@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú - La Buena Mesa</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <!-- HEADER -->
+    <header class="header-interior">
+        <div class="container">
+            <a href="index.html" class="header-logo">La Buena Mesa</a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="menu.html" class="active">Menú</a></li>
+                    <li><a href="index.html#reservaciones">Reservaciones</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="carrito.html" class="cart-btn">
+                    <span>&#128203;</span> <!-- Icono de carrito -->
+                    <span class="cart-badge">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="menu-page">
+        <div class="container">
+            <div class="section-header text-center" style="text-align: center; margin-bottom: 50px;">
+                <span class="section-label">— NUESTROS FAVORITOS</span>
+                <h3 class="section-title">Las Joyas de Nuestra Cocina</h3>
+            </div>
+
+            <div class="cards-grid">
+                <!-- Card 1 -->
+                <article class="card">
+                    <img src="../docs/img/cochinillo.jpg" alt="Cochinillo Asado" class="card-img">
+                    <div class="card-body">
+                        <div class="card-heading">
+                            <h4 class="card-title">Cochinillo Asado</h4>
+                            <span class="card-price">Q189</span>
+                        </div>
+                        <p class="card-desc">Crujiente por fuera, tierno y jugoso por dentro, preparado al horno de leña tradicional con un toque de romero y ajo.</p>
+                        <button class="btn btn-add-cart">AGREGAR AL CARRITO</button>
+                    </div>
+                </article>
+
+                <!-- Card 2 -->
+                <article class="card">
+                    <img src="../docs/img/paella.jpg" alt="Paella de la Casa" class="card-img">
+                    <div class="card-body">
+                        <div class="card-heading">
+                            <h4 class="card-title">Paella de la Casa</h4>
+                            <span class="card-price">Q159</span>
+                        </div>
+                        <p class="card-desc">Arroz bomba premium con mariscos frescos de la costa, azafrán en hebras y un toque ahumado característico de nuestra leña.</p>
+                        <button class="btn btn-add-cart">AGREGAR AL CARRITO</button>
+                    </div>
+                </article>
+
+                <!-- Card 3 -->
+                <article class="card">
+                    <img src="../docs/img/croquetas.jpg" alt="Croquetas de Jamón" class="card-img">
+                    <div class="card-body">
+                        <div class="card-heading">
+                            <h4 class="card-title">Croquetas de Jamón Ibérico</h4>
+                            <span class="card-price">Q139</span>
+                        </div>
+                        <p class="card-desc">Bechamel cremosa elaborada a fuego lento con auténtico jamón ibérico de bellota y un rebozado crujiente artesanal.</p>
+                        <button class="btn btn-add-cart">AGREGAR AL CARRITO</button>
+                    </div>
+                </article>
+
+                <!-- Card 4 -->
+                <article class="card">
+                    <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Jocon" class="card-img">
+                    <div class="card-body">
+                        <div class="card-heading">
+                            <h4 class="card-title">Jocón</h4>
+                            <span class="card-price">Q68.00</span>
+                        </div>
+                        <p class="card-desc">Pollo tierno en salsa verde tradicional de tomatillo, cilantro y pepitoria, servido con arroz.</p>
+                        <button class="btn btn-add-cart">AGREGAR AL CARRITO</button>
+                    </div>
+                </article>
+
+                <!-- Card 5 -->
+                <article class="card">
+                    <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chomin" class="card-img">
+                    <div class="card-body">
+                        <div class="card-heading">
+                            <h4 class="card-title">Chomin</h4>
+                            <span class="card-price">Q59.50</span>
+                        </div>
+                        <p class="card-desc">Fideos tradicionales guatemaltecos salteados con verduras frescas, pollo o carne, en un recado ligero y aromático.</p>
+                        <button class="btn btn-add-cart">AGREGAR AL CARRITO</button>
+                    </div>
+                </article>
+                
+                <!-- Card 6 -->
+                <article class="card">
+                    <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chuchitos" class="card-img">
+                    <div class="card-body">
+                        <div class="card-heading">
+                            <h4 class="card-title">Chuchitos</h4>
+                            <span class="card-price">Q13.00</span>
+                        </div>
+                        <p class="card-desc">Pequeños tamales de masa de maíz envueltos en tuza, rellenos de recado de tomate y carne, espolvoreados con queso seco.</p>
+                        <button class="btn btn-add-cart">AGREGAR AL CARRITO</button>
+                    </div>
+                </article>
+
+                <!-- Add more cards as needed -->
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-bottom" style="text-align: center; margin-top: 0; flex-direction: row; justify-content: center;">
+                <p>&copy; 2026 La Buena Mesa. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+

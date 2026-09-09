@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Buena Mesa - Restaurante</title>
+    <!-- Enlace a la hoja de estilos -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Google Fonts para tipografía parecida al diseño -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <!-- =========================
+         HERO SECTION / ENCABEZADO
+         ========================= -->
+    <header class="hero" id="inicio">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">La Buena Mesa</h1>
+            <h2 class="hero-subtitle">COCINA DE TRADICIÓN, SABOR DE SIEMPRE</h2>
+            <p class="hero-text">
+                El auténtico sabor de la cocina tradicional. 
+                Un rincón acogedor donde las recetas heredadas de madres y abuelas se preparan con el corazón, 
+                para ofrecer una experiencia cálida y memorable a nuestros comensales.
+            </p>
+            <a href="#menu" class="btn btn-primary">VER MENÚ</a>
+            
+            <div class="scroll-indicator">
+                <span>DESPLAZAR</span>
+                <div class="arrow-down">&#x25BC;</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- =========================
+             SECCIÓN: NUESTROS FAVORITOS
+             ========================= -->
+        <section class="favorites-section" id="favoritos">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label">— NUESTROS FAVORITOS</span>
+                    <h3 class="section-title">Las joyas de Nuestra Cocina</h3>
+                </div>
+                
+                <div class="cards-grid">
+                    <!-- Favorito 1 -->
+                    <article class="card">
+                        <img src="../docs/img/cochinillo.jpg" alt="Cochinillo Asado" class="card-img">
+                        <div class="card-body">
+                            <div class="card-heading">
+                                <h4 class="card-title">Cochinillo Asado</h4>
+                                <span class="card-price">Q150</span>
+                            </div>
+                            <p class="card-desc">Crujiente por fuera, tierno y jugoso por dentro, preparado al horno de leña tradicional con un toque de romero y ajo.</p>
+                        </div>
+                    </article>
+
+                    <!-- Favorito 2 -->
+                    <article class="card">
+                        <img src="../docs/img/paella.jpg" alt="Paella de la Casa" class="card-img">
+                        <div class="card-body">
+                            <div class="card-heading">
+                                <h4 class="card-title">Paella de la Casa</h4>
+                                <span class="card-price">Q180</span>
+                            </div>
+                            <p class="card-desc">Arroz bomba premium con mariscos frescos de la costa, azafrán en hebras y un toque ahumado característico de nuestra leña.</p>
+                        </div>
+                    </article>
+
+                    <!-- Favorito 3 -->
+                    <article class="card">
+                        <img src="../docs/img/croquetas.jpg" alt="Croquetas de Jamón Ibérico" class="card-img">
+                        <div class="card-body">
+                            <div class="card-heading">
+                                <h4 class="card-title">Croquetas de Jamón Ibérico</h4>
+                                <span class="card-price">Q120</span>
+                            </div>
+                            <p class="card-desc">Bechamel cremosa elaborada a fuego lento con auténtico jamón ibérico de bellota y un rebozado crujiente artesanal.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             SECCIÓN: LA CARTA / MENÚ
+             ========================= -->
+        <section class="menu-section" id="menu">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label">— LA CARTA</span>
+                    <h3 class="section-title">Explora Nuestro Menú Tradicional</h3>
+                </div>
+
+                <div class="menu-grid">
+                    <!-- Categoría: Entradas -->
+                    <div class="menu-category">
+                        <div class="category-banner bg-entradas">
+                            <h4 class="category-title">Entradas</h4>
+                        </div>
+                        <ul class="menu-list">
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h5 class="item-name">Salmorejo Cordobés</h5>
+                                    <span class="item-price">Q65.00</span>
+                                </div>
+                                <p class="item-desc">Crema de tomate fresca emulsionada con aceite de oliva virgen extra, virutas de jamón y huevo duro.</p>
+                            </li>
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h5 class="item-name">Pulpo a la Gallega</h5>
+                                    <span class="item-price">Q160.00</span>
+                                </div>
+                                <p class="item-desc">Tierno pulpo sobre cama de patatas cocidas, espolvoreado con pimentón de la Vera y aceite de oliva.</p>
+                            </li>
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h5 class="item-name">Pimientos del Padrón</h5>
+                                    <span class="item-price">Q70.00</span>
+                                </div>
+                                <p class="item-desc">Pequeños pimientos verdes fritos sazonados con sal gruesa marina, algunos pican y otros no.</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Categoría: Platos Principales -->
+                    <div class="menu-category">
+                        <div class="category-banner bg-principales">
+                            <h4 class="category-title">Platos Principales</h4>
+                        </div>
+                        <ul class="menu-list">
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h5 class="item-name">Entrecot de Ternera</h5>
+                                    <span class="item-price">Q250.00</span>
+                                </div>
+                                <p class="item-desc">400g de ternera madurada cocinada a las brasas, servido con patatas panaderas y pimientos.</p>
+                            </li>
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h5 class="item-name">Bacalao al Pil-Pil</h5>
+                                    <span class="item-price">Q155.00</span>
+                                </div>
+                                <p class="item-desc">Lomo de bacalao fresco confitado con su propia gelatina, ajo y guindilla.</p>
+                            </li>
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h5 class="item-name">Rabo de Toro Estofado</h5>
+                                    <span class="item-price">Q220.00</span>
+                                </div>
+                                <p class="item-desc">Guisado a fuego lento en reducción de vino tinto de la casa, tierno que se deshace.</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Categoría: Postres -->
+                    <div class="menu-category">
+                        <div class="category-banner bg-postres">
+                            <h4 class="category-title">Postres</h4>
+                        </div>
+                        <ul class="menu-list">
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h5 class="item-name">Torrija Caramelizada</h5>
+                                    <span class="item-price">Q65.50</span>
+                                </div>
+                                <p class="item-desc">Empapada en leche infusionada con canela y cítricos, caramelizada al momento y con helado de vainilla.</p>
+                            </li>
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h5 class="item-name">Crema Catalana</h5>
+                                    <span class="item-price">Q50.00</span>
+                                </div>
+                                <p class="item-desc">Clásica crema pastelera con una crujiente capa de azúcar quemada.</p>
+                            </li>
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h5 class="item-name">Tarta de Queso Casera</h5>
+                                    <span class="item-price">Q65.00</span>
+                                </div>
+                                <p class="item-desc">Tarta cremosa horneada diariamente con queso azul nuestro ibérico.</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Categoría: Bebidas & Vinos -->
+                    <div class="menu-category">
+                        <div class="category-banner bg-bebidas">
+                            <h4 class="category-title">Bebidas & Vinos</h4>
+                        </div>
+                        <ul class="menu-list">
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h5 class="item-name">Ribera del Duero Crianza</h5>
+                                    <span class="item-price">Q45.00/copa</span>
+                                </div>
+                                <p class="item-desc">Vino tinto elegante, equilibrado y con sutiles notas a madera.</p>
+                            </li>
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h5 class="item-name">Sangría de Cava de la Casa</h5>
+                                    <span class="item-price">Q80.00/jarra</span>
+                                </div>
+                                <p class="item-desc">Refrescante sangría preparada con cava premium, fruta fresca seleccionada y licor.</p>
+                            </li>
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h5 class="item-name">Cerveza Artesana 'Buena Mesa'</h5>
+                                    <span class="item-price">Q35.00</span>
+                                </div>
+                                <p class="item-desc">Nuestra cerveza rubia de malta lager, ligera y refrescante, ideal para acompañar.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             SECCIÓN: RESERVACIONES
+             ========================= -->
+        <section class="reservations-section" id="reservaciones">
+            <div class="container">
+                <div class="reservations-grid">
+                    <div class="reservations-info">
+                        <div class="section-header">
+                            <span class="section-label">— RESERVACIONES</span>
+                            <h3 class="section-title">Planifica tu Visita</h3>
+                        </div>
+                        <p class="reservations-desc">
+                            Le sugerimos reservar con antelación para asegurar su mesa, especialmente para los servicios de cena de fin de semana.
+                        </p>
+                        
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <div class="icon">&#128336;</div> <!-- Icono reloj -->
+                                <div>
+                                    <h5 class="contact-title">HORARIOS DE APERTURA</h5>
+                                    <p>Martes a Sábado: 13:00 - 16:30 | 20:00 - 23:30<br>Domingo: 13:00 - 17:00 (Lunes cerrado)</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="icon">&#128205;</div> <!-- Icono pin ubicacion -->
+                                <div>
+                                    <h5 class="contact-title">UBICACIÓN</h5>
+                                    <p>Calle de la Tradición, Huehuetenango</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="icon">&#128222;</div> <!-- Icono teléfono -->
+                                <div>
+                                    <h5 class="contact-title">RESERVAS DIRECTAS</h5>
+                                    <p class="highlight-text">47672068</p>
+                                    <p>reservas@labuename.gt</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reservations-image">
+                        <img src="../docs/img/interior-restaurante.jpg" alt="Interior acogedor del restaurante La Buena Mesa">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- =========================
+         FOOTER / PIE DE PÁGINA
+         ========================= -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3 class="footer-logo">La Buena Mesa</h3>
+                    <p class="footer-desc">
+                        Cocina tradicional de herencia, sabores guardados en la memoria y el corazón que llevamos al comensal.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h5 class="column-title">SÍGUENOS</h5>
+                        <ul>
+                            <li><a href="#">Instagram</a></li>
+                            <li><a href="#">Facebook</a></li>
+                            <li><a href="#">TripAdvisor</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h5 class="column-title">LEGAL</h5>
+                        <ul>
+                            <li><a href="#">Aviso Legal</a></li>
+                            <li><a href="#">Privacidad</a></li>
+                            <li><a href="#">Cookies</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 La Buena Mesa. Todos los derechos reservados.</p>
+                <p class="developer-note">Diseñado con amor por los amantes del buen sazón.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
