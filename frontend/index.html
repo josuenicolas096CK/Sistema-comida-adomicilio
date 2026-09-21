@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Buena Mesa - Cocina de Tradición</title>
+    <!-- Hojas de estilos del proyecto -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <!-- Tipografías de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <!-- ==========================================================================
+         ENCABEZADO PRINCIPAL (HEADER): Barra de navegación fija con logo y carrito
+         ========================================================================== -->
+    <header class="header-interior">
+        <div class="container">
+            <!-- Logotipo del restaurante con enlace al inicio -->
+            <a href="index.html" class="header-logo" aria-label="Ir a la página de inicio">La Buena Mesa</a>
+            
+            <!-- Navegación principal semántica -->
+            <nav class="main-nav" aria-label="Navegación principal">
+                <ul>
+                    <li><a href="index.html" class="active">Inicio</a></li>
+                    <li><a href="menu.html">Menú</a></li>
+                    <li><a href="#reservaciones">Reservaciones</a></li>
+                </ul>
+            </nav>
+            
+            <!-- Acciones del encabezado: Botón para desplegar el carrito de compras -->
+            <div class="header-actions">
+                <button type="button" class="cart-btn" id="open-cart-btn" aria-label="Abrir carrito de compras" title="Ver carrito de compras">
+                    <span aria-hidden="true">&#128722;</span>
+                    <!-- Contador reactivo de productos -->
+                    <span class="cart-badge" id="header-cart-badge">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================================================
+         HERO SECTION: Banner de bienvenida y presentación de la marca
+         ========================================================================== -->
+    <section class="hero" id="inicio" aria-label="Bienvenida a La Buena Mesa">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">La Buena Mesa</h1>
+            <p class="hero-subtitle">COCINA DE TRADICIÓN, SABOR DE SIEMPRE</p>
+            <p class="hero-text">
+                El auténtico sabor de la cocina tradicional guatemalteca. 
+                Un rincón acogedor donde las recetas heredadas de madres y abuelas se preparan con el corazón, 
+                para ofrecer una experiencia cálida y memorable en cada entrega a domicilio.
+            </p>
+            <!-- Botón principal para redirigir al menú donde se agregan los productos -->
+            <a href="menu.html" class="btn btn-primary">EXPLORAR MENÚ Y PEDIR</a>
+            
+            <div class="scroll-indicator" aria-hidden="true">
+                <span>DESPLAZAR</span>
+                <div class="arrow-down">&#x25BC;</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         CONTENIDO PRINCIPAL (MAIN): Bloques informativos y catálogo de muestra
+         ========================================================================== -->
+    <main>
+        
+        <!-- ======================================================================
+             SECCIÓN 1: NUESTROS FAVORITOS (Platillos emblemáticos)
+             Nota: En el Home los productos no tienen botón de agregar, sino enlace
+             directo hacia el menú completo según las directrices de diseño.
+             ====================================================================== -->
+        <section class="favorites-section" id="favoritos" aria-labelledby="favoritos-title">
+            <div class="container">
+                <header class="section-header">
+                    <span class="section-label">— NUESTROS FAVORITOS</span>
+                    <h2 class="section-title" id="favoritos-title">Las Joyas de Nuestra Cocina</h2>
+                </header>
+                
+                <div class="cards-grid">
+                    <!-- Platillo Favorito 1 -->
+                    <article class="card">
+                        <figure class="card-media">
+                            <img src="../docs/img/jocon.jpeg" alt="Platillo tradicional Jocón guatemalteco" class="card-img">
+                            <span class="category-tag">Tradicional</span>
+                        </figure>
+                        <div class="card-body">
+                            <div class="card-heading">
+                                <h3 class="card-title">Jocón Tradicional</h3>
+                                <span class="card-price">Q68.00</span>
+                            </div>
+                            <p class="card-desc">Pollo tierno en salsa verde tradicional de tomatillo, cilantro y pepitoria, servido con arroz recién hecho.</p>
+                            <a href="menu.html" class="btn btn-outline" style="text-align: center; margin-top: 15px;">
+                                VER EN EL MENÚ &rarr;
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Platillo Favorito 2 -->
+                    <article class="card">
+                        <figure class="card-media">
+                            <img src="../docs/img/chomin.jpeg" alt="Platillo tradicional Chomin casero" class="card-img">
+                            <span class="category-tag">Tradicional</span>
+                        </figure>
+                        <div class="card-body">
+                            <div class="card-heading">
+                                <h3 class="card-title">Chomin Casero</h3>
+                                <span class="card-price">Q59.50</span>
+                            </div>
+                            <p class="card-desc">Fideos tradicionales guatemaltecos salteados con verduras frescas, pollo o carne, en un recado ligero y aromático.</p>
+                            <a href="menu.html" class="btn btn-outline" style="text-align: center; margin-top: 15px;">
+                                VER EN EL MENÚ &rarr;
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Platillo Favorito 3 -->
+                    <article class="card">
+                        <figure class="card-media">
+                            <img src="../docs/img/chuchito.png" alt="Chuchitos típicos de maíz con salsa y queso" class="card-img">
+                            <span class="category-tag">Tradicional</span>
+                        </figure>
+                        <div class="card-body">
+                            <div class="card-heading">
+                                <h3 class="card-title">Chuchitos Típicos</h3>
+                                <span class="card-price">Q13.00</span>
+                            </div>
+                            <p class="card-desc">Pequeños tamales de masa de maíz envueltos en tuza, rellenos de recado de tomate y carne, espolvoreados con queso seco.</p>
+                            <a href="menu.html" class="btn btn-outline" style="text-align: center; margin-top: 15px;">
+                                VER EN EL MENÚ &rarr;
+                            </a>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Llamada a la acción para ir al catálogo completo -->
+                <div style="text-align: center; margin-top: 45px;">
+                    <a href="menu.html" class="btn btn-primary" style="padding: 16px 40px; font-size: 1rem;">
+                        &#128214; VER MENÚ COMPLETO Y AGREGAR PLATILLOS
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================================
+             SECCIÓN 2: LA CARTA / CATEGORÍAS GASTRONÓMICAS
+             ====================================================================== -->
+        <section class="menu-section" id="carta" aria-labelledby="carta-title">
+            <div class="container">
+                <header class="section-header">
+                    <span class="section-label">— LA CARTA</span>
+                    <h2 class="section-title" id="carta-title">Explora Nuestras Categorías</h2>
+                </header>
+
+                <div class="menu-grid">
+                    <!-- Categoría: Entradas -->
+                    <div class="menu-category">
+                        <div class="category-banner bg-entradas">
+                            <h3 class="category-title">Entradas</h3>
+                        </div>
+                        <ul class="menu-list">
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h4 class="item-name">Salmorejo Cordobés</h4>
+                                    <span class="item-price">Q65.00</span>
+                                </div>
+                                <p class="item-desc">Crema de tomate emulsionada con virutas de jamón y huevo duro.</p>
+                            </li>
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h4 class="item-name">Pimientos del Padrón</h4>
+                                    <span class="item-price">Q70.00</span>
+                                </div>
+                                <p class="item-desc">Fritos en aceite de oliva y sazonados con sal marina gruesa.</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Categoría: Platos Principales -->
+                    <div class="menu-category">
+                        <div class="category-banner bg-principales">
+                            <h3 class="category-title">Platos Fuertes</h3>
+                        </div>
+                        <ul class="menu-list">
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h4 class="item-name">Entrecot de Ternera a la Leña</h4>
+                                    <span class="item-price">Q250.00</span>
+                                </div>
+                                <p class="item-desc">400g madurados cocinados a las brasas con patatas panaderas.</p>
+                            </li>
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h4 class="item-name">Bacalao al Pil-Pil</h4>
+                                    <span class="item-price">Q155.00</span>
+                                </div>
+                                <p class="item-desc">Lomo confitado en su gelatina con ajo dorado y guindilla.</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Categoría: Postres -->
+                    <div class="menu-category">
+                        <div class="category-banner bg-postres">
+                            <h3 class="category-title">Postres Caseros</h3>
+                        </div>
+                        <ul class="menu-list">
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h4 class="item-name">Torrija Caramelizada</h4>
+                                    <span class="item-price">Q65.50</span>
+                                </div>
+                                <p class="item-desc">Empapada en leche infusionada, caramelizada con helado de vainilla.</p>
+                            </li>
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h4 class="item-name">Crema Catalana Quemada</h4>
+                                    <span class="item-price">Q50.00</span>
+                                </div>
+                                <p class="item-desc">Clásica crema suave con crujiente capa de azúcar quemada.</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Categoría: Bebidas -->
+                    <div class="menu-category">
+                        <div class="category-banner bg-bebidas">
+                            <h3 class="category-title">Bebidas & Vinos</h3>
+                        </div>
+                        <ul class="menu-list">
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h4 class="item-name">Sangría de Cava de la Casa</h4>
+                                    <span class="item-price">Q80.00/jarra</span>
+                                </div>
+                                <p class="item-desc">Preparada con fruta selecta fresca de temporada y licor.</p>
+                            </li>
+                            <li class="menu-item">
+                                <div class="item-heading">
+                                    <h4 class="item-name">Cerveza Artesana 'Buena Mesa'</h4>
+                                    <span class="item-price">Q35.00</span>
+                                </div>
+                                <p class="item-desc">Rubia de malta lager, ligera y perfecta para acompañar.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="menu.html" class="btn btn-outline" style="border-width: 2px; padding: 14px 35px;">
+                        IR AL MENÚ PARA AGREGAR PRODUCTOS &rarr;
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================================
+             SECCIÓN 3: RESERVACIONES Y UBICACIÓN
+             ====================================================================== -->
+        <section class="reservations-section" id="reservaciones" aria-labelledby="reservas-title">
+            <div class="container">
+                <div class="reservations-grid">
+                    <div class="reservations-info">
+                        <header class="section-header">
+                            <span class="section-label">— RESERVACIONES & PEDIDOS</span>
+                            <h2 class="section-title" id="reservas-title">Planifica tu Visita o Entrega</h2>
+                        </header>
+                        <p class="reservations-desc">
+                            Realiza tu pedido en línea con entrega inmediata a domicilio o reserva tu mesa con antelación para asegurar la mejor experiencia gastronómica.
+                        </p>
+                        
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <div class="icon" aria-hidden="true">&#128336;</div>
+                                <div>
+                                    <h3 class="contact-title">HORARIOS DE SERVICIO</h3>
+                                    <p>Martes a Sábado: 12:00 - 22:00<br>Domingo: 12:00 - 18:00 (Lunes cerrado)</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="icon" aria-hidden="true">&#128205;</div>
+                                <div>
+                                    <h3 class="contact-title">UBICACIÓN</h3>
+                                    <p>Calle de la Tradición, Huehuetenango / Ciudad de Guatemala</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="icon" aria-hidden="true">&#128222;</div>
+                                <div>
+                                    <h3 class="contact-title">ATENCIÓN DIRECTA</h3>
+                                    <p class="highlight-text">+502 4767 2068</p>
+                                    <p>pedidos@labuename.gt</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <figure class="reservations-image">
+                        <img src="../docs/img/ConfirmacionYPagoRestaurante.png" alt="Ambiente cálido del restaurante La Buena Mesa" style="border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    </figure>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==========================================================================
+         COMPONENTE ASIDE: CARRITO DE COMPRAS DESPLEGABLE (DRAWER OFF-CANVAS)
+         Accesible desde el botón del encabezado sin salir de la página
+         ========================================================================== -->
+    <div id="cart-drawer-overlay" class="cart-drawer-overlay" aria-hidden="true"></div>
+
+    <aside id="cart-drawer" class="cart-drawer" aria-label="Carrito de compras desplegable" aria-hidden="true">
+        <!-- Cabecera del Drawer -->
+        <header class="drawer-header">
+            <h3 class="drawer-title">&#128722; Tu Carrito</h3>
+            <button type="button" class="close-drawer-btn" id="close-cart-drawer" aria-label="Cerrar carrito">&times;</button>
+        </header>
+
+        <!-- Cuerpo del Drawer: Lista de productos agregados -->
+        <div class="drawer-body">
+            <div id="drawer-items-list">
+                <!-- Se inyecta dinámicamente desde app.js -->
+            </div>
+
+            <!-- Mensaje cuando el carrito está vacío -->
+            <div id="drawer-empty-state" class="drawer-empty-state" style="display: none;">
+                <span class="drawer-empty-icon">&#128722;</span>
+                <h4>Tu carrito está vacío</h4>
+                <p>Ve a nuestro menú para agregar tus platillos favoritos.</p>
+                <a href="menu.html" class="btn btn-outline" style="margin-top: 15px;" onclick="CartManager.closeDrawer()">
+                    EXPLORAR MENÚ
+                </a>
+            </div>
+        </div>
+
+        <!-- Pie del Drawer: Resumen financiero y botones de acción -->
+        <footer class="drawer-footer" id="drawer-footer">
+            <div class="drawer-summary-row">
+                <span>Subtotal:</span>
+                <span id="drawer-subtotal">Q0.00</span>
+            </div>
+            <div class="drawer-summary-row">
+                <span>Envío estimado:</span>
+                <span id="drawer-shipping">Q25.00</span>
+            </div>
+            <div class="drawer-summary-row total">
+                <span>Total:</span>
+                <span id="drawer-total">Q0.00</span>
+            </div>
+            
+            <div class="drawer-actions">
+                <a href="checkout.html" class="btn btn-primary btn-block" style="text-align: center;">
+                    CONTINUAR AL CHECKOUT &rarr;
+                </a>
+                <a href="carrito.html" class="btn btn-outline btn-block" style="text-align: center;">
+                    VER CARRITO COMPLETO
+                </a>
+            </div>
+        </footer>
+    </aside>
+
+    <!-- ==========================================================================
+         PIE DE PÁGINA (FOOTER): Enlaces de navegación institucional y copyright
+         ========================================================================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3 class="footer-logo">La Buena Mesa</h3>
+                    <p class="footer-desc">
+                        Cocina tradicional guatemalteca e internacional. Sabores guardados en la memoria y el corazón que llevamos a tu mesa.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4 class="column-title">NAVEGACIÓN</h4>
+                        <ul>
+                            <li><a href="index.html">Inicio</a></li>
+                            <li><a href="menu.html">Menú a Domicilio</a></li>
+                            <li><a href="carrito.html">Mi Carrito</a></li>
+                            <li><a href="checkout.html">Checkout</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4 class="column-title">SÍGUENOS</h4>
+                        <ul>
+                            <li><a href="#">Instagram</a></li>
+                            <li><a href="#">Facebook</a></li>
+                            <li><a href="#">WhatsApp</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 La Buena Mesa. Todos los derechos reservados.</p>
+                <p class="developer-note">Sistema Web de Pedidos de Comida a Domicilio.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script de lógica de negocio y gestión del carrito -->
+    <script src="js/app.js"></script>
+</body>
+</html>

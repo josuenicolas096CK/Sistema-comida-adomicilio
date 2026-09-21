@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos de Entrega y Envío - La Buena Mesa</title>
+    <!-- Hojas de estilo del proyecto -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body style="background-color: var(--clr-bg-alt);">
+    
+    <!-- ==========================================================================
+         ENCABEZADO PRINCIPAL (HEADER): Barra de navegación fija
+         ========================================================================== -->
+    <header class="header-interior">
+        <div class="container">
+            <a href="index.html" class="header-logo" aria-label="Ir al inicio">La Buena Mesa</a>
+            <nav class="main-nav" aria-label="Navegación principal">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="menu.html">Menú</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="carrito.html" class="cart-btn" style="background-color: var(--clr-secondary); color: white;" aria-label="Ver carrito">
+                    <span aria-hidden="true">&#128722;</span>
+                    <span class="cart-badge" id="header-cart-badge" style="background-color: #222;">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================================================
+         STEPPER DE PROGRESO: Indicador visual de los 3 pasos de compra
+         ========================================================================== -->
+    <nav class="container" aria-label="Progreso de compra">
+        <div class="stepper">
+            <div class="step">
+                <div class="step-number" style="background-color: var(--clr-secondary); color: #fff;">&#10003;</div>
+                <span>1. Carrito</span>
+            </div>
+            <div class="step-divider" style="background-color: var(--clr-secondary);"></div>
+            <div class="step active">
+                <div class="step-number">2</div>
+                <span>2. Datos de Envío</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <span>3. Pago y Confirmación</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==========================================================================
+         CONTENIDO PRINCIPAL (MAIN): Formulario de Envío y Resumen del Pedido
+         ========================================================================== -->
+    <main class="container" style="padding-bottom: 70px;">
+        <header class="page-title">
+            <h1>Datos de Entrega</h1>
+        </header>
+
+        <div class="checkout-layout">
+            
+            <!-- Columna izquierda: Formulario semántico con fieldsets y validaciones -->
+            <section aria-label="Formulario de información del cliente y entrega">
+                <form id="checkout-shipping-form" novalidate>
+                    
+                    <!-- Selección del Método de Entrega -->
+                    <fieldset style="border: none; margin-bottom: 25px;">
+                        <legend class="section-label" style="color: var(--clr-dark); margin-bottom: 10px;">MÉTODO DE ENTREGA</legend>
+                        <div class="method-toggle">
+                            <label class="method-option selected">
+                                <input type="radio" name="delivery_method" value="delivery" checked>
+                                <div class="method-details">
+                                    <h3 style="font-size: 1rem; margin-bottom: 4px;">Envío a Domicilio</h3>
+                                    <p>Recibe tus platillos en la puerta de tu hogar u oficina</p>
+                                </div>
+                            </label>
+                            <label class="method-option">
+                                <input type="radio" name="delivery_method" value="pickup">
+                                <div class="method-details">
+                                    <h3 style="font-size: 1rem; margin-bottom: 4px;">Recoger en Restaurante</h3>
+                                    <p>Listo para llevar en 25 minutos, sin costo de envío</p>
+                                </div>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <!-- Bloque de Información de Contacto y Dirección -->
+                    <fieldset class="form-section">
+                        <legend class="form-title" style="padding: 0 10px; font-family: var(--font-heading); font-size: 1.25rem;">
+                            Información del Destinatario
+                        </legend>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="customer-name">Nombre Completo *</label>
+                                <input type="text" id="customer-name" required value="Josué Antonio Morales" placeholder="Ej. Carlos Mendoza">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="customer-phone">Teléfono de Contacto *</label>
+                                <input type="tel" id="customer-phone" required value="5523 9845" placeholder="Ej. 4123 4567">
+                            </div>
+                            
+                            <div class="form-group full">
+                                <label for="customer-email">Correo Electrónico *</label>
+                                <input type="email" id="customer-email" required value="josue.morales@gmail.com" placeholder="tu@correo.com">
+                            </div>
+
+                            <div class="form-group full">
+                                <label for="customer-address">Dirección Exacta de Entrega *</label>
+                                <input type="text" id="customer-address" required value="Avenida las Américas 14-20, Edificio Las Brisas, Apartamento 4B" placeholder="Calle, avenida, número de casa/apto">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="shipping-zone-select">Zona / Sector *</label>
+                                <select id="shipping-zone-select">
+                                    <option value="Zona 14" selected>Zona 14 (Tarifa Promo: GRATIS)</option>
+                                    <option value="Zona 15">Zona 15 (Tarifa: Q15.00)</option>
+                                    <option value="Zona 10">Zona 10 (Tarifa: Q15.00)</option>
+                                    <option value="Zona 1">Zona 1 (Tarifa: Q20.00)</option>
+                                    <option value="Zona 2">Zona 2 (Tarifa: Q25.00)</option>
+                                    <option value="Zona 3">Zona 3 (Tarifa: Q30.00)</option>
+                                    <option value="Otras Zonas">Otras Zonas (Tarifa: Q35.00)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="customer-city">Ciudad / Departamento *</label>
+                                <input type="text" id="customer-city" required value="Guatemala">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="customer-postal">Código Postal</label>
+                                <input type="text" id="customer-postal" value="01014">
+                            </div>
+                        </div>
+
+                        <!-- Programación del horario de entrega -->
+                        <h3 class="form-title" style="margin-top: 30px; font-size: 1rem; text-transform: uppercase;">
+                            PROGRAMACIÓN DE LA ENTREGA
+                        </h3>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="customer-date">Fecha de Entrega</label>
+                                <input type="text" id="customer-date" value="Hoy">
+                            </div>
+                            <div class="form-group">
+                                <label for="customer-time">Hora Estimada</label>
+                                <input type="text" id="customer-time" value="Lo antes posible (35-50 min)">
+                            </div>
+                        </div>
+
+                        <div class="form-group full" style="margin-top: 15px;">
+                            <label for="customer-notes">Instrucciones Especiales para el Repartidor</label>
+                            <textarea id="customer-notes" rows="3" placeholder="Ej. Tocar el timbre del portón café, dejar en garita de seguridad..."></textarea>
+                        </div>
+                    </fieldset>
+
+                    <div style="margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary btn-block" style="padding: 16px; font-size: 1rem;">
+                            CONTINUAR AL MÉTODO DE PAGO &rarr;
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Columna derecha: Resumen del pedido en tiempo real -->
+            <aside aria-label="Resumen de la orden">
+                <div class="sidebar-summary">
+                    <h2 class="summary-title" style="font-size: 1.25rem;">Resumen del Pedido</h2>
+                    
+                    <!-- Lista de productos pequeños calculados dinámicamente -->
+                    <div class="mini-cart" id="checkout-mini-cart">
+                        <!-- Inyectado desde app.js (initCheckoutPage) -->
+                    </div>
+
+                    <div style="background: #fafafa; padding: 12px 15px; border-radius: 4px; margin-bottom: 20px; font-size: 0.8rem; color: #666; border-left: 3px solid var(--clr-primary);">
+                        <strong>TARIFAS POR ZONA</strong><br>
+                        Zona 14: Gratis | Zona 10/15: Q15.00 | Otras Zonas: desde Q20.00
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="checkout-subtotal">Q0.00</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span>Costo de Envío</span>
+                        <span id="checkout-shipping" class="text-success">¡GRATIS!</span>
+                    </div>
+                    
+                    <div class="summary-row total">
+                        <span>Total Estimado</span>
+                        <span class="summary-total-price" id="checkout-total">Q0.00</span>
+                    </div>
+
+                    <div class="alert-info" style="justify-content: center; margin-top: 15px;">
+                        &#9989; Pedido listo para preparación en cocina
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- ==========================================================================
+         PIE DE PÁGINA (FOOTER)
+         ========================================================================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-bottom" style="text-align: center; margin-top: 0; justify-content: center;">
+                <p>&copy; 2026 La Buena Mesa. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script de lógica interactiva -->
+    <script src="js/app.js"></script>
+</body>
+</html>

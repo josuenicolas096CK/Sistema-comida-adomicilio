@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método de Pago y Confirmación - La Buena Mesa</title>
+    <!-- Estilos del proyecto -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body style="background-color: var(--clr-bg-alt);">
+    
+    <!-- ==========================================================================
+         ENCABEZADO PRINCIPAL (HEADER)
+         ========================================================================== -->
+    <header class="header-interior">
+        <div class="container">
+            <a href="index.html" class="header-logo" aria-label="Ir al inicio">La Buena Mesa</a>
+            <nav class="main-nav" aria-label="Navegación principal">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="menu.html">Menú</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="carrito.html" class="cart-btn" style="background-color: var(--clr-secondary); color: white;" aria-label="Ver carrito">
+                    <span aria-hidden="true">&#128722;</span>
+                    <span class="cart-badge" id="header-cart-badge" style="background-color: #222;">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================================================
+         STEPPER DE PROGRESO: Paso 3 - Pago y Confirmación
+         ========================================================================== -->
+    <nav class="container" aria-label="Progreso de compra">
+        <div class="stepper">
+            <div class="step">
+                <div class="step-number" style="background-color: var(--clr-secondary); color: #fff;">&#10003;</div>
+                <span>1. Carrito</span>
+            </div>
+            <div class="step-divider" style="background-color: var(--clr-secondary);"></div>
+            <div class="step">
+                <div class="step-number" style="background-color: var(--clr-secondary); color: #fff;">&#10003;</div>
+                <span>2. Datos de Envío</span>
+            </div>
+            <div class="step-divider" style="background-color: var(--clr-secondary);"></div>
+            <div class="step active">
+                <div class="step-number">3</div>
+                <span>3. Pago y Confirmación</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==========================================================================
+         CONTENIDO PRINCIPAL (MAIN): Selección de método de pago y confirmación
+         ========================================================================== -->
+    <main class="container" style="padding-bottom: 70px;">
+        <header class="page-title">
+            <h1>Método de Pago</h1>
+        </header>
+
+        <div class="checkout-layout">
+            
+            <!-- Columna izquierda: Opciones de Pago Semánticas -->
+            <section aria-label="Formulario de selección de pago y propina">
+                
+                <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px;">
+                    
+                    <!-- Opción 1: Tarjeta de Crédito / Débito -->
+                    <article class="form-section" style="border: 2px solid var(--clr-secondary); margin-bottom: 0;">
+                        <header style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                            <label style="display: flex; align-items: center; gap: 10px; font-weight: 700; cursor: pointer;">
+                                <input type="radio" name="payment" value="tarjeta" checked style="transform: scale(1.3); accent-color: var(--clr-secondary);">
+                                Tarjeta de Crédito / Débito (En línea)
+                            </label>
+                            <span style="font-size: 1.5rem;" aria-hidden="true">&#128179;</span>
+                        </header>
+                        
+                        <div class="form-grid">
+                            <div class="form-group full">
+                                <label for="card-name">Nombre en la Tarjeta</label>
+                                <input type="text" id="card-name" value="JOSUE ANTONIO MORALES">
+                            </div>
+                            <div class="form-group full">
+                                <label for="card-number">Número de Tarjeta</label>
+                                <input type="text" id="card-number" value="4532 •••• •••• 8824">
+                            </div>
+                            <div class="form-group">
+                                <label for="card-exp">Fecha de Vencimiento</label>
+                                <input type="text" id="card-exp" value="12 / 29">
+                            </div>
+                            <div class="form-group">
+                                <label for="card-cvv">Código de Seguridad CVV</label>
+                                <input type="password" id="card-cvv" value="928">
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Opción 2: Efectivo contra entrega -->
+                    <article class="form-section" style="margin-bottom: 0; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #ddd;">
+                        <label style="display: flex; align-items: center; gap: 10px; font-weight: 700; cursor: pointer; width: 100%;">
+                            <input type="radio" name="payment" value="efectivo" style="transform: scale(1.3);">
+                            Pago contra entrega (Efectivo al recibir)
+                        </label>
+                        <span style="font-size: 1.5rem;" aria-hidden="true">&#128181;</span>
+                    </article>
+
+                    <!-- Opción 3: Transferencia Bancaria -->
+                    <article class="form-section" style="margin-bottom: 0; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #ddd;">
+                        <label style="display: flex; align-items: center; gap: 10px; font-weight: 700; cursor: pointer; width: 100%;">
+                            <input type="radio" name="payment" value="transferencia" style="transform: scale(1.3);">
+                            Transferencia Bancaria Inmediata
+                        </label>
+                        <span style="font-size: 1.5rem;" aria-hidden="true">&#128241;</span>
+                    </article>
+                </div>
+
+                <!-- Propina para el Repartidor -->
+                <section class="form-section" aria-label="Propina opcional para el repartidor">
+                    <header style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;">
+                        <h3 class="form-title" style="margin-bottom: 0; font-size: 1.1rem;">Propina para el Repartidor</h3>
+                        <span style="font-size: 0.8rem; color: #888;">El 100% se destina a tu conductor</span>
+                    </header>
+                    
+                    <div class="tip-options" role="radiogroup" aria-label="Seleccionar monto de propina">
+                        <button type="button" class="tip-btn" data-tip="0">No, gracias</button>
+                        <button type="button" class="tip-btn" data-tip="10">Q10.00</button>
+                        <button type="button" class="tip-btn selected" data-tip="30">Q30.00</button>
+                        <button type="button" class="tip-btn" data-tip="50">Q50.00</button>
+                        <button type="button" class="tip-btn" data-tip="custom">Otro monto</button>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Columna derecha: Resumen Final y Botón de Confirmación -->
+            <aside aria-label="Resumen y confirmación de la orden">
+                <div class="sidebar-summary">
+                    <h2 class="summary-title" style="font-family: var(--font-heading); font-size: 1.3rem;">Resumen Final</h2>
+                    
+                    <!-- Previsualización de dirección y tiempo -->
+                    <div style="background: #fdfbf7; padding: 15px; border-radius: 4px; margin-bottom: 25px; border: 1px solid #eee;">
+                        <div style="font-weight: 700; margin-bottom: 8px; color: var(--clr-secondary); font-size: 0.9rem;">
+                            &#128205; Entrega Programada
+                        </div>
+                        <p id="preview-address" style="font-size: 0.85rem; color: #555; margin-bottom: 8px;">
+                            Avenida las Américas 14-20, Zona 14, Edificio Las Brisas, Apartamento 4B.
+                        </p>
+                        <p id="preview-time" style="font-size: 0.85rem; font-weight: 700; color: var(--clr-secondary);">
+                            Estimado hoy: 35 - 50 minutos
+                        </p>
+                    </div>
+
+                    <!-- Desglose de totales -->
+                    <div class="summary-row">
+                        <span>Subtotal de alimentos</span>
+                        <span id="payment-subtotal-amount">Q646.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Costo de Envío</span>
+                        <span id="payment-shipping-amount" style="color: #10b618; font-weight: 700;">¡GRATIS!</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Propina</span>
+                        <span id="payment-tip-amount">Q30.00</span>
+                    </div>
+                    
+                    <div class="summary-row total">
+                        <span>Total a Pagar</span>
+                        <span class="summary-total-price" id="payment-total-amount">Q676.00</span>
+                    </div>
+
+                    <!-- Aceptación de términos -->
+                    <div style="margin: 20px 0; font-size: 0.8rem; color: #666; display: flex; gap: 10px; align-items: flex-start;">
+                        <input type="checkbox" id="accept-terms" checked style="margin-top: 3px; accent-color: var(--clr-secondary);">
+                        <label for="accept-terms">He leído y acepto los términos de servicio y política de entregas.</label>
+                    </div>
+
+                    <!-- Botón de Confirmación Definitiva -->
+                    <button type="button" id="btn-confirm-order" class="btn btn-primary btn-block" style="background-color: var(--clr-primary); font-size: 1rem; padding: 18px;">
+                        CONFIRMAR PEDIDO (Q676.00)
+                    </button>
+
+                    <div class="security-badge" style="margin-top: 15px;">
+                        &#128274; Transacción cifrada y protegida
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- ==========================================================================
+         PIE DE PÁGINA (FOOTER)
+         ========================================================================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-bottom" style="text-align: center; margin-top: 0; justify-content: center;">
+                <p>&copy; 2026 La Buena Mesa. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script de lógica de pago y confirmación -->
+    <script src="js/app.js"></script>
+</body>
+</html>

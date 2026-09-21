@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Pedido - La Buena Mesa</title>
+    <!-- Hojas de estilo del proyecto -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body style="background-color: var(--clr-bg-alt);">
+    
+    <!-- ==========================================================================
+         ENCABEZADO PRINCIPAL (HEADER)
+         ========================================================================== -->
+    <header class="header-interior">
+        <div class="container">
+            <a href="index.html" class="header-logo" aria-label="Ir al inicio">La Buena Mesa</a>
+            <nav class="main-nav" aria-label="Navegación principal">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="menu.html">Menú</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="index.html" class="btn btn-outline" style="padding: 8px 18px; font-size: 0.85rem;">
+                    &larr; Volver al Inicio
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================================================
+         CONTENIDO PRINCIPAL (MAIN): Pantalla Final de Confirmación de Compra
+         ========================================================================== -->
+    <main class="container">
+        
+        <!-- Tarjeta Semántica de Confirmación con detalles de la orden -->
+        <article class="confirmation-card" id="confirmation-details" aria-live="polite">
+            
+            <!-- Encabezado con Icono de Éxito y Número de Orden -->
+            <header class="confirmation-header">
+                <div class="confirmation-icon" aria-hidden="true">&#10004;</div>
+                <h1 style="font-family: var(--font-heading); color: var(--clr-secondary); font-size: 2.2rem; margin-bottom: 8px;">
+                    ¡Pedido Confirmado con Éxito!
+                </h1>
+                <p style="color: var(--clr-text); font-size: 1rem; max-width: 550px; margin: 0 auto 15px;">
+                    Muchas gracias por tu preferencia. Tu orden ya fue enviada a la cocina de <strong>La Buena Mesa</strong> y está siendo preparada con la receta tradicional.
+                </p>
+                
+                <!-- Número de Orden Único Generado -->
+                <div class="order-badge" aria-label="Número de orden generado">
+                    Orden: <span id="order-number">#LBM-2026-84920</span>
+                </div>
+            </header>
+
+            <!-- ==================================================================
+                 SEGUIMIENTO VISUAL DEL ESTADO DEL PEDIDO (TRACKER TIMELINE)
+                 ================================================================== -->
+            <section class="order-tracker" aria-label="Estado actual del pedido">
+                <div class="tracker-progress-bar" aria-hidden="true"></div>
+                
+                <div class="tracker-step completed">
+                    <div class="tracker-dot">&#10003;</div>
+                    <div class="tracker-label">Recibido</div>
+                </div>
+                <div class="tracker-step active">
+                    <div class="tracker-dot">&#127859;</div>
+                    <div class="tracker-label">En Cocina</div>
+                </div>
+                <div class="tracker-step">
+                    <div class="tracker-dot">&#128666;</div>
+                    <div class="tracker-label">En Camino</div>
+                </div>
+                <div class="tracker-step">
+                    <div class="tracker-dot">&#127969;</div>
+                    <div class="tracker-label">Entregado</div>
+                </div>
+            </section>
+
+            <!-- ==================================================================
+                 DETALLES DE ENTREGA Y CLIENTE
+                 ================================================================== -->
+            <section class="confirmation-details-grid" aria-label="Información de entrega">
+                <div>
+                    <h3 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--clr-secondary); margin-bottom: 5px;">
+                        &#128336; TIEMPO ESTIMADO DE ENTREGA
+                    </h3>
+                    <p style="font-size: 1.15rem; font-weight: 700; color: var(--clr-dark);" id="estimated-time">
+                        35 - 50 minutos
+                    </p>
+                    
+                    <h3 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--clr-secondary); margin-top: 15px; margin-bottom: 5px;">
+                        &#128100; CLIENTE
+                    </h3>
+                    <p id="order-customer-name" style="font-size: 0.95rem; color: #444;">
+                        Josué Antonio Morales
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--clr-secondary); margin-bottom: 5px;">
+                        &#128205; DIRECCIÓN DE ENTREGA
+                    </h3>
+                    <p id="order-customer-address" style="font-size: 0.95rem; color: #444;">
+                        Avenida las Américas 14-20, Zona 14, Edificio Las Brisas, Apartamento 4B.
+                    </p>
+
+                    <h3 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--clr-secondary); margin-top: 15px; margin-bottom: 5px;">
+                        &#128179; MÉTODO DE PAGO
+                    </h3>
+                    <p id="order-payment-method" style="font-size: 0.95rem; color: #444;">
+                        Tarjeta de Crédito / Débito (Procesado)
+                    </p>
+                </div>
+            </section>
+
+            <!-- ==================================================================
+                 RESUMEN DE COMPRA: LISTA DE PLATILLOS ORDENADOS
+                 ================================================================== -->
+            <section aria-label="Desglose de platillos ordenados">
+                <h2 style="font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 10px; color: var(--clr-dark);">
+                    Resumen de Compra
+                </h2>
+                
+                <ul class="confirmation-items-list" id="order-items-list">
+                    <!-- Se inyecta dinámicamente desde app.js (initConfirmationPage) -->
+                    <li class="confirmation-item">
+                        <div class="confirmation-item-info">
+                            <strong>1x</strong> Jocón Tradicional <span class="text-muted">(Porción Estándar)</span>
+                        </div>
+                        <div class="confirmation-item-price">Q68.00</div>
+                    </li>
+                </ul>
+
+                <!-- Totales y desglose financiero -->
+                <div style="background: #fafafa; padding: 20px; border-radius: 6px; margin-top: 20px;">
+                    <div class="summary-row" style="margin-bottom: 8px;">
+                        <span>Subtotal de Alimentos:</span>
+                        <span id="order-subtotal">Q646.00</span>
+                    </div>
+                    <div class="summary-row" style="margin-bottom: 8px;">
+                        <span>Costo de Envío:</span>
+                        <span id="order-shipping" style="color: #10b618; font-weight: 700;">¡GRATIS!</span>
+                    </div>
+                    <div class="summary-row" style="margin-bottom: 8px;">
+                        <span>Propina del Repartidor:</span>
+                        <span id="order-tip">Q30.00</span>
+                    </div>
+                    <div class="summary-row" style="margin-bottom: 8px; font-size: 0.85rem; color: #777;">
+                        <span>IVA Desglosado (12%):</span>
+                        <span id="order-tax">Q77.52</span>
+                    </div>
+                    <div class="summary-row total" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #ddd; font-size: 1.25rem; font-weight: 700;">
+                        <span>Total Pagado:</span>
+                        <span id="order-total" style="color: var(--clr-secondary);">Q676.00</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================================================================
+                 BOTONES DE ACCIÓN: Imprimir comprobante y Volver al Menú
+                 ================================================================== -->
+            <footer class="confirmation-actions">
+                <button type="button" class="btn btn-outline" onclick="window.print()" aria-label="Imprimir recibo del pedido">
+                    &#128424; Imprimir Comprobante
+                </button>
+                <a href="menu.html" class="btn btn-primary" aria-label="Volver al menú de platillos">
+                    Realizar Otro Pedido &rarr;
+                </a>
+            </footer>
+
+        </article>
+    </main>
+
+    <!-- ==========================================================================
+         PIE DE PÁGINA (FOOTER)
+         ========================================================================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-bottom" style="text-align: center; margin-top: 0; justify-content: center;">
+                <p>&copy; 2026 La Buena Mesa. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script de inicialización de la orden -->
+    <script src="js/app.js"></script>
+</body>
+</html>

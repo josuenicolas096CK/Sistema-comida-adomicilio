@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Carrito de Compras - La Buena Mesa</title>
+    <!-- Estilos del proyecto -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body style="background-color: var(--clr-bg-alt);">
+    
+    <!-- ==========================================================================
+         ENCABEZADO PRINCIPAL (HEADER): Navegación e indicador de carrito
+         ========================================================================== -->
+    <header class="header-interior">
+        <div class="container">
+            <!-- Logotipo -->
+            <a href="index.html" class="header-logo" aria-label="Ir al inicio">La Buena Mesa</a>
+            
+            <!-- Menú de navegación principal -->
+            <nav class="main-nav" aria-label="Navegación principal">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="menu.html">Menú</a></li>
+                    <li><a href="index.html#reservaciones">Reservaciones</a></li>
+                </ul>
+            </nav>
+            
+            <!-- Acciones: Botón de carrito con badge numérico -->
+            <div class="header-actions">
+                <button type="button" class="cart-btn" id="open-cart-btn" aria-label="Abrir carrito" title="Ver carrito" style="background-color: var(--clr-secondary); color: white;">
+                    <span aria-hidden="true">&#128722;</span>
+                    <span class="cart-badge" id="header-cart-badge" style="background-color: #222;">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Barra dinámica con cálculo de envío gratis -->
+        <aside id="promo-shipping-banner" style="background-color: #fdf2f2; color: var(--clr-secondary); text-align: center; padding: 10px; font-weight: 700; font-size: 0.9rem;" role="status">
+            &#128666; ¡Envío GRATIS en pedidos mayores a Q300! Completa tu orden y no pagues envío.
+        </aside>
+    </header>
+
+    <!-- ==========================================================================
+         CONTENIDO PRINCIPAL (MAIN): Vista detallada del carrito de compras
+         ========================================================================== -->
+    <main class="container" style="padding-top: 40px; padding-bottom: 70px;">
+        
+        <!-- Encabezado de la página del carrito -->
+        <header class="page-title" style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h1>Tu Carrito de Compras</h1>
+            <a href="#" class="link-empty-cart" style="font-size: 0.9rem; color: var(--clr-secondary); font-weight: 700; text-decoration: underline;">
+                Vaciar Carrito
+            </a>
+        </header>
+
+        <!-- Estado cuando el carrito se encuentra vacío -->
+        <section id="cart-page-empty" style="display: none; text-align: center; padding: 70px 20px; background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-top: 20px;">
+            <div style="font-size: 4rem; color: #ccc; margin-bottom: 15px;">&#128722;</div>
+            <h2 style="font-family: var(--font-heading); color: var(--clr-secondary); font-size: 2rem; margin-bottom: 10px;">Tu carrito está vacío</h2>
+            <p style="color: var(--clr-text-light); max-width: 450px; margin: 0 auto 25px;">
+                Parece que aún no has agregado ningún platillo a tu pedido. Explora nuestro menú tradicional para comenzar.
+            </p>
+            <a href="menu.html" class="btn btn-primary" style="padding: 15px 35px;">
+                EXPLORAR EL MENÚ
+            </a>
+        </section>
+
+        <!-- Distribución del carrito en dos columnas: Lista de productos y Resumen -->
+        <div class="checkout-layout" id="cart-page-layout">
+            
+            <!-- Columna izquierda: Lista interactiva de productos seleccionados -->
+            <section class="cart-items-list" id="page-cart-items" aria-label="Lista de platillos en el carrito">
+                <!-- Se inyecta dinámicamente mediante app.js (initCartPage) -->
+            </section>
+
+            <!-- Columna derecha: Barra lateral con el desglose de costos y totales -->
+            <aside aria-label="Resumen financiero de la compra">
+                <div class="sidebar-summary">
+                    <h2 class="summary-title" style="font-size: 1.3rem;">Resumen de Compra</h2>
+                    
+                    <div class="summary-row">
+                        <span id="page-count">Subtotal (0 artículos)</span>
+                        <span id="page-subtotal">Q0.00</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span>Costo de Envío</span>
+                        <span id="page-shipping" class="text-success">Q25.00</span>
+                    </div>
+
+                    <div class="summary-row" style="font-size: 0.85rem; color: #777;">
+                        <span>IVA Incluido (12%)</span>
+                        <span id="page-tax">Q0.00</span>
+                    </div>
+                    
+                    <div class="summary-row total">
+                        <span>Total a Pagar</span>
+                        <span class="summary-total-price" id="page-total">Q0.00</span>
+                    </div>
+
+                    <!-- Botones de acción semánticos -->
+                    <div style="margin-top: 25px; display: flex; flex-direction: column; gap: 12px;">
+                        <a href="checkout.html" class="btn btn-primary btn-block" style="background-color: var(--clr-primary); text-align: center;">
+                            PROCEDER AL CHECKOUT &rarr;
+                        </a>
+                        <a href="menu.html" class="btn btn-outline btn-block" style="text-align: center;">
+                            SEGUIR COMPRANDO
+                        </a>
+                    </div>
+
+                    <div class="security-badge" style="margin-top: 25px;">
+                        &#128274; Compra 100% segura y garantizada
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- ==========================================================================
+         DRAWER LATERAL DESPLEGABLE (CONSISTENCIA GLOBAL)
+         ========================================================================== -->
+    <div id="cart-drawer-overlay" class="cart-drawer-overlay" aria-hidden="true"></div>
+
+    <aside id="cart-drawer" class="cart-drawer" aria-label="Carrito de compras desplegable" aria-hidden="true">
+        <header class="drawer-header">
+            <h3 class="drawer-title">&#128722; Tu Carrito</h3>
+            <button type="button" class="close-drawer-btn" id="close-cart-drawer" aria-label="Cerrar carrito">&times;</button>
+        </header>
+
+        <div class="drawer-body">
+            <div id="drawer-items-list"></div>
+            <div id="drawer-empty-state" class="drawer-empty-state" style="display: none;">
+                <span class="drawer-empty-icon">&#128722;</span>
+                <h4>Tu carrito está vacío</h4>
+                <p>Agrega los platillos que más te gusten desde el menú.</p>
+            </div>
+        </div>
+
+        <footer class="drawer-footer" id="drawer-footer">
+            <div class="drawer-summary-row">
+                <span>Subtotal:</span>
+                <span id="drawer-subtotal">Q0.00</span>
+            </div>
+            <div class="drawer-summary-row">
+                <span>Envío estimado:</span>
+                <span id="drawer-shipping">Q25.00</span>
+            </div>
+            <div class="drawer-summary-row total">
+                <span>Total:</span>
+                <span id="drawer-total">Q0.00</span>
+            </div>
+            <div class="drawer-actions">
+                <a href="checkout.html" class="btn btn-primary btn-block" style="text-align: center;">
+                    CONTINUAR AL CHECKOUT &rarr;
+                </a>
+            </div>
+        </footer>
+    </aside>
+
+    <!-- ==========================================================================
+         PIE DE PÁGINA (FOOTER)
+         ========================================================================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-bottom" style="text-align: center; margin-top: 0; justify-content: center;">
+                <p>&copy; 2026 La Buena Mesa. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script de lógica de negocio y gestión del carrito -->
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú a Domicilio - La Buena Mesa</title>
+    <!-- Hojas de estilos del proyecto -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <!-- Tipografías de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body style="background-color: var(--clr-bg-alt);">
+    
+    <!-- ==========================================================================
+         ENCABEZADO PRINCIPAL (HEADER): Barra de navegación fija con logo y carrito
+         ========================================================================== -->
+    <header class="header-interior">
+        <div class="container">
+            <!-- Logotipo del restaurante -->
+            <a href="index.html" class="header-logo" aria-label="Ir a la página de inicio">La Buena Mesa</a>
+            
+            <!-- Navegación principal -->
+            <nav class="main-nav" aria-label="Navegación principal">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="menu.html" class="active">Menú</a></li>
+                    <li><a href="index.html#reservaciones">Reservaciones</a></li>
+                </ul>
+            </nav>
+            
+            <!-- Botón del carrito con badge reactivo -->
+            <div class="header-actions">
+                <button type="button" class="cart-btn" id="open-cart-btn" aria-label="Abrir carrito de compras" title="Ver carrito de compras">
+                    <span aria-hidden="true">&#128722;</span>
+                    <span class="cart-badge" id="header-cart-badge">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Barra informativa de promoción de envío gratis -->
+        <aside style="background-color: #fdf2f2; color: var(--clr-secondary); text-align: center; padding: 10px; font-weight: 700; font-size: 0.9rem;" role="complementary">
+            &#128666; ¡Envío GRATIS en pedidos mayores a Q300! Agrega tus platillos favoritos.
+        </aside>
+    </header>
+
+    <!-- ==========================================================================
+         CONTENIDO PRINCIPAL (MAIN): Catálogo de Platillos y Filtrado por Categorías
+         ========================================================================== -->
+    <main class="menu-page">
+        <div class="container">
+            
+            <!-- Cabecera de la sección de Menú -->
+            <header class="section-header text-center" style="text-align: center; margin-bottom: 35px;">
+                <span class="section-label">— NUESTRO CATÁLOGO EXCLUSIVO</span>
+                <h1 class="section-title">Elige tus Platillos y Arma tu Pedido</h1>
+                <p style="color: var(--clr-text-light); max-width: 600px; margin: 10px auto 0;">
+                    Selecciona una categoría para explorar o agrega tus platillos directamente al carrito de compras.
+                </p>
+            </header>
+
+            <!-- ==================================================================
+                 BARRA DE FILTROS POR CATEGORÍA
+                 Permite filtrar dinámicamente sin recargar la página
+                 ================================================================== -->
+            <nav class="category-filter-nav" aria-label="Filtro de platillos por categoría">
+                <button type="button" class="filter-btn active" data-filter="all">Todos</button>
+                <button type="button" class="filter-btn" data-filter="tradicional">Tradicionales</button>
+                <button type="button" class="filter-btn" data-filter="entradas">Entradas</button>
+                <button type="button" class="filter-btn" data-filter="fuertes">Platos Fuertes</button>
+                <button type="button" class="filter-btn" data-filter="postres">Postres</button>
+                <button type="button" class="filter-btn" data-filter="bebidas">Bebidas</button>
+            </nav>
+
+            <!-- ==================================================================
+                 GRID DE PRODUCTOS / TARJETAS SEMÁNTICAS (<article class="card">)
+                 Los elementos se renderizan dinámicamente con JavaScript desde app.js
+                 o desde el marcado inicial para máxima compatibilidad
+                 ================================================================== -->
+            <div class="cards-grid" id="menu-cards-grid" aria-live="polite">
+                <!-- Generado dinámicamente con app.js (initMenuPage) -->
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- ==========================================================================
+         COMPONENTE ASIDE: CARRITO DE COMPRAS DESPLEGABLE (DRAWER OFF-CANVAS)
+         ========================================================================== -->
+    <div id="cart-drawer-overlay" class="cart-drawer-overlay" aria-hidden="true"></div>
+
+    <aside id="cart-drawer" class="cart-drawer" aria-label="Carrito de compras desplegable" aria-hidden="true">
+        <header class="drawer-header">
+            <h3 class="drawer-title">&#128722; Tu Carrito</h3>
+            <button type="button" class="close-drawer-btn" id="close-cart-drawer" aria-label="Cerrar carrito">&times;</button>
+        </header>
+
+        <div class="drawer-body">
+            <div id="drawer-items-list">
+                <!-- Artículos inyectados desde app.js -->
+            </div>
+
+            <div id="drawer-empty-state" class="drawer-empty-state" style="display: none;">
+                <span class="drawer-empty-icon">&#128722;</span>
+                <h4>Tu carrito está vacío</h4>
+                <p>Agrega los platillos que más te gusten desde el menú.</p>
+            </div>
+        </div>
+
+        <footer class="drawer-footer" id="drawer-footer">
+            <div class="drawer-summary-row">
+                <span>Subtotal:</span>
+                <span id="drawer-subtotal">Q0.00</span>
+            </div>
+            <div class="drawer-summary-row">
+                <span>Envío estimado:</span>
+                <span id="drawer-shipping">Q25.00</span>
+            </div>
+            <div class="drawer-summary-row total">
+                <span>Total:</span>
+                <span id="drawer-total">Q0.00</span>
+            </div>
+            
+            <div class="drawer-actions">
+                <a href="checkout.html" class="btn btn-primary btn-block" style="text-align: center;">
+                    CONTINUAR AL CHECKOUT &rarr;
+                </a>
+                <a href="carrito.html" class="btn btn-outline btn-block" style="text-align: center;">
+                    VER VISTA COMPLETA DE CARRITO
+                </a>
+            </div>
+        </footer>
+    </aside>
+
+    <!-- ==========================================================================
+         PIE DE PÁGINA (FOOTER)
+         ========================================================================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-bottom" style="text-align: center; margin-top: 0; justify-content: center;">
+                <p>&copy; 2026 La Buena Mesa. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script de lógica de negocio y gestión del carrito -->
+    <script src="js/app.js"></script>
+</body>
+</html>
