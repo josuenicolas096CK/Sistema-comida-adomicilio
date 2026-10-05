@@ -112,6 +112,40 @@
     background-color: #a88562;
 }
 
+.product-placeholder {
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #f5e8d6, #e8d0ab);
+    color: #6c4d34;
+    font-size: 3rem;
+}
+.page-cart-row {
+    display: grid;
+    grid-template-columns: 90px 1fr auto auto;
+    gap: 18px;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid #eadfd2;
+}
+.page-cart-img { width: 90px; height: 90px; object-fit: cover; border-radius: 8px; }
+.mini-cart-img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; flex: none; }
+.page-cart-row h3 { font-family: var(--font-heading); margin-bottom: 6px; }
+.page-cart-row p { color: var(--clr-text-light); margin-bottom: 10px; }
+.form-message {
+    padding: 14px 18px;
+    margin: 14px 0;
+    border-radius: 6px;
+    background: #fff1e8;
+    color: #8a381c;
+    border: 1px solid #efd0bd;
+}
+[hidden] { display: none !important; }
+@media (max-width: 600px) {
+    .page-cart-row { grid-template-columns: 70px 1fr auto; gap: 10px; }
+    .page-cart-img { width: 70px; height: 70px; }
+    .page-cart-row strong { grid-column: 2; }
+}
+
 /* ==========================================================================
    STEPPER (CARRITO -> DATOS -> PAGO)
    ========================================================================== */
@@ -1010,5 +1044,3 @@
         margin: 0 !important;
     }
 }
-
-

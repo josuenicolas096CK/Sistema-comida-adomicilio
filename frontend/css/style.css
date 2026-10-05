@@ -515,3 +515,98 @@ ul {
     }
 }
 
+/* ==========================================================================
+   UTILIDADES — reemplazan los estilos inline eliminados del HTML
+   ========================================================================== */
+
+/* Botón de tarjeta en el Home (centra el texto y añade margen superior) */
+.btn-menu-link {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* Botón CTA principal grande (Ver Menú Completo) */
+.btn-cta {
+    padding: 16px 40px;
+    font-size: 1rem;
+}
+
+/* Variante del botón outline con borde más grueso */
+.btn-outline-thick {
+    border-width: 2px;
+    padding: 14px 35px;
+}
+
+/* Centra el texto en links de acción dentro del drawer y demás bloques */
+.btn-center {
+    text-align: center;
+}
+
+/* Contenedor de botones de llamada a la acción de sección */
+.section-cta {
+    text-align: center;
+    margin-top: 45px;
+}
+
+/* Variante centrada del encabezado de sección (usado en menu.html) */
+.section-header--center {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+/* Párrafo descriptivo debajo del título en la página de menú */
+.section-desc {
+    color: var(--clr-text-light);
+    max-width: 600px;
+    margin: 10px auto 0;
+}
+
+/* Barra de promoción de envío gratis */
+.promo-bar {
+    background-color: #fdf2f2;
+    color: var(--clr-secondary);
+    text-align: center;
+    padding: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* Fondo alternativo para la página del menú */
+.page-menu {
+    background-color: var(--clr-bg-alt);
+}
+
+/* Footer simplificado centrado (usado en menu.html) */
+.footer-bottom--centered {
+    text-align: center;
+    margin-top: 0;
+    justify-content: center;
+}
+
+/* Botón de agregar al carrito en las tarjetas del menú */
+.btn-add-cart {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    background-color: var(--clr-secondary);
+    color: var(--clr-light);
+    padding: 12px 20px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.15s ease;
+}
+
+.btn-add-cart:hover {
+    background-color: #5c1418;
+    transform: translateY(-2px);
+}
+
+.btn-add-cart:active {
+    transform: translateY(0);
+}
