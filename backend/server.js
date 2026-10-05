@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 // 1. Primero inicializamos Express
@@ -16,6 +17,8 @@ require('./config/db');
 // 4. Luego importamos y usamos las rutas (¡aquí ya existe 'app'!)
 const productosRoutes = require('./routes/productos');
 app.use('/api', productosRoutes);
+app.use('/docs/img', express.static(path.join(__dirname, '../docs/img')));
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // 5. Ruta de prueba inicial
 app.get('/', (req, res) => {
