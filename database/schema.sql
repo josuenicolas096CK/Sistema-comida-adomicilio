@@ -1,4 +1,6 @@
--- Base de datos: pedidos_db
+-- Estructura actual de pedidos_db: usuarios, productos, pedidos,
+-- pedido_entrega y detalles_pedido.
+-- Ejecutar solo para crear una base nueva; no volver a ejecutar sobre la base existente.
 CREATE DATABASE IF NOT EXISTS pedidos_db
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
@@ -34,6 +36,22 @@ CREATE TABLE pedidos (
     estado ENUM('pendiente', 'en_preparacion', 'entregado') NOT NULL DEFAULT 'pendiente',
     CONSTRAINT fk_pedidos_usuario
         FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- Tabla: datos de entrega conservados para cada pedido
+CREATE TABLE pedido_entrega (
+    pedido_id INT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    correo VARCHAR(150) NOT NULL,
+    telefono VARCHAR(20) NOT NULL,
+    direccion VARCHAR(255) NOT NULL,
+    zona VARCHAR(50) NOT NULL,
+    ciudad VARCHAR(100) NOT NULL,
+    codigo_postal VARCHAR(20),
+    CONSTRAINT fk_pedido_entrega_pedido
+        FOREIGN KEY (pedido_id) REFERENCES pedidos(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 ) ENGINE=InnoDB;

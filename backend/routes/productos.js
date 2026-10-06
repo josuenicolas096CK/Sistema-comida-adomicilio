@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
 
-const clean = (value, max) => typeof value === 'string' ? value.trim().slice(0, max) : '';
 const round = value => Math.round(value * 100) / 100;
+const validText = (value, max) => typeof value === 'string' && value.trim().length > 0 && value.trim().length <= max;
 async function productSelect() {
     const [legacyImage] = await pool.query("SHOW COLUMNS FROM productos LIKE 'imagen'");
     const image = legacyImage.length ? "COALESCE(NULLIF(imagen_url, ''), NULLIF(imagen, ''))" : 'imagen_url';
@@ -34,13 +34,27 @@ router.get('/productos/:id', async (req, res) => {
 });
 
 router.post('/pedidos', async (req, res) => {
-    const { cliente: rawClient, items } = req.body || {};
+    const { cliente: rawClient, entrega: rawDelivery, items } = req.body || {};
     const cliente = rawClient && typeof rawClient === 'object' && !Array.isArray(rawClient) ? rawClient : {};
-    const nombre = clean(cliente.nombre, 100);
-    const correo = clean(cliente.correo, 150).toLowerCase();
-    const telefono = clean(cliente.telefono, 20);
-    const direccion = clean(cliente.direccion, 255);
-    if (!nombre || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo) || !telefono || !direccion ||
+    const entrega = rawDelivery && typeof rawDelivery === 'object' && !Array.isArray(rawDelivery) ? rawDelivery : {};
+    if (!validText(cliente.nombre, 100) || !validText(cliente.correo, 150) ||
+        !validText(cliente.telefono, 20) || !validText(entrega.direccion, 255) ||
+        !validText(entrega.zona, 50) || !validText(entrega.ciudad, 100) ||
+        (entrega.codigo_postal != null && (typeof entrega.codigo_postal !== 'string' || entrega.codigo_postal.trim().length > 20))) {
+        return res.status(400).json({ error: 'Completa los datos de contacto y entrega sin superar los límites del formulario.' });
+    }
+    const nombre = cliente.nombre.trim();
+    const correo = cliente.correo.trim().toLowerCase();
+    const telefono = cliente.telefono.trim();
+    const calle = entrega.direccion.trim();
+    const zona = entrega.zona.trim();
+    const ciudad = entrega.ciudad.trim();
+    const codigoPostal = entrega.codigo_postal?.trim() || '';
+    const direccion = [calle, zona, ciudad, codigoPostal].filter(Boolean).join(', ');
+    if (direccion.length > 255) {
+        return res.status(400).json({ error: 'La dirección completa no debe superar 255 caracteres.' });
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo) ||
         !Array.isArray(items) || items.length === 0 || items.length > 50 ||
         items.some(item => !Number.isInteger(Number(item.id)) || Number(item.id) < 1 ||
             !Number.isInteger(Number(item.cantidad)) || Number(item.cantidad) < 1 || Number(item.cantidad) > 99)) {
@@ -72,19 +86,42 @@ router.post('/pedidos', async (req, res) => {
             usuarioId = user.insertId;
         }
         const [order] = await connection.query('INSERT INTO pedidos (usuario_id, total, estado) VALUES (?, ?, ?)', [usuarioId, total, 'pendiente']);
+        await connection.query(
+            'INSERT INTO pedido_entrega (pedido_id, nombre, correo, telefono, direccion, zona, ciudad, codigo_postal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            [order.insertId, nombre, correo, telefono, calle, zona, ciudad, codigoPostal || null]
+        );
         for (const product of products) {
             await connection.query('INSERT INTO detalles_pedido (pedido_id, producto_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)',
                 [order.insertId, product.id, quantities.get(product.id), product.precio]);
         }
+        const [savedOrders] = await connection.query(
+            'SELECT p.id, p.estado, p.total, e.nombre, e.correo, e.telefono, e.direccion, e.zona, e.ciudad, e.codigo_postal FROM pedidos p JOIN pedido_entrega e ON e.pedido_id = p.id WHERE p.id = ?',
+            [order.insertId]
+        );
+        const [savedItems] = await connection.query(
+            'SELECT d.producto_id AS id, pr.nombre, d.cantidad, d.precio_unitario FROM detalles_pedido d JOIN productos pr ON pr.id = d.producto_id WHERE d.pedido_id = ? ORDER BY d.id',
+            [order.insertId]
+        );
         await connection.commit();
+        const saved = savedOrders[0];
         res.status(201).json({
-            pedido_id: order.insertId,
-            estado: 'pendiente',
-            total,
-            cliente: { nombre, correo, telefono, direccion },
-            items: products.map(product => ({
-                id: product.id, nombre: product.nombre, cantidad: quantities.get(product.id),
-                precio_unitario: Number(product.precio)
+            pedido_id: saved.id,
+            estado: saved.estado,
+            total: Number(saved.total),
+            cliente: {
+                nombre: saved.nombre,
+                correo: saved.correo,
+                telefono: saved.telefono,
+                direccion: [saved.direccion, saved.zona, saved.ciudad, saved.codigo_postal].filter(Boolean).join(', '),
+                zona: saved.zona,
+                ciudad: saved.ciudad,
+                codigo_postal: saved.codigo_postal
+            },
+            items: savedItems.map(item => ({
+                id: item.id,
+                nombre: item.nombre,
+                cantidad: item.cantidad,
+                precio_unitario: Number(item.precio_unitario)
             }))
         });
     } catch (error) {

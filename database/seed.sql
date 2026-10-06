@@ -1,20 +1,60 @@
--- Completa solo datos faltantes de los productos existentes.
-UPDATE productos SET categoria = 'Platos Fuertes' WHERE nombre = 'Hamburguesa Clásica' AND (categoria IS NULL OR categoria = '');
-UPDATE productos SET categoria = 'Platos Fuertes' WHERE nombre = 'Pizza Pepperoni' AND (categoria IS NULL OR categoria = '');
-UPDATE productos SET categoria = 'Entradas' WHERE nombre = 'Alitas BBQ' AND (categoria IS NULL OR categoria = '');
-UPDATE productos SET categoria = 'Bebidas' WHERE nombre = 'Gaseosa de Cola' AND (categoria IS NULL OR categoria = '');
-UPDATE productos SET descripcion = 'Hamburguesa recién preparada con ingredientes frescos.' WHERE nombre = 'Hamburguesa Clásica' AND (descripcion IS NULL OR descripcion = '');
-UPDATE productos SET descripcion = 'Pizza horneada con pepperoni y queso fundido.' WHERE nombre = 'Pizza Pepperoni' AND (descripcion IS NULL OR descripcion = '');
-UPDATE productos SET descripcion = 'Alitas bañadas en salsa BBQ.' WHERE nombre = 'Alitas BBQ' AND (descripcion IS NULL OR descripcion = '');
-UPDATE productos SET descripcion = 'Bebida fría para acompañar tu pedido.' WHERE nombre = 'Gaseosa de Cola' AND (descripcion IS NULL OR descripcion = '');
+-- Catálogo actual de La Buena Mesa.
+-- Ejecutar sobre pedidos_db después de vaciarla; no cambia su estructura.
+-- Los precios en quetzales son sugeridos y pueden editarse antes de ejecutar.
+-- Las imágenes están en frontend/img y Express las sirve en /img.
 
--- Los favoritos que antes estaban escritos directamente en index.html ahora viven en MySQL.
-INSERT INTO productos (nombre, descripcion, precio, categoria, imagen_url)
-SELECT 'Jocón Tradicional', 'Pollo tierno en salsa verde de tomatillo, cilantro y pepitoria, servido con arroz.', 68.00, 'Tradicional', '/docs/img/jocon.jpeg'
-WHERE NOT EXISTS (SELECT 1 FROM productos WHERE nombre = 'Jocón Tradicional');
-INSERT INTO productos (nombre, descripcion, precio, categoria, imagen_url)
-SELECT 'Chomin Casero', 'Fideos tradicionales salteados con verduras frescas y recado aromático.', 59.50, 'Tradicional', '/docs/img/chomin.jpeg'
-WHERE NOT EXISTS (SELECT 1 FROM productos WHERE nombre = 'Chomin Casero');
-INSERT INTO productos (nombre, descripcion, precio, categoria, imagen_url)
-SELECT 'Chuchitos Típicos', 'Tamales de masa de maíz con recado de tomate, carne y queso seco.', 13.00, 'Tradicional', '/docs/img/chuchito.png'
-WHERE NOT EXISTS (SELECT 1 FROM productos WHERE nombre = 'Chuchitos Típicos');
+USE pedidos_db;
+
+INSERT INTO productos (nombre, descripcion, precio, categoria, imagen_url) VALUES
+(
+    'Hamburguesa Clásica',
+    'Hamburguesa de carne a la plancha con queso, vegetales frescos y salsa de la casa, servida en pan suave.',
+    49.00,
+    'Platos Fuertes',
+    '/img/hamburguesa.png'
+),
+(
+    'Pizza Pepperoni',
+    'Pizza horneada con salsa de tomate, queso fundido y rodajas de pepperoni sobre una masa dorada.',
+    79.00,
+    'Platos Fuertes',
+    '/img/pizza-pepperoni.webp'
+),
+(
+    'Alitas BBQ',
+    'Alitas de pollo bañadas en salsa barbacoa de sabor ahumado, ideales para compartir o disfrutar como entrada.',
+    54.00,
+    'Entradas',
+    '/img/alitas-bbq.jpeg'
+),
+(
+    'Gaseosa de Cola',
+    'Bebida gaseosa de cola, servida fría para acompañar cualquiera de nuestros platillos.',
+    12.00,
+    'Bebidas',
+    '/img/coca-cola.jpeg'
+),
+(
+    'Jocón Tradicional',
+    'Pollo en salsa verde de tomatillo, cilantro y pepitoria, acompañado de arroz al estilo guatemalteco.',
+    68.00,
+    'Tradicional',
+    '/img/jocon.jpeg'
+),
+(
+    'Chomin Casero',
+    'Fideos salteados con verduras frescas y un recado ligero, preparados con el sabor de la cocina casera.',
+    59.00,
+    'Tradicional',
+    '/img/chomin.jpeg'
+),
+(
+    'Chuchitos Típicos',
+    'Tamales de masa de maíz envueltos en tuza, rellenos con recado de tomate y carne, terminados con queso seco.',
+    15.00,
+    'Tradicional',
+    '/img/chuchito.png'
+);
+
+-- Comprobación rápida del catálogo cargado.
+SELECT id, nombre, precio, categoria, imagen_url FROM productos ORDER BY id;

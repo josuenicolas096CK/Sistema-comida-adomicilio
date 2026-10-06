@@ -69,7 +69,7 @@
             
             <!-- Columna izquierda: Formulario semántico con fieldsets y validaciones -->
             <section aria-label="Formulario de información del cliente y entrega">
-                <form id="checkout-shipping-form">
+                <form id="checkout-shipping-form" autocomplete="off">
                     
                     <!-- Bloque de Información de Contacto y Dirección -->
                     <fieldset class="form-section">
@@ -80,22 +80,22 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="customer-name">Nombre Completo *</label>
-                                <input type="text" id="customer-name" required autocomplete="name" placeholder="Ej. Carlos Mendoza">
+                                <input type="text" id="customer-name" required maxlength="100" autocomplete="off" placeholder="Ej. Carlos Mendoza">
                             </div>
                             
                             <div class="form-group">
                                 <label for="customer-phone">Teléfono de Contacto *</label>
-                                <input type="tel" id="customer-phone" required autocomplete="tel" placeholder="Ej. 4123 4567">
+                                <input type="tel" id="customer-phone" required maxlength="20" autocomplete="off" placeholder="Ej. 4123 4567">
                             </div>
                             
                             <div class="form-group full">
                                 <label for="customer-email">Correo Electrónico *</label>
-                                <input type="email" id="customer-email" required autocomplete="email" placeholder="tu@correo.com">
+                                <input type="email" id="customer-email" required maxlength="150" autocomplete="off" placeholder="tu@correo.com">
                             </div>
 
                             <div class="form-group full">
                                 <label for="customer-address">Dirección Exacta de Entrega *</label>
-                                <input type="text" id="customer-address" required autocomplete="street-address" placeholder="Calle, avenida, número de casa/apto">
+                                <input type="text" id="customer-address" required autocomplete="off" placeholder="Calle, avenida, número de casa/apto">
                             </div>
 
                             <div class="form-group">
@@ -113,12 +113,12 @@
 
                             <div class="form-group">
                                 <label for="customer-city">Ciudad / Departamento *</label>
-                                <input type="text" id="customer-city" required autocomplete="address-level2">
+                                <input type="text" id="customer-city" required autocomplete="off">
                             </div>
 
                             <div class="form-group">
                                 <label for="customer-postal">Código Postal</label>
-                                <input type="text" id="customer-postal" autocomplete="postal-code">
+                                <input type="text" id="customer-postal" autocomplete="off">
                             </div>
                         </div>
 

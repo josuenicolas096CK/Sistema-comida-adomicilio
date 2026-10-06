@@ -859,6 +859,84 @@
     transform: scale(1.05);
 }
 
+.product-image-trigger {
+    display: block;
+    position: relative;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+    text-align: left;
+}
+
+.product-image-trigger:focus-visible {
+    outline: 3px solid var(--clr-secondary);
+    outline-offset: -3px;
+}
+
+.product-image-hint {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    background: rgba(34, 34, 34, 0.85);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.product-image-dialog {
+    position: fixed;
+    inset: 0;
+    width: min(92vw, 850px);
+    max-width: none;
+    max-height: 90vh;
+    margin: auto;
+    padding: 16px;
+    border: 0;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.product-image-dialog::backdrop {
+    background: rgba(16, 14, 13, 0.8);
+}
+
+.product-image-dialog img {
+    display: block;
+    width: 100%;
+    max-height: calc(90vh - 95px);
+    object-fit: contain;
+    border-radius: 6px;
+}
+
+.product-image-dialog p {
+    margin-top: 12px;
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    color: var(--clr-dark);
+}
+
+.product-image-close {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(34, 34, 34, 0.85);
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
 /* ==========================================================================
    TOAST NOTIFICACIONES FLOTANTES
    ========================================================================== */

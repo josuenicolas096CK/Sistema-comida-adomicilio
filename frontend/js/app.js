@@ -8,12 +8,15 @@ const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '
 const safeImage = value => {
     if (!value) return '';
     try {
-        const url = new URL(value, value.startsWith('/docs/') ? new URL(API, location.href).origin : location.href);
+        const url = new URL(value, value.startsWith('/') ? new URL(API, location.href).origin : location.href);
         return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
     } catch { return ''; }
 };
 const readStorage = (key, fallback) => {
     try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
+};
+const readSessionStorage = (key, fallback) => {
+    try { return JSON.parse(sessionStorage.getItem(key)) ?? fallback; } catch { return fallback; }
 };
 async function requestApi(path, options) {
     return fetch(`${API}${path}`, options);
@@ -116,7 +119,12 @@ function renderCart() {
     renderCheckout();
 }
 function productCard(product, featured = false) {
-    return `<article class="card"><figure class="card-media">${imageMarkup(product, 'card-img')}
+    const image = imageMarkup(product, 'card-img');
+    const canExpand = !featured && safeImage(product.imagen_url);
+    const media = canExpand
+        ? `<button type="button" class="product-image-trigger" data-action="zoom" data-id="${Number(product.id)}" aria-label="Ampliar imagen de ${escapeHtml(product.nombre)}">${image}<span class="product-image-hint" aria-hidden="true">Ampliar imagen</span></button>`
+        : image;
+    return `<article class="card"><figure class="card-media">${media}
         <span class="category-tag">${escapeHtml(product.categoria || 'Del menú')}</span></figure>
         <div class="card-body"><div class="card-heading"><h3 class="card-title">${escapeHtml(product.nombre)}</h3>
         <span class="card-price">${money(product.precio)}</span></div>
@@ -124,6 +132,16 @@ function productCard(product, featured = false) {
         ${featured ? '<a href="menu.html" class="btn btn-outline btn-menu-link">VER EN EL MENÚ →</a>' :
         `<button type="button" class="btn btn-add-cart" data-action="add" data-id="${product.id}">🛒 AGREGAR AL CARRITO</button>`}
         </div></article>`;
+}
+function openProductImage(id) {
+    const dialog = $('product-image-dialog');
+    const product = products.find(item => item.id === Number(id));
+    const source = product && safeImage(product.imagen_url);
+    if (!dialog || !source) return;
+    $('product-image-large').src = source;
+    $('product-image-large').alt = product.nombre;
+    setText('product-image-title', product.nombre);
+    dialog.showModal();
 }
 function categoryOf(product) {
     const value = (product.categoria || '').toLowerCase();
@@ -200,7 +218,17 @@ function renderCheckout() {
 function initCheckout() {
     const form = $('checkout-shipping-form');
     if (!form) return;
-    const saved = readStorage(DELIVERY_KEY, {});
+    // Solo se recupera un borrador si el cliente volvió expresamente a editarlo.
+    localStorage.removeItem(DELIVERY_KEY);
+    const editing = new URLSearchParams(location.search).has('editar');
+    const saved = editing ? readSessionStorage(DELIVERY_KEY, {}) : {};
+    if (!editing) {
+        sessionStorage.removeItem(DELIVERY_KEY);
+        sessionStorage.removeItem(LAST_ORDER_KEY);
+    }
+    window.addEventListener('pageshow', () => {
+        if (!editing) form.reset();
+    });
     for (const [id, value] of Object.entries({ 'customer-name': saved.nombre, 'customer-phone': saved.telefono,
         'customer-email': saved.correo, 'customer-address': saved.direccion, 'shipping-zone-select': saved.zona,
         'customer-city': saved.ciudad, 'customer-postal': saved.codigo_postal })) {
@@ -212,14 +240,14 @@ function initCheckout() {
         if (!form.reportValidity()) return;
         const delivery = deliveryFromForm();
         if (fullAddress(delivery).length > 255) return showMessage('La dirección completa no debe superar 255 caracteres.');
-        localStorage.setItem(DELIVERY_KEY, JSON.stringify(delivery));
+        sessionStorage.setItem(DELIVERY_KEY, JSON.stringify(delivery));
         location.href = 'pago.html';
     });
     renderCheckout();
 }
 function renderPayment() {
     if (!$('payment-total-amount')) return;
-    const delivery = readStorage(DELIVERY_KEY, null);
+    const delivery = readSessionStorage(DELIVERY_KEY, null);
     if (!cart.length || !delivery) {
         showMessage('Completa tu carrito y los datos de entrega antes de confirmar.');
         if ($('btn-confirm-order')) $('btn-confirm-order').disabled = true;
@@ -239,23 +267,35 @@ function initPayment() {
     $('btn-confirm-order').addEventListener('click', async () => {
         if (!$('accept-terms')?.checked) return showMessage('Acepta los términos para continuar.');
         if (!cart.length) return showMessage('Tu carrito está vacío.');
-        const delivery = readStorage(DELIVERY_KEY, null);
+        const delivery = readSessionStorage(DELIVERY_KEY, null);
         if (!delivery) return showMessage('Completa los datos de entrega.');
         const button = $('btn-confirm-order');
         button.disabled = true;
         showMessage('Guardando tu pedido…');
+        let savedOrderId = null;
         try {
             const response = await requestApi('/pedidos', { method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ cliente: { nombre: delivery.nombre, correo: delivery.correo,
-                    telefono: delivery.telefono, direccion: fullAddress(delivery) },
+                    telefono: delivery.telefono },
+                    entrega: { direccion: delivery.direccion, zona: delivery.zona,
+                        ciudad: delivery.ciudad, codigo_postal: delivery.codigo_postal },
                     items: cart.map(item => ({ id: item.id, cantidad: item.quantity })) }) });
             const result = await response.json();
             if (!response.ok) throw new Error(result.error || 'No se pudo guardar el pedido.');
+            savedOrderId = result.pedido_id;
             sessionStorage.setItem(LAST_ORDER_KEY, JSON.stringify(result));
+            sessionStorage.removeItem(DELIVERY_KEY);
+            localStorage.removeItem(DELIVERY_KEY);
             cart = [];
             saveCart();
             location.href = 'confirmacion.html';
         } catch (error) {
+            if (savedOrderId) {
+                cart = [];
+                try { saveCart(); } catch { /* El servidor ya guardó el pedido. */ }
+                showMessage(`El pedido #${savedOrderId} se guardó, pero no se pudo abrir el comprobante. Anota este número y contacta al restaurante.`);
+                return;
+            }
             showMessage(error.message || 'No se pudo guardar el pedido.');
             button.disabled = false;
         }
@@ -283,6 +323,8 @@ document.addEventListener('click', event => {
     const control = event.target.closest('[data-action]');
     if (control) {
         const { action, id } = control.dataset;
+        if (action === 'zoom') openProductImage(id);
+        if (action === 'close-image') $('product-image-dialog')?.close();
         if (action === 'add') addProduct(id);
         if (action === 'increase') updateQuantity(id, 1);
         if (action === 'decrease') updateQuantity(id, -1);
@@ -297,6 +339,10 @@ document.addEventListener('click', event => {
     if (event.target.closest('#open-cart-btn')) openDrawer();
     if (event.target.closest('#close-cart-drawer, #cart-drawer-overlay')) closeDrawer();
     if (event.target.closest('.link-empty-cart')) { event.preventDefault(); cart = []; saveCart(); }
+});
+document.addEventListener('click', event => {
+    const dialog = $('product-image-dialog');
+    if (event.target === dialog) dialog.close();
 });
 document.addEventListener('DOMContentLoaded', () => {
     renderCart();
