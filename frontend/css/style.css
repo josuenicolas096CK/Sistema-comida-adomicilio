@@ -384,6 +384,16 @@ ul {
     background-color: var(--clr-light);
 }
 
+.home-catalog {
+    margin-top: 80px;
+    padding-top: 60px;
+    border-top: 1px solid #eee5dc;
+}
+
+.home-catalog .section-header {
+    margin-bottom: 25px;
+}
+
 .menu-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;

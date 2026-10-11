@@ -27,6 +27,7 @@ cart = cart.filter(item => Number.isInteger(Number(item.id)) && Number(item.id) 
     .map(item => ({ ...item, id: Number(item.id), precio: Number(item.precio), quantity: Number(item.quantity) }));
 let products = [];
 let activeFilter = 'all';
+let homeActiveFilter = 'tradicional';
 let checkoutConfig = null;
 const totalLabel = value => value == null ? 'Calculando…' : money(value);
 
@@ -140,9 +141,9 @@ function renderCart() {
     setText('page-total', totalLabel(totals.total));
     renderCheckout();
 }
-function productCard(product, featured = false) {
+function productCard(product) {
     const image = imageMarkup(product, 'card-img');
-    const canExpand = !featured && safeImage(product.imagen_url);
+    const canExpand = Boolean($('product-image-dialog')) && safeImage(product.imagen_url);
     const media = canExpand
         ? `<button type="button" class="product-image-trigger" data-action="zoom" data-id="${Number(product.id)}" aria-label="Ampliar imagen de ${escapeHtml(product.nombre)}">${image}<span class="product-image-hint" aria-hidden="true">Ampliar imagen</span></button>`
         : image;
@@ -151,8 +152,7 @@ function productCard(product, featured = false) {
         <div class="card-body"><div class="card-heading"><h3 class="card-title">${escapeHtml(product.nombre)}</h3>
         <span class="card-price">${money(product.precio)}</span></div>
         <p class="card-desc">${escapeHtml(product.descripcion || 'Preparado especialmente para ti.')}</p>
-        ${featured ? '<a href="menu.html" class="btn btn-outline btn-menu-link">VER EN EL MENÚ →</a>' :
-        `<button type="button" class="btn btn-add-cart" data-action="add" data-id="${product.id}">🛒 AGREGAR AL CARRITO</button>`}
+        <button type="button" class="btn btn-add-cart" data-action="add" data-id="${product.id}">🛒 AGREGAR AL CARRITO</button>
         </div></article>`;
 }
 function openProductImage(id) {
@@ -180,8 +180,9 @@ function renderProducts() {
         $('menu-cards-grid').innerHTML = filtered.length ? filtered.map(product => productCard(product)).join('') :
             '<p class="section-desc">No hay productos en esta categoría.</p>';
     }
-    if ($('featured-products')) $('featured-products').innerHTML = [...products.filter(product => product.imagen_url), ...products.filter(product => !product.imagen_url)].slice(0, 3).map(product => productCard(product, true)).join('') ||
+    if ($('featured-products')) $('featured-products').innerHTML = [...products.filter(product => product.imagen_url), ...products.filter(product => !product.imagen_url)].slice(0, 3).map(product => productCard(product)).join('') ||
         '<p class="section-desc">Pronto tendremos platillos disponibles.</p>';
+    renderHomeCatalog();
     if ($('home-categories')) {
         const groups = ['entradas', 'fuertes', 'postres', 'bebidas'];
         $('home-categories').innerHTML = groups.map(group => {
@@ -194,6 +195,12 @@ function renderProducts() {
                     <p class="item-desc">${escapeHtml(product.descripcion || '')}</p></li>`).join('')}</ul></div>`;
         }).join('') || '<p class="section-desc">Explora todos los productos en nuestro menú.</p>';
     }
+}
+function renderHomeCatalog() {
+    if (!$('home-catalog-grid')) return;
+    const selected = homeActiveFilter === 'all' ? products : products.filter(product => categoryOf(product) === homeActiveFilter);
+    $('home-catalog-grid').innerHTML = selected.length ? selected.map(product => productCard(product)).join('') :
+        '<p class="section-desc">No hay platillos en esta categoría.</p>';
 }
 async function loadProducts() {
     if ($('confirmation-details')) return;
@@ -405,6 +412,16 @@ document.addEventListener('click', event => {
         activeFilter = filter.dataset.filter;
         document.querySelectorAll('[data-filter]').forEach(button => button.classList.toggle('active', button === filter));
         renderProducts();
+    }
+    const homeFilter = event.target.closest('[data-home-filter]');
+    if (homeFilter) {
+        homeActiveFilter = homeFilter.dataset.homeFilter;
+        document.querySelectorAll('[data-home-filter]').forEach(button => {
+            const active = button === homeFilter;
+            button.classList.toggle('active', active);
+            button.setAttribute('aria-pressed', String(active));
+        });
+        renderHomeCatalog();
     }
     if (event.target.closest('#open-cart-btn')) openDrawer();
     if (event.target.closest('#close-cart-drawer, #cart-drawer-overlay')) closeDrawer();
