@@ -17,10 +17,49 @@
 }
 
 .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex: none;
     font-family: var(--font-heading);
     font-size: 1.8rem;
     color: var(--clr-primary);
     font-weight: 700;
+}
+
+.header-logo-img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    flex: none;
+}
+
+@media (max-width: 700px) {
+    .header-logo-text {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .header-interior .container {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .header-actions {
+        margin-left: auto;
+    }
+
+    .main-nav {
+        order: 3;
+        width: 100%;
+    }
+
+    .main-nav ul {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+    }
 }
 
 .main-nav ul {
@@ -511,6 +550,31 @@
 .method-option input[type="radio"] {
     transform: scale(1.3);
     accent-color: var(--clr-secondary);
+}
+
+.payment-method-fieldset {
+    border: 0;
+    margin-top: 28px;
+}
+
+.payment-method-fieldset .form-title {
+    margin-bottom: 14px;
+}
+
+.payment-method-fieldset .method-toggle {
+    margin-bottom: 0;
+}
+
+.method-option small {
+    color: var(--clr-text-light);
+    font-size: 0.82rem;
+}
+
+.payment-estimate,
+.delivery-estimate {
+    margin-top: 14px;
+    color: var(--clr-secondary);
+    font-weight: 700;
 }
 
 .method-details h5 {
@@ -1019,8 +1083,8 @@
     content: '';
     position: absolute;
     top: 20px;
-    left: 10%;
-    right: 10%;
+    left: 16.7%;
+    right: 16.7%;
     height: 3px;
     background: #e0e0e0;
     z-index: 1;
@@ -1029,8 +1093,8 @@
 .tracker-progress-bar {
     position: absolute;
     top: 20px;
-    left: 10%;
-    width: 35%;
+    left: 16.7%;
+    width: 0;
     height: 3px;
     background: #10b618;
     z-index: 2;
@@ -1108,11 +1172,46 @@
     margin-top: 30px;
 }
 
+@media (max-width: 600px) {
+    .form-grid,
+    .confirmation-details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-section,
+    .sidebar-summary,
+    .confirmation-card {
+        padding: 20px;
+    }
+
+    .stepper {
+        gap: 4px;
+    }
+
+    .step {
+        flex: 1;
+        flex-direction: column;
+        text-align: center;
+        gap: 4px;
+        font-size: 0.78rem;
+    }
+
+    .step-divider {
+        width: 14px;
+        flex: none;
+    }
+
+    .confirmation-actions {
+        flex-wrap: wrap;
+    }
+}
+
 @media print {
     body {
         background: #ffffff !important;
     }
-    .header-interior, .site-footer, .cart-drawer, .confirmation-actions, .lbm-toast {
+    .header-interior, .site-footer, .cart-drawer, .confirmation-actions, .lbm-toast,
+    .order-tracker, .order-status {
         display: none !important;
     }
     .confirmation-card {

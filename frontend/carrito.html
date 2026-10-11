@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/webp" href="img/LOGOTIPORESTAURANTE.webp">
     <title>Tu Carrito de Compras - La Buena Mesa</title>
     <!-- Estilos del proyecto -->
     <link rel="stylesheet" href="css/style.css">
@@ -20,7 +21,7 @@
     <header class="header-interior">
         <div class="container">
             <!-- Logotipo -->
-            <a href="index.html" class="header-logo" aria-label="Ir al inicio">La Buena Mesa</a>
+            <a href="index.html" class="header-logo" aria-label="Ir al inicio"><img src="img/LOGOTIPORESTAURANTE.webp" alt="" class="header-logo-img" width="48" height="48"><span class="header-logo-text">La Buena Mesa</span></a>
             
             <!-- Menú de navegación principal -->
             <nav class="main-nav" aria-label="Navegación principal">
@@ -93,10 +94,14 @@
                         <span>IVA Incluido (12%)</span>
                         <span id="page-tax">Q0.00</span>
                     </div>
+                    <div class="summary-row">
+                        <span>Envío</span>
+                        <span id="page-shipping">Calculando…</span>
+                    </div>
                     
                     <div class="summary-row total">
-                        <span>Total de Productos</span>
-                        <span class="summary-total-price" id="page-total">Q0.00</span>
+                        <span>Total del Pedido</span>
+                        <span class="summary-total-price" id="page-total">Calculando…</span>
                     </div>
 
                     <!-- Botones de acción semánticos -->
@@ -110,7 +115,7 @@
                     </div>
 
                     <div class="security-badge" style="margin-top: 25px;">
-                        &#128274; Compra 100% segura y garantizada
+                        Revisa tus datos y confirma el pedido en el siguiente paso.
                     </div>
                 </div>
             </aside>
@@ -142,6 +147,10 @@
             <div class="drawer-summary-row">
                 <span>Subtotal:</span>
                 <span id="drawer-subtotal">Q0.00</span>
+            </div>
+            <div class="drawer-summary-row">
+                <span>Envío:</span>
+                <span id="drawer-shipping">Calculando…</span>
             </div>
             <div class="drawer-summary-row total">
                 <span>Total:</span>

@@ -27,6 +27,24 @@ cart = cart.filter(item => Number.isInteger(Number(item.id)) && Number(item.id) 
     .map(item => ({ ...item, id: Number(item.id), precio: Number(item.precio), quantity: Number(item.quantity) }));
 let products = [];
 let activeFilter = 'all';
+let checkoutConfig = null;
+const totalLabel = value => value == null ? 'Calculando…' : money(value);
+
+async function loadCheckoutConfig() {
+    if ($('confirmation-details')) return;
+    try {
+        const response = await requestApi('/configuracion');
+        if (!response.ok) throw new Error();
+        const config = await response.json();
+        if (!Number.isFinite(Number(config.costo_envio)) || Number(config.costo_envio) < 0) throw new Error();
+        checkoutConfig = config;
+        renderCart();
+        renderPayment();
+    } catch {
+        showMessage('No se pudo calcular el envío. Comprueba que el servidor esté activo.');
+        if ($('btn-confirm-order')) $('btn-confirm-order').disabled = true;
+    }
+}
 
 function setText(id, value) { if ($(id)) $(id).textContent = value; }
 function imageMarkup(product, className) {
@@ -48,7 +66,9 @@ function showMessage(message, target) {
 }
 function getTotals() {
     const subtotal = Math.round(cart.reduce((sum, item) => sum + Number(item.precio) * item.quantity, 0) * 100) / 100;
-    return { subtotal, total: subtotal, count: cart.reduce((sum, item) => sum + item.quantity, 0) };
+    const envio = !cart.length ? 0 : checkoutConfig ? Number(checkoutConfig.costo_envio) : null;
+    const total = envio == null ? null : Math.round((subtotal + envio) * 100) / 100;
+    return { subtotal, envio, total, count: cart.reduce((sum, item) => sum + item.quantity, 0) };
 }
 function saveCart() {
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
@@ -101,7 +121,8 @@ function renderCart() {
     if ($('drawer-empty-state')) $('drawer-empty-state').hidden = cart.length > 0;
     if ($('drawer-footer')) $('drawer-footer').hidden = cart.length === 0;
     setText('drawer-subtotal', money(totals.subtotal));
-    setText('drawer-total', money(totals.total));
+    setText('drawer-shipping', totalLabel(totals.envio));
+    setText('drawer-total', totalLabel(totals.total));
     if ($('page-cart-items')) $('page-cart-items').innerHTML = cart.map(item => `
         <article class="page-cart-row">${imageMarkup(item, 'page-cart-img')}
             <div><h3>${escapeHtml(item.nombre)}</h3><p>${money(item.precio)} c/u</p>
@@ -115,7 +136,8 @@ function renderCart() {
     setText('page-count', `Subtotal (${totals.count} artículos)`);
     setText('page-subtotal', money(totals.subtotal));
     setText('page-tax', money(totals.subtotal * 0.12 / 1.12));
-    setText('page-total', money(totals.total));
+    setText('page-shipping', totalLabel(totals.envio));
+    setText('page-total', totalLabel(totals.total));
     renderCheckout();
 }
 function productCard(product, featured = false) {
@@ -215,7 +237,9 @@ function renderCheckout() {
         '<p>Tu carrito está vacío. <a href="menu.html">Explorar menú</a></p>';
     const totals = getTotals();
     setText('checkout-subtotal', money(totals.subtotal));
-    setText('checkout-total', money(totals.total));
+    setText('checkout-tax', money(totals.subtotal * 0.12 / 1.12));
+    setText('checkout-shipping', totalLabel(totals.envio));
+    setText('checkout-total', totalLabel(totals.total));
 }
 function initCheckout() {
     const form = $('checkout-shipping-form');
@@ -239,6 +263,7 @@ function initCheckout() {
     form.addEventListener('submit', event => {
         event.preventDefault();
         if (!cart.length) return showMessage('Agrega al menos un platillo antes de continuar.');
+        if (!checkoutConfig) return showMessage('Espera a que se calcule el costo de envío.');
         if (!form.reportValidity()) return;
         const delivery = deliveryFromForm();
         if (fullAddress(delivery).length > 255) return showMessage('La dirección completa no debe superar 255 caracteres.');
@@ -257,20 +282,32 @@ function renderPayment() {
     }
     const totals = getTotals();
     setText('review-customer', delivery.nombre);
-    setText('review-contact', `${delivery.telefono} · ${delivery.correo}`);
+    setText('review-contact', [delivery.telefono, delivery.correo].filter(Boolean).join(' · '));
     setText('review-address', fullAddress(delivery));
     setText('payment-subtotal-amount', money(totals.subtotal));
-    setText('payment-total-amount', money(totals.total));
-    setText('btn-confirm-order', `CONFIRMAR PEDIDO (${money(totals.total)})`);
+    setText('payment-tax-amount', money(totals.subtotal * 0.12 / 1.12));
+    setText('payment-shipping-amount', totalLabel(totals.envio));
+    setText('payment-total-amount', totalLabel(totals.total));
+    setText('payment-estimate', checkoutConfig
+        ? `Tiempo estimado: ${checkoutConfig.estimacion_min_minutos}–${checkoutConfig.estimacion_max_minutos} minutos`
+        : 'Tiempo estimado: calculando…');
+    setText('btn-confirm-order', `CONFIRMAR PEDIDO (${totalLabel(totals.total)})`);
+    $('btn-confirm-order').disabled = !checkoutConfig;
 }
 function initPayment() {
     if (!$('btn-confirm-order')) return;
     renderPayment();
+    document.querySelectorAll('input[name="metodo_pago"]').forEach(input => input.addEventListener('change', () => {
+        document.querySelectorAll('.method-option').forEach(option => option.classList.toggle('selected', option.querySelector('input')?.checked));
+    }));
     $('btn-confirm-order').addEventListener('click', async () => {
         if (!$('accept-terms')?.checked) return showMessage('Acepta los términos para continuar.');
         if (!cart.length) return showMessage('Tu carrito está vacío.');
+        if (!checkoutConfig) return showMessage('No se pudo calcular el envío. Intenta de nuevo.');
         const delivery = readSessionStorage(DELIVERY_KEY, null);
         if (!delivery) return showMessage('Completa los datos de entrega.');
+        const metodoPago = document.querySelector('input[name="metodo_pago"]:checked')?.value;
+        if (!metodoPago) return showMessage('Selecciona un método de pago.');
         const button = $('btn-confirm-order');
         button.disabled = true;
         showMessage('Guardando tu pedido…');
@@ -281,6 +318,7 @@ function initPayment() {
                     telefono: delivery.telefono },
                     entrega: { direccion: delivery.direccion, zona: delivery.zona,
                         ciudad: delivery.ciudad, codigo_postal: delivery.codigo_postal },
+                    metodo_pago: metodoPago,
                     items: cart.map(item => ({ id: item.id, cantidad: item.quantity })) }) });
             const result = await response.json();
             if (!response.ok) throw new Error(result.error || 'No se pudo guardar el pedido.');
@@ -303,23 +341,53 @@ function initPayment() {
         }
     });
 }
-function initConfirmation() {
-    if (!$('confirmation-details')) return;
-    let order;
-    try { order = JSON.parse(sessionStorage.getItem(LAST_ORDER_KEY)); } catch { /* sin pedido */ }
-    if (!order?.pedido_id || !order?.cliente || !Array.isArray(order.items)) {
-        $('confirmation-details').innerHTML = '<p class="form-message">No hay un pedido reciente para mostrar. <a href="menu.html">Ir al menú</a></p>';
-        return;
-    }
+function renderConfirmation(order) {
     setText('order-number', `#LBM-${order.pedido_id}`);
-    setText('estimated-time', 'Pendiente de preparación');
+    const statusNames = { pendiente: 'Pendiente de preparación', en_preparacion: 'En preparación', entregado: 'Entregado' };
+    setText('estimated-time', statusNames[order.estado] || 'Estado no disponible');
+    setText('order-estimate', order.estimacion_min_minutos && order.estimacion_max_minutos
+        ? `Tiempo estimado de entrega: ${order.estimacion_min_minutos}–${order.estimacion_max_minutos} minutos desde la confirmación`
+        : 'Tiempo estimado de entrega no registrado.');
     setText('order-customer-name', order.cliente.nombre);
     setText('order-customer-address', order.cliente.direccion);
     $('order-items-list').innerHTML = order.items.map(item => `<li class="confirmation-item"><span><strong>${item.cantidad}x</strong> ${escapeHtml(item.nombre)}</span>
         <span>${money(Number(item.precio_unitario) * item.cantidad)}</span></li>`).join('');
-    setText('order-subtotal', money(order.total));
-    setText('order-tax', money(Number(order.total) * 0.12 / 1.12));
+    const subtotal = Number(order.subtotal ?? order.total);
+    setText('order-subtotal', money(subtotal));
+    setText('order-tax', money(subtotal * 0.12 / 1.12));
+    setText('order-shipping', money(order.costo_envio));
+    setText('order-payment-method', { efectivo: 'Efectivo contra entrega', transferencia: 'Transferencia' }[order.metodo_pago] || 'No registrado');
     setText('order-total', money(order.total));
+    const statusIndex = { pendiente: 0, en_preparacion: 1, entregado: 2 }[order.estado] ?? 0;
+    document.querySelectorAll('.tracker-step').forEach((step, index) => {
+        step.classList.toggle('completed', index < statusIndex);
+        step.classList.toggle('active', index === statusIndex);
+        if (index === statusIndex) step.setAttribute('aria-current', 'step');
+        else step.removeAttribute('aria-current');
+    });
+    const progress = document.querySelector('.tracker-progress-bar');
+    if (progress) progress.style.width = `${statusIndex * 33.3}%`;
+}
+async function initConfirmation() {
+    if (!$('confirmation-details')) return;
+    const order = readSessionStorage(LAST_ORDER_KEY, null);
+    if (!order?.pedido_id || !order?.cliente || !Array.isArray(order.items)) {
+        $('confirmation-details').innerHTML = '<p class="form-message">No hay un pedido reciente para mostrar. <a href="menu.html">Ir al menú</a></p>';
+        return;
+    }
+    renderConfirmation(order);
+    if (!order.consulta_token) return;
+    try {
+        const response = await requestApi(`/pedidos/${encodeURIComponent(order.pedido_id)}`, {
+            headers: { Authorization: `Bearer ${order.consulta_token}` }
+        });
+        if (!response.ok) throw new Error();
+        const current = await response.json();
+        sessionStorage.setItem(LAST_ORDER_KEY, JSON.stringify(current));
+        renderConfirmation(current);
+    } catch {
+        showMessage('El comprobante se muestra con los últimos datos guardados en este navegador; no se pudo actualizar desde el servidor.');
+    }
 }
 document.addEventListener('click', event => {
     const control = event.target.closest('[data-action]');
@@ -351,5 +419,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initCheckout();
     initPayment();
     initConfirmation();
+    loadCheckoutConfig();
     loadProducts();
 });

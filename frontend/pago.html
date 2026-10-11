@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/webp" href="img/LOGOTIPORESTAURANTE.webp">
     <title>Revisión y Confirmación - La Buena Mesa</title>
     <!-- Estilos del proyecto -->
     <link rel="stylesheet" href="css/style.css">
@@ -19,7 +20,7 @@
          ========================================================================== -->
     <header class="header-interior">
         <div class="container">
-            <a href="index.html" class="header-logo" aria-label="Ir al inicio">La Buena Mesa</a>
+            <a href="index.html" class="header-logo" aria-label="Ir al inicio"><img src="img/LOGOTIPORESTAURANTE.webp" alt="" class="header-logo-img" width="48" height="48"><span class="header-logo-text">La Buena Mesa</span></a>
             <nav class="main-nav" aria-label="Navegación principal">
                 <ul>
                     <li><a href="index.html">Inicio</a></li>
@@ -73,6 +74,19 @@
                 <p id="review-contact" class="section-desc"></p>
                 <p id="review-address" class="section-desc"></p>
                 <a href="checkout.html?editar=1" class="btn btn-outline btn-menu-link">EDITAR DATOS</a>
+                <fieldset class="payment-method-fieldset">
+                    <legend class="form-title">¿Cómo deseas pagar?</legend>
+                    <div class="method-toggle">
+                        <label class="method-option selected">
+                            <input type="radio" name="metodo_pago" value="efectivo" checked>
+                            <span class="method-details"><strong>Efectivo contra entrega</strong><br><small>Paga cuando recibas tu pedido.</small></span>
+                        </label>
+                        <label class="method-option">
+                            <input type="radio" name="metodo_pago" value="transferencia">
+                            <span class="method-details"><strong>Transferencia</strong><br><small>Coordina los datos de pago con el restaurante.</small></span>
+                        </label>
+                    </div>
+                </fieldset>
             </section>
 
             <!-- Columna derecha: Resumen Final y Botón de Confirmación -->
@@ -85,10 +99,19 @@
                         <span>Productos</span>
                         <span id="payment-subtotal-amount">Q0.00</span>
                     </div>
-                    <div class="summary-row total">
-                        <span>Total de Productos</span>
-                        <span class="summary-total-price" id="payment-total-amount">Q0.00</span>
+                    <div class="summary-row">
+                        <span>IVA incluido (12%)</span>
+                        <span id="payment-tax-amount">Q0.00</span>
                     </div>
+                    <div class="summary-row">
+                        <span>Envío</span>
+                        <span id="payment-shipping-amount">Calculando…</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total del Pedido</span>
+                        <span class="summary-total-price" id="payment-total-amount">Calculando…</span>
+                    </div>
+                    <p class="payment-estimate" id="payment-estimate">Tiempo estimado: calculando…</p>
 
                     <!-- Aceptación de términos -->
                     <div style="margin: 20px 0; font-size: 0.8rem; color: #666; display: flex; gap: 10px; align-items: flex-start;">

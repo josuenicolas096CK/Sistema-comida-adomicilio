@@ -1,5 +1,5 @@
 -- Estructura actual de pedidos_db: usuarios, productos, pedidos,
--- pedido_entrega y detalles_pedido.
+-- pedido_entrega, detalles_pedido y resumen_pedidos.
 -- Ejecutar solo para crear una base nueva; no volver a ejecutar sobre la base existente.
 CREATE DATABASE IF NOT EXISTS pedidos_db
     CHARACTER SET utf8mb4
@@ -32,8 +32,12 @@ CREATE TABLE pedidos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+    subtotal DECIMAL(10,2),
+    costo_envio DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     estado ENUM('pendiente', 'en_preparacion', 'entregado') NOT NULL DEFAULT 'pendiente',
+    metodo_pago ENUM('efectivo', 'transferencia'),
+    consulta_token CHAR(64) UNIQUE,
     CONSTRAINT fk_pedidos_usuario
         FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
         ON DELETE CASCADE
@@ -70,5 +74,23 @@ CREATE TABLE detalles_pedido (
     CONSTRAINT fk_detalles_producto
         FOREIGN KEY (producto_id) REFERENCES productos(id)
         ON DELETE RESTRICT
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- Tabla: resumen de cada orden para consulta rápida en DBeaver
+CREATE TABLE resumen_pedidos (
+    pedido_id INT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    nombre_cliente VARCHAR(100) NOT NULL,
+    telefono VARCHAR(20),
+    correo VARCHAR(150),
+    direccion VARCHAR(255),
+    total DECIMAL(10,2) NOT NULL,
+    cantidad_articulos INT NOT NULL DEFAULT 0,
+    fecha DATETIME NOT NULL,
+    INDEX idx_resumen_fecha (fecha),
+    CONSTRAINT fk_resumen_pedido
+        FOREIGN KEY (pedido_id) REFERENCES pedidos(id)
+        ON DELETE CASCADE
         ON UPDATE CASCADE
 ) ENGINE=InnoDB;

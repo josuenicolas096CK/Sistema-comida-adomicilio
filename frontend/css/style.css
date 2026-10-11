@@ -106,10 +106,9 @@ ul {
    ========================================================================== */
 .hero {
     position: relative;
-    height: 100vh;
-    min-height: 700px;
-    /* Fondo temporal usando un placeholder, asumiendo que HomeRestaurante.png es la UI y no un asset */
-    background: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+    min-height: min(760px, 100svh);
+    padding: 120px 20px 130px;
+    background: #281b18 url('../img/churrasco.webp') center 48%/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -123,22 +122,35 @@ ul {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7));
+    background: linear-gradient(90deg, rgba(23, 13, 10, 0.82), rgba(30, 18, 14, 0.58) 55%, rgba(30, 18, 14, 0.66));
     z-index: 1;
 }
 
 .hero-content {
     position: relative;
     z-index: 2;
-    max-width: 800px;
+    max-width: 860px;
     padding: 0 20px;
+}
+
+.hero-eyebrow {
+    display: inline-block;
+    margin-bottom: 22px;
+    padding: 9px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.52);
+    border-radius: 999px;
+    color: #f9e4c6;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
 }
 
 .hero-title {
     font-family: var(--font-heading);
-    font-size: 5rem;
-    color: var(--clr-primary);
-    margin-bottom: 15px;
+    font-size: clamp(3.7rem, 8vw, 6.5rem);
+    line-height: 1.05;
+    color: #fff5e9;
+    margin-bottom: 20px;
     font-weight: 700;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
@@ -147,17 +159,42 @@ ul {
     font-size: 1.2rem;
     letter-spacing: 4px;
     text-transform: uppercase;
-    margin-bottom: 30px;
-    font-weight: 400;
+    margin-bottom: 22px;
+    font-weight: 700;
+    color: #eac9a3;
 }
 
 .hero-text {
-    font-size: 1.1rem;
-    margin-bottom: 40px;
-    color: #f0f0f0;
+    font-size: 1.15rem;
+    margin-bottom: 34px;
+    color: #f7eee5;
     max-width: 650px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.hero-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px 28px;
+}
+
+.hero-actions .btn {
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+}
+
+.hero-secondary-link {
+    color: #ffffff;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+    padding: 10px 0 6px;
+}
+
+.hero-secondary-link:hover,
+.hero-secondary-link:focus-visible {
+    color: #f2d7b5;
 }
 
 .scroll-indicator {
@@ -197,9 +234,93 @@ ul {
     background-color: var(--clr-bg-alt);
 }
 
+/* Una pausa visual entre los favoritos y el catálogo. */
+.story-section {
+    overflow: hidden;
+    padding: 100px 0;
+    background: #2d2421;
+    color: #f8f1e8;
+}
+
+.story-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(32px, 6vw, 90px);
+    align-items: center;
+}
+
+.story-copy .section-label {
+    color: #d9ad80;
+}
+
+.story-title {
+    max-width: 530px;
+    margin: 0 0 25px;
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 4vw, 4.1rem);
+    line-height: 1.14;
+    font-weight: 700;
+}
+
+.story-copy p {
+    max-width: 490px;
+    color: #e0d5ca;
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.story-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 30px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #d9ad80;
+    color: #f6d3ad;
+    font-weight: 700;
+}
+
+.story-link:hover,
+.story-link:focus-visible {
+    color: #ffffff;
+}
+
+.story-gallery {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.35fr 0.85fr;
+    grid-template-rows: repeat(2, 180px);
+    gap: 12px;
+    padding-bottom: 28px;
+}
+
+.story-gallery img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.story-gallery-main {
+    grid-row: 1 / 3;
+}
+
+.story-gallery-caption {
+    position: absolute;
+    right: 16px;
+    bottom: 7px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    background: #f8f1e8;
+    color: #4c2724;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+}
+
 .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
     gap: 40px;
 }
 
@@ -475,6 +596,14 @@ ul {
         grid-template-columns: 1fr;
         gap: 50px;
     }
+
+    .story-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .story-copy {
+        max-width: 680px;
+    }
     
     .hero-title {
         font-size: 4rem;
@@ -483,12 +612,11 @@ ul {
 
 @media (max-width: 768px) {
     .hero {
-        height: auto;
         min-height: 100svh;
-        padding: 100px 0 110px;
+        padding: 95px 0 125px;
     }
     .hero-title {
-        font-size: 3rem;
+        font-size: clamp(3rem, 12vw, 4rem);
     }
     
     .hero-subtitle {
@@ -514,6 +642,34 @@ ul {
     
     .section-title {
         font-size: 2rem;
+    }
+
+    .story-section {
+        padding: 75px 0;
+    }
+
+    .story-gallery {
+        grid-template-rows: repeat(2, min(34vw, 220px));
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-eyebrow {
+        font-size: 0.65rem;
+    }
+
+    .hero-subtitle {
+        letter-spacing: 1px;
+    }
+
+    .hero-text {
+        font-size: 1rem;
+    }
+
+    .story-gallery-caption {
+        right: 8px;
+        font-size: 0.85rem;
+        padding: 9px 11px;
     }
 }
 

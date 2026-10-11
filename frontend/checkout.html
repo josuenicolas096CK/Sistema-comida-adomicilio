@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/webp" href="img/LOGOTIPORESTAURANTE.webp">
     <title>Datos de Entrega y Envío - La Buena Mesa</title>
     <!-- Hojas de estilo del proyecto -->
     <link rel="stylesheet" href="css/style.css">
@@ -19,7 +20,7 @@
          ========================================================================== -->
     <header class="header-interior">
         <div class="container">
-            <a href="index.html" class="header-logo" aria-label="Ir al inicio">La Buena Mesa</a>
+            <a href="index.html" class="header-logo" aria-label="Ir al inicio"><img src="img/LOGOTIPORESTAURANTE.webp" alt="" class="header-logo-img" width="48" height="48"><span class="header-logo-text">La Buena Mesa</span></a>
             <nav class="main-nav" aria-label="Navegación principal">
                 <ul>
                     <li><a href="index.html">Inicio</a></li>
@@ -89,8 +90,8 @@
                             </div>
                             
                             <div class="form-group full">
-                                <label for="customer-email">Correo Electrónico *</label>
-                                <input type="email" id="customer-email" required maxlength="150" autocomplete="off" placeholder="tu@correo.com">
+                                <label for="customer-email">Correo Electrónico (opcional)</label>
+                                <input type="email" id="customer-email" maxlength="150" autocomplete="off" placeholder="tu@correo.com">
                             </div>
 
                             <div class="form-group full">
@@ -100,14 +101,20 @@
 
                             <div class="form-group">
                                 <label for="shipping-zone-select">Zona / Sector *</label>
-                                <select id="shipping-zone-select">
-                                    <option value="Zona 14" selected>Zona 14</option>
-                                    <option value="Zona 15">Zona 15</option>
-                                    <option value="Zona 10">Zona 10</option>
+                                <select id="shipping-zone-select" required>
+                                    <option value="" selected disabled>Selecciona una zona</option>
                                     <option value="Zona 1">Zona 1</option>
                                     <option value="Zona 2">Zona 2</option>
                                     <option value="Zona 3">Zona 3</option>
-                                    <option value="Otras Zonas">Otras Zonas</option>
+                                    <option value="Zona 4">Zona 4</option>
+                                    <option value="Zona 5">Zona 5</option>
+                                    <option value="Zona 6">Zona 6</option>
+                                    <option value="Zona 7">Zona 7</option>
+                                    <option value="Zona 8">Zona 8</option>
+                                    <option value="Zona 9">Zona 9</option>
+                                    <option value="Zona 10">Zona 10</option>
+                                    <option value="Zona 11">Zona 11</option>
+                                    <option value="Zona 12">Zona 12</option>
                                 </select>
                             </div>
 
@@ -146,10 +153,18 @@
                         <span>Subtotal</span>
                         <span id="checkout-subtotal">Q0.00</span>
                     </div>
+                    <div class="summary-row">
+                        <span>IVA incluido (12%)</span>
+                        <span id="checkout-tax">Q0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Envío</span>
+                        <span id="checkout-shipping">Calculando…</span>
+                    </div>
                     
                     <div class="summary-row total">
-                        <span>Total de Productos</span>
-                        <span class="summary-total-price" id="checkout-total">Q0.00</span>
+                        <span>Total del Pedido</span>
+                        <span class="summary-total-price" id="checkout-total">Calculando…</span>
                     </div>
 
                     <div class="alert-info" style="justify-content: center; margin-top: 15px;">

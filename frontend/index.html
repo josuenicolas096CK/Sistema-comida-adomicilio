@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/webp" href="img/LOGOTIPORESTAURANTE.webp">
     <title>La Buena Mesa - Cocina de Tradición</title>
     <meta name="description" content="La Buena Mesa: auténtica cocina tradicional guatemalteca a domicilio. Pide tus platillos favoritos y los llevamos hasta tu puerta.">
     <!-- Hojas de estilos del proyecto -->
@@ -21,7 +22,7 @@
     <header class="header-interior">
         <div class="container">
             <!-- Logotipo del restaurante con enlace al inicio -->
-            <a href="index.html" class="header-logo" aria-label="Ir a la página de inicio">La Buena Mesa</a>
+            <a href="index.html" class="header-logo" aria-label="Ir a la página de inicio"><img src="img/LOGOTIPORESTAURANTE.webp" alt="" class="header-logo-img" width="48" height="48"><span class="header-logo-text">La Buena Mesa</span></a>
 
             <!-- Navegación principal semántica -->
             <nav class="main-nav" aria-label="Navegación principal">
@@ -49,16 +50,17 @@
     <section class="hero" id="inicio" aria-label="Bienvenida a La Buena Mesa">
         <div class="hero-overlay"></div>
         <div class="hero-content">
+            <p class="hero-eyebrow">SABORES QUE SE COMPARTEN</p>
             <h1 class="hero-title">La Buena Mesa</h1>
             <p class="hero-subtitle">COCINA DE TRADICIÓN, SABOR DE SIEMPRE</p>
             <p class="hero-text">
-                El auténtico sabor de la cocina tradicional guatemalteca.
-                Un rincón acogedor donde las recetas heredadas de madres y abuelas se preparan con el corazón,
-                para ofrecer una experiencia cálida y memorable en cada entrega a domicilio.
+                Platillos para disfrutar sin prisa, preparados con el sabor de nuestra cocina
+                y listos para llegar a tu mesa.
             </p>
-            <!-- Botón principal para redirigir al menú donde se agregan los productos -->
-            <a href="menu.html" class="btn btn-primary">EXPLORAR MENÚ Y PEDIR</a>
-
+            <div class="hero-actions">
+                <a href="menu.html" class="btn btn-primary">VER EL MENÚ &rarr;</a>
+                <a href="#carta" class="hero-secondary-link">Explorar categorías <span aria-hidden="true">↗</span></a>
+            </div>
         </div>
         <div class="scroll-indicator" aria-hidden="true">
             <span>DESPLAZAR</span>
@@ -89,6 +91,24 @@
                     <a href="menu.html" class="btn btn-primary btn-cta">
                         &#128214; VER MENÚ COMPLETO Y AGREGAR PLATILLOS
                     </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Un vistazo visual a los sabores de la casa. -->
+        <section class="story-section" aria-labelledby="story-title">
+            <div class="container story-layout">
+                <div class="story-copy">
+                    <span class="section-label">— HECHO PARA COMPARTIR</span>
+                    <h2 class="story-title" id="story-title">Un buen plato siempre tiene una historia.</h2>
+                    <p>En La Buena Mesa conviven los sabores de siempre con esos antojos que alegran cualquier día. Descubre platillos tradicionales, entradas para compartir y algo dulce para terminar.</p>
+                    <a href="menu.html" class="story-link">Descubre todos los sabores <span aria-hidden="true">&rarr;</span></a>
+                </div>
+                <div class="story-gallery" aria-label="Selección de platillos de La Buena Mesa">
+                    <img class="story-gallery-main" src="img/fiambre.webp" alt="Fiambre, platillo tradicional guatemalteco" loading="lazy" width="600" height="600">
+                    <img class="story-gallery-side" src="img/bruschettas.webp" alt="Bruschettas para compartir" loading="lazy" width="300" height="300">
+                    <img class="story-gallery-side" src="img/brownies.webp" alt="Brownies de chocolate" loading="lazy" width="300" height="300">
+                    <span class="story-gallery-caption">De nuestra cocina a tu mesa</span>
                 </div>
             </div>
         </section>
@@ -194,6 +214,10 @@
             <div class="drawer-summary-row">
                 <span>Subtotal:</span>
                 <span id="drawer-subtotal">Q0.00</span>
+            </div>
+            <div class="drawer-summary-row">
+                <span>Envío:</span>
+                <span id="drawer-shipping">Calculando…</span>
             </div>
             <div class="drawer-summary-row total">
                 <span>Total:</span>

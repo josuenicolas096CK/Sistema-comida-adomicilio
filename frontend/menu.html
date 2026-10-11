@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/webp" href="img/LOGOTIPORESTAURANTE.webp">
     <title>Menú a Domicilio - La Buena Mesa</title>
     <meta name="description" content="Explora el menú completo de La Buena Mesa. Filtra por categoría y agrega tus platillos favoritos al carrito para recibirlos en casa.">
     <!-- Hojas de estilos del proyecto -->
@@ -21,7 +22,7 @@
     <header class="header-interior">
         <div class="container">
             <!-- Logotipo del restaurante -->
-            <a href="index.html" class="header-logo" aria-label="Ir a la página de inicio">La Buena Mesa</a>
+            <a href="index.html" class="header-logo" aria-label="Ir a la página de inicio"><img src="img/LOGOTIPORESTAURANTE.webp" alt="" class="header-logo-img" width="48" height="48"><span class="header-logo-text">La Buena Mesa</span></a>
 
             <!-- Navegación principal -->
             <nav class="main-nav" aria-label="Navegación principal">
@@ -122,6 +123,10 @@
             <div class="drawer-summary-row">
                 <span>Subtotal:</span>
                 <span id="drawer-subtotal">Q0.00</span>
+            </div>
+            <div class="drawer-summary-row">
+                <span>Envío:</span>
+                <span id="drawer-shipping">Calculando…</span>
             </div>
             <div class="drawer-summary-row total">
                 <span>Total:</span>

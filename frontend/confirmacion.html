@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/webp" href="img/LOGOTIPORESTAURANTE.webp">
     <title>Confirmación de Pedido - La Buena Mesa</title>
     <!-- Hojas de estilo del proyecto -->
     <link rel="stylesheet" href="css/style.css">
@@ -19,7 +20,7 @@
          ========================================================================== -->
     <header class="header-interior">
         <div class="container">
-            <a href="index.html" class="header-logo" aria-label="Ir al inicio">La Buena Mesa</a>
+            <a href="index.html" class="header-logo" aria-label="Ir al inicio"><img src="img/LOGOTIPORESTAURANTE.webp" alt="" class="header-logo-img" width="48" height="48"><span class="header-logo-text">La Buena Mesa</span></a>
             <nav class="main-nav" aria-label="Navegación principal">
                 <ul>
                     <li><a href="index.html">Inicio</a></li>
@@ -49,7 +50,7 @@
                     ¡Pedido Confirmado con Éxito!
                 </h1>
                 <p style="color: var(--clr-text); font-size: 1rem; max-width: 550px; margin: 0 auto 15px;">
-                    Muchas gracias por tu preferencia. Tu orden fue recibida por <strong>La Buena Mesa</strong> y está pendiente de preparación.
+                    Muchas gracias por tu preferencia. Tu orden fue recibida por <strong>La Buena Mesa</strong>.
                 </p>
                 
                 <!-- Número de Orden Único Generado -->
@@ -73,10 +74,6 @@
                     <div class="tracker-label">En Cocina</div>
                 </div>
                 <div class="tracker-step">
-                    <div class="tracker-dot">&#128666;</div>
-                    <div class="tracker-label">En Camino</div>
-                </div>
-                <div class="tracker-step">
                     <div class="tracker-dot">&#127969;</div>
                     <div class="tracker-label">Entregado</div>
                 </div>
@@ -87,12 +84,15 @@
                  ================================================================== -->
             <section class="confirmation-details-grid" aria-label="Información de entrega">
                 <div>
-                    <h3 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--clr-secondary); margin-bottom: 5px;">
-                        &#128336; ESTADO DEL PEDIDO
-                    </h3>
-                    <p style="font-size: 1.15rem; font-weight: 700; color: var(--clr-dark);" id="estimated-time">
-                        Pendiente de preparación
-                    </p>
+                    <div class="order-status">
+                        <h3 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--clr-secondary); margin-bottom: 5px;">
+                            &#128336; ESTADO DEL PEDIDO
+                        </h3>
+                        <p style="font-size: 1.15rem; font-weight: 700; color: var(--clr-dark);" id="estimated-time">
+                            Pendiente de preparación
+                        </p>
+                    </div>
+                    <p class="delivery-estimate" id="order-estimate">Tiempo estimado: cargando…</p>
                     
                     <h3 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--clr-secondary); margin-top: 15px; margin-bottom: 5px;">
                         &#128100; CLIENTE
@@ -135,8 +135,16 @@
                         <span>IVA Desglosado (12%):</span>
                         <span id="order-tax">Q0.00</span>
                     </div>
+                    <div class="summary-row" style="margin-bottom: 8px;">
+                        <span>Envío:</span>
+                        <span id="order-shipping">Q0.00</span>
+                    </div>
+                    <div class="summary-row" style="margin-bottom: 8px;">
+                        <span>Método de pago:</span>
+                        <span id="order-payment-method">Cargando…</span>
+                    </div>
                     <div class="summary-row total" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #ddd; font-size: 1.25rem; font-weight: 700;">
-                        <span>Total de Productos:</span>
+                        <span>Total del Pedido:</span>
                         <span id="order-total" style="color: var(--clr-secondary);">Q0.00</span>
                     </div>
                 </div>
