@@ -286,11 +286,11 @@ ul {
     background-color: rgba(0,0,0,0.5);
 }
 
-/* Imágenes placeholder para banners de categorías */
-.bg-entradas { background-image: url('https://images.unsplash.com/photo-1541544741938-0af808871cc0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); }
-.bg-principales { background-image: url('https://images.unsplash.com/photo-1544025162-8315db811104?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); }
-.bg-postres { background-image: url('https://images.unsplash.com/photo-1551024506-0bccd828d307?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); }
-.bg-bebidas { background-image: url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); }
+/* Imágenes locales para los banners de categorías */
+.bg-entradas { background-image: url('../img/bruschettas.webp'); }
+.bg-principales { background-image: url('../img/churrasco.webp'); }
+.bg-postres { background-image: url('../img/brownies.webp'); }
+.bg-bebidas { background-image: url('../img/horchata.webp'); }
 
 .category-title {
     font-family: var(--font-heading);

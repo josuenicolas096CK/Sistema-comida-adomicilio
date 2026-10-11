@@ -179,6 +179,7 @@ async function loadProducts() {
         const response = await requestApi('/productos');
         if (!response.ok) throw new Error();
         products = await response.json();
+        if (!Array.isArray(products)) throw new Error('La API no devolvió una lista de productos.');
         const previousCount = cart.length;
         cart = cart.flatMap(item => {
             const current = products.find(product => product.id === item.id);
@@ -188,6 +189,7 @@ async function loadProducts() {
         saveCart();
         renderPayment();
         renderProducts();
+        if (!products.length) showMessage('La conexión funciona, pero la tabla productos está vacía. Carga el catálogo con database/seed.sql.');
     } catch {
         showMessage('No se pudo cargar el menú. Comprueba que el servidor y la base de datos estén activos.');
         if ($('btn-confirm-order')) $('btn-confirm-order').disabled = true;
