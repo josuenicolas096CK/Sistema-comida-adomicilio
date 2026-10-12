@@ -30,11 +30,11 @@
         <section class="tracking-card" aria-labelledby="tracking-title">
             <span class="section-label">— TU PEDIDO</span>
             <h1 class="section-title" id="tracking-title">Consulta el estado de tu orden</h1>
-            <p class="section-desc">Escribe el número que aparece en tu comprobante, por ejemplo <strong>#LBM-123</strong>.</p>
+            <p class="section-desc">Escribe el código que aparece en tu comprobante. Aceptamos <strong>LBM-123</strong>, <strong>lbm123</strong> o solo <strong>123</strong>.</p>
             <form id="tracking-form" class="tracking-form">
                 <div class="form-group">
-                    <label for="tracking-number">Número de orden</label>
-                    <input id="tracking-number" name="pedido" type="text" inputmode="numeric" autocomplete="off" placeholder="#LBM-123" required>
+                    <label for="tracking-number">Código de rastreo</label>
+                    <input id="tracking-number" name="pedido" type="text" autocapitalize="off" autocomplete="off" placeholder="LBM-123" required>
                 </div>
                 <button type="submit" class="btn btn-primary" id="tracking-submit">Consultar estado</button>
             </form>

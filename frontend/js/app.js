@@ -353,7 +353,7 @@ function initPayment() {
     });
 }
 function renderConfirmation(order) {
-    setText('order-number', `#LBM-${order.pedido_id}`);
+    setText('order-number', order.codigo_rastreo || `LBM-${order.pedido_id}`);
     const statusNames = { pendiente: 'Pendiente de preparación', en_preparacion: 'En preparación', entregado: 'Entregado' };
     setText('estimated-time', statusNames[order.estado] || 'Estado no disponible');
     setText('order-estimate', order.estimacion_min_minutos && order.estimacion_max_minutos

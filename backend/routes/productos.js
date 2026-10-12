@@ -14,7 +14,7 @@ async function productSelect() {
 
 async function readOrder(connection, id, token) {
     const [orders] = await connection.query(
-        `SELECT p.id, p.fecha, p.estado, p.subtotal, p.costo_envio, p.total, p.metodo_pago,
+        `SELECT p.id, p.codigo_rastreo, p.fecha, p.estado, p.subtotal, p.costo_envio, p.total, p.metodo_pago,
                 e.nombre, e.correo, e.telefono, e.direccion, e.zona, e.ciudad, e.codigo_postal
          FROM pedidos p JOIN pedido_entrega e ON e.pedido_id = p.id
          WHERE p.id = ? AND p.consulta_token = ?`,
@@ -28,6 +28,7 @@ async function readOrder(connection, id, token) {
     const saved = orders[0];
     return {
         pedido_id: saved.id,
+        codigo_rastreo: saved.codigo_rastreo,
         consulta_token: token,
         fecha: saved.fecha,
         estado: saved.estado,
@@ -96,13 +97,17 @@ router.get('/pedidos/:id', async (req, res) => {
 });
 
 // Consulta pública: solo muestra el estado, sin datos personales ni artículos.
-router.get('/seguimiento/:id', async (req, res) => {
-    const id = Number(req.params.id);
-    if (!Number.isSafeInteger(id) || id < 1) return res.status(400).json({ error: 'Número de pedido inválido.' });
+router.get('/seguimiento/:codigo', async (req, res) => {
+    const normalized = req.params.codigo.replace(/\s/g, '');
+    const match = /^#?(?:LBM-?)?([1-9]\d*)$/i.exec(normalized);
+    if (!match || !Number.isSafeInteger(Number(match[1]))) {
+        return res.status(400).json({ error: 'Código de rastreo inválido.' });
+    }
+    const codigo = `LBM-${Number(match[1])}`;
     try {
-        const [rows] = await pool.query('SELECT id, estado FROM pedidos WHERE id = ?', [id]);
-        if (!rows.length) return res.status(404).json({ error: 'No encontramos ese número de pedido.' });
-        res.json({ pedido_id: rows[0].id, estado: rows[0].estado });
+        const [rows] = await pool.query('SELECT id, codigo_rastreo, estado FROM pedidos WHERE codigo_rastreo = ?', [codigo]);
+        if (!rows.length) return res.status(404).json({ error: 'No encontramos ese código de rastreo.' });
+        res.json({ pedido_id: rows[0].id, codigo_rastreo: rows[0].codigo_rastreo, estado: rows[0].estado });
     } catch (error) {
         console.error('Error al consultar seguimiento:', error);
         res.status(500).json({ error: 'No se pudo consultar el estado del pedido.' });
@@ -175,6 +180,7 @@ router.post('/pedidos', async (req, res) => {
             'INSERT INTO pedidos (usuario_id, subtotal, costo_envio, total, estado, metodo_pago, consulta_token) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [usuarioId, subtotal, costoEnvio, total, 'pendiente', metodoPago, consultaToken]
         );
+        await connection.query('UPDATE pedidos SET codigo_rastreo = ? WHERE id = ?', [`LBM-${order.insertId}`, order.insertId]);
         await connection.query(
             'INSERT INTO pedido_entrega (pedido_id, nombre, correo, telefono, direccion, zona, ciudad, codigo_postal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
             [order.insertId, nombre, correo, telefono, calle, zona, ciudad, codigoPostal || null]

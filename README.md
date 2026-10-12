@@ -6,7 +6,7 @@ Sistema de pedidos de comida a domicilio con frontend HTML/CSS/JavaScript, Expre
 
 1. Instala Node.js y MySQL. En DBeaver, crea una base nueva ejecutando `database/schema.sql`; después ejecuta `database/seed.sql` para cargar los productos. No vuelvas a ejecutar `schema.sql` en una base que ya tiene esas tablas. `seed.sql` omite productos con el mismo nombre o ruta de imagen.
 2. Copia `backend/.env.example` a `backend/.env` y completa las credenciales de MySQL. `DB_PORT=3306` es el puerto de MySQL; `PORT=3002` es el puerto del servidor web.
-3. Si usas una base anterior sin las columnas nuevas de `pedidos`, agrega `subtotal DECIMAL(10,2) NULL`, `costo_envio DECIMAL(10,2) NOT NULL DEFAULT 0`, `metodo_pago ENUM('efectivo','transferencia') NULL` y `consulta_token CHAR(64) NULL UNIQUE`. La base de este proyecto ya fue actualizada.
+3. Si usas una base anterior sin las columnas nuevas de `pedidos`, agrega `subtotal DECIMAL(10,2) NULL`, `costo_envio DECIMAL(10,2) NOT NULL DEFAULT 0`, `metodo_pago ENUM('efectivo','transferencia') NULL`, `consulta_token CHAR(64) NULL UNIQUE` y `codigo_rastreo VARCHAR(32) NULL UNIQUE`. Para los pedidos existentes, asigna `codigo_rastreo = CONCAT('LBM-', id)`. La base de este proyecto ya fue actualizada.
 4. En `backend/`, ejecuta `npm install` y `npm start`.
 5. Abre `http://127.0.0.1:3002`.
 
@@ -21,7 +21,7 @@ Para comprobar el guardado completo contra tu MySQL local, ejecuta `npm run test
 - `GET /api/configuracion`: costo de envío, métodos de pago y rango estimado de entrega.
 - `POST /api/pedidos`: guarda el cliente en `usuarios`, el total y estado en `pedidos`, la dirección y contacto de esa compra en `pedido_entrega`, los artículos en `detalles_pedido` y una fila de consulta en `resumen_pedidos`. Devuelve el comprobante leído de la base tras guardar.
 - `GET /api/pedidos/:id`: devuelve un pedido desde MySQL. Requiere `Authorization: Bearer <consulta_token>`; la clave se entrega al crear el pedido.
-- `GET /api/seguimiento/:id`: devuelve únicamente el número y el estado de un pedido; no expone datos personales. Alimenta `seguimiento.html`, donde se puede escribir el número de orden.
+- `GET /api/seguimiento/:codigo`: devuelve únicamente el código y el estado de un pedido; no expone datos personales. Acepta `LBM-123`, `lbm123` o `123`.
 
 Los productos nuevos se agregan a la tabla `productos`. Las imágenes de los platillos están en `frontend/img`; guarda una ruta como `/img/jocon.jpeg` en `imagen_url`. Los campos `categoria` y `descripcion` alimentan los filtros y tarjetas del sitio. Para cargar el catálogo actual, ejecuta `database/seed.sql`.
 

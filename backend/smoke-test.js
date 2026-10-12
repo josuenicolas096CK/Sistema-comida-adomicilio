@@ -43,6 +43,7 @@ require('./server');
             assert.equal(Number(created.total), Number(product.precio) * 2 + config.costo_envio);
             assert.equal(created.metodo_pago, includeEmail ? 'efectivo' : 'transferencia');
             assert.match(created.consulta_token, /^[a-f0-9]{64}$/);
+            assert.equal(created.codigo_rastreo, `LBM-${created.pedido_id}`);
             assert.equal(created.estimacion_min_minutos, config.estimacion_min_minutos);
             assert.equal(created.items.length, 1);
             assert.equal(created.items[0].cantidad, 2);
@@ -58,9 +59,16 @@ require('./server');
             });
             assert.equal(lookup.status, 200);
             assert.deepEqual(await lookup.json(), created);
-            const tracking = await fetch(`http://127.0.0.1:${port}/api/seguimiento/${created.pedido_id}`);
-            assert.equal(tracking.status, 200);
-            assert.deepEqual(await tracking.json(), { pedido_id: created.pedido_id, estado: 'pendiente' });
+            for (const code of [created.codigo_rastreo, created.codigo_rastreo.toLowerCase(),
+                `lbm${created.pedido_id}`, String(created.pedido_id)]) {
+                const tracking = await fetch(`http://127.0.0.1:${port}/api/seguimiento/${code}`);
+                assert.equal(tracking.status, 200);
+                assert.deepEqual(await tracking.json(), {
+                    pedido_id: created.pedido_id,
+                    codigo_rastreo: created.codigo_rastreo,
+                    estado: 'pendiente'
+                });
+            }
             return created;
         }
         await createOrder('Dirección de prueba A');
@@ -70,7 +78,7 @@ require('./server');
         guestUserId = guestUser.usuario_id;
         assert.equal(guestOrder.cliente.correo, '');
         const [stored] = await pool.query(
-            'SELECT p.id, p.usuario_id, p.total, p.estado, e.correo, e.direccion, e.zona, e.ciudad, d.cantidad FROM pedidos p JOIN pedido_entrega e ON e.pedido_id = p.id JOIN detalles_pedido d ON d.pedido_id = p.id WHERE p.id IN (?) ORDER BY p.id',
+            'SELECT p.id, p.codigo_rastreo, p.usuario_id, p.total, p.estado, e.correo, e.direccion, e.zona, e.ciudad, d.cantidad FROM pedidos p JOIN pedido_entrega e ON e.pedido_id = p.id JOIN detalles_pedido d ON d.pedido_id = p.id WHERE p.id IN (?) ORDER BY p.id',
             [orderIds]
         );
         assert.equal(stored.length, 3);
@@ -80,6 +88,7 @@ require('./server');
         assert.equal(stored[2].correo, '');
         assert.equal(stored[2].usuario_id, guestUserId);
         assert.ok(stored.every(row => row.estado === 'pendiente' && row.cantidad === 2));
+        assert.ok(stored.every(row => row.codigo_rastreo === `LBM-${row.id}`));
         const [summaries] = await pool.query(
             'SELECT pedido_id, usuario_id, nombre_cliente, correo, direccion, total, cantidad_articulos FROM resumen_pedidos WHERE pedido_id IN (?) ORDER BY pedido_id',
             [orderIds]

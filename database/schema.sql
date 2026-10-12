@@ -38,6 +38,7 @@ CREATE TABLE pedidos (
     estado ENUM('pendiente', 'en_preparacion', 'entregado') NOT NULL DEFAULT 'pendiente',
     metodo_pago ENUM('efectivo', 'transferencia'),
     consulta_token CHAR(64) UNIQUE,
+    codigo_rastreo VARCHAR(32) UNIQUE,
     CONSTRAINT fk_pedidos_usuario
         FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
         ON DELETE CASCADE

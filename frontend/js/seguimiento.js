@@ -14,9 +14,9 @@ trackingForm.addEventListener('submit', async event => {
     event.preventDefault();
     trackingResult.hidden = true;
     trackingMessage.hidden = true;
-    const match = /^(?:#?LBM-)?([1-9]\d*)$/i.exec(trackingNumber.value.trim());
+    const match = /^#?(?:LBM-?)?([1-9]\d*)$/i.exec(trackingNumber.value.replace(/\s/g, ''));
     if (!match || !Number.isSafeInteger(Number(match[1]))) {
-        trackingMessage.textContent = 'Escribe un número válido, por ejemplo #LBM-123 o 123.';
+        trackingMessage.textContent = 'Escribe un código válido, por ejemplo LBM-123, lbm123 o 123.';
         trackingMessage.hidden = false;
         return;
     }
@@ -24,12 +24,12 @@ trackingForm.addEventListener('submit', async event => {
     trackingButton.disabled = true;
     trackingButton.textContent = 'Consultando…';
     try {
-        const response = await fetch(`${trackingApi}/seguimiento/${match[1]}`);
+        const response = await fetch(`${trackingApi}/seguimiento/${encodeURIComponent(`LBM-${Number(match[1])}`)}`);
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'No se pudo consultar el pedido.');
         const state = trackingStates[data.estado];
         if (!state) throw new Error('El estado de esta orden no está disponible.');
-        document.getElementById('tracking-order').textContent = `#LBM-${data.pedido_id}`;
+        document.getElementById('tracking-order').textContent = data.codigo_rastreo;
         document.getElementById('tracking-status').textContent = state.label;
         trackingResult.querySelectorAll('.tracker-step').forEach((step, index) => {
             step.classList.toggle('completed', index < state.step);
