@@ -1,4 +1,4 @@
-const trackingApi = location.port === '3002' ? '/api' : 'http://127.0.0.1:3002/api';
+const trackingApi = location.port === '3002' ? '/api' : `http://${location.hostname || '127.0.0.1'}:3002/api`;
 const trackingForm = document.getElementById('tracking-form');
 const trackingNumber = document.getElementById('tracking-number');
 const trackingMessage = document.getElementById('tracking-message');
@@ -25,7 +25,8 @@ trackingForm.addEventListener('submit', async event => {
     trackingButton.textContent = 'Consultando…';
     try {
         const response = await fetch(`${trackingApi}/seguimiento/${encodeURIComponent(`LBM-${Number(match[1])}`)}`);
-        const data = await response.json();
+        const data = response.headers.get('content-type')?.includes('application/json') ? await response.json() : null;
+        if (!data) throw new Error('La ruta de seguimiento no está disponible. Reinicia el servidor y vuelve a intentar.');
         if (!response.ok) throw new Error(data.error || 'No se pudo consultar el pedido.');
         const state = trackingStates[data.estado];
         if (!state) throw new Error('El estado de esta orden no está disponible.');
@@ -40,7 +41,9 @@ trackingForm.addEventListener('submit', async event => {
         trackingResult.querySelector('.tracker-progress-bar').style.width = `${state.step * 33.3}%`;
         trackingResult.hidden = false;
     } catch (error) {
-        trackingMessage.textContent = error.message || 'No se pudo conectar con el servidor. Inténtalo de nuevo.';
+        trackingMessage.textContent = error instanceof TypeError
+            ? 'No se pudo conectar con el servidor. Comprueba que esté activo en el puerto 3002.'
+            : error.message || 'No se pudo consultar el pedido. Inténtalo de nuevo.';
         trackingMessage.hidden = false;
     } finally {
         trackingButton.disabled = false;
