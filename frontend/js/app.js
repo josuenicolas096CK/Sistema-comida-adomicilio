@@ -2,6 +2,7 @@ const API = location.port === '3002' ? '/api' : 'http://127.0.0.1:3002/api';
 const CART_KEY = 'lbm_cart';
 const DELIVERY_KEY = 'lbm_delivery';
 const LAST_ORDER_KEY = 'lbm_last_order';
+const ORDER_REFERENCE_KEY = 'lbm_order_reference';
 const $ = id => document.getElementById(id);
 const money = value => `Q${Number(value || 0).toFixed(2)}`;
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -331,6 +332,9 @@ function initPayment() {
             if (!response.ok) throw new Error(result.error || 'No se pudo guardar el pedido.');
             savedOrderId = result.pedido_id;
             sessionStorage.setItem(LAST_ORDER_KEY, JSON.stringify(result));
+            try {
+                localStorage.setItem(ORDER_REFERENCE_KEY, JSON.stringify({ pedido_id: result.pedido_id, consulta_token: result.consulta_token }));
+            } catch { /* El comprobante sigue disponible durante esta sesión. */ }
             sessionStorage.removeItem(DELIVERY_KEY);
             localStorage.removeItem(DELIVERY_KEY);
             cart = [];
@@ -378,22 +382,26 @@ function renderConfirmation(order) {
 async function initConfirmation() {
     if (!$('confirmation-details')) return;
     const order = readSessionStorage(LAST_ORDER_KEY, null);
-    if (!order?.pedido_id || !order?.cliente || !Array.isArray(order.items)) {
-        $('confirmation-details').innerHTML = '<p class="form-message">No hay un pedido reciente para mostrar. <a href="menu.html">Ir al menú</a></p>';
+    const reference = order?.consulta_token ? order : readStorage(ORDER_REFERENCE_KEY, null);
+    if (!reference?.pedido_id || !/^[a-f0-9]{64}$/i.test(reference.consulta_token || '')) {
+        $('confirmation-details').innerHTML = '<p class="form-message">No hay un pedido reciente guardado en este navegador. <a href="menu.html">Ir al menú</a></p>';
         return;
     }
-    renderConfirmation(order);
-    if (!order.consulta_token) return;
+    if (order?.cliente && Array.isArray(order.items)) renderConfirmation(order);
     try {
-        const response = await requestApi(`/pedidos/${encodeURIComponent(order.pedido_id)}`, {
-            headers: { Authorization: `Bearer ${order.consulta_token}` }
+        const response = await requestApi(`/pedidos/${encodeURIComponent(reference.pedido_id)}`, {
+            headers: { Authorization: `Bearer ${reference.consulta_token}` }
         });
         if (!response.ok) throw new Error();
         const current = await response.json();
         sessionStorage.setItem(LAST_ORDER_KEY, JSON.stringify(current));
         renderConfirmation(current);
     } catch {
-        showMessage('El comprobante se muestra con los últimos datos guardados en este navegador; no se pudo actualizar desde el servidor.');
+        if (order?.cliente && Array.isArray(order.items)) {
+            showMessage('El comprobante se muestra con los últimos datos guardados en este navegador; no se pudo actualizar desde el servidor.');
+        } else {
+            $('confirmation-details').innerHTML = '<p class="form-message">No se pudo consultar tu pedido. Comprueba que el servidor esté activo y vuelve a cargar esta página.</p>';
+        }
     }
 }
 document.addEventListener('click', event => {

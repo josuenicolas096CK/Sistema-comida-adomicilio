@@ -20,11 +20,11 @@ Para comprobar el guardado completo contra tu MySQL local, ejecuta `npm run test
 - `GET /api/productos/:id`: detalle de un producto.
 - `GET /api/configuracion`: costo de envío, métodos de pago y rango estimado de entrega.
 - `POST /api/pedidos`: guarda el cliente en `usuarios`, el total y estado en `pedidos`, la dirección y contacto de esa compra en `pedido_entrega`, los artículos en `detalles_pedido` y una fila de consulta en `resumen_pedidos`. Devuelve el comprobante leído de la base tras guardar.
-- `GET /api/pedidos/:id`: devuelve un pedido desde MySQL. Requiere `Authorization: Bearer <consulta_token>`; la clave se entrega al crear el pedido y se conserva durante la sesión del navegador.
+- `GET /api/pedidos/:id`: devuelve un pedido desde MySQL. Requiere `Authorization: Bearer <consulta_token>`; la clave se entrega al crear el pedido.
 
 Los productos nuevos se agregan a la tabla `productos`. Las imágenes de los platillos están en `frontend/img`; guarda una ruta como `/img/jocon.jpeg` en `imagen_url`. Los campos `categoria` y `descripcion` alimentan los filtros y tarjetas del sitio. Para cargar el catálogo actual, ejecuta `database/seed.sql`.
 
-Cada pedido conserva sus propios datos de entrega aunque el mismo cliente vuelva a comprar. El servidor calcula el subtotal y añade Q15 de envío; el IVA se muestra como parte incluida en el subtotal. En pago se puede elegir efectivo contra entrega o transferencia, que se coordina con el restaurante. El tiempo estimado inicial es de 45–60 minutos. Edita estos valores en `backend/config/checkout.js`. El comprobante se conserva durante la sesión del navegador y actualiza el estado consultando MySQL.
+Cada pedido conserva sus propios datos de entrega aunque el mismo cliente vuelva a comprar. El servidor calcula el subtotal y añade Q15 de envío; el IVA se muestra como parte incluida en el subtotal. En pago se puede elegir efectivo contra entrega o transferencia, que se coordina con el restaurante. El tiempo estimado inicial es de 45–60 minutos. Edita estos valores en `backend/config/checkout.js`. Desde el inicio, «Seguir mi pedido» abre el comprobante del último pedido hecho en ese navegador y consulta su estado en MySQL. El navegador conserva solo el número y la clave de consulta entre sesiones; para ver cambios en el estado, recarga la página. Al borrar los datos del sitio o usar otro dispositivo, se pierde ese acceso local.
 
 El correo es opcional en checkout. Como `usuarios.correo` exige un valor único, los pedidos sin correo reciben una referencia interna en esa tabla; `pedido_entrega.correo` queda vacío y el comprobante no muestra un correo inventado.
 
