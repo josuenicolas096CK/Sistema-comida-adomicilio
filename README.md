@@ -5,18 +5,18 @@ Sistema de pedidos de comida a domicilio con frontend HTML/CSS/JavaScript, Expre
 ## Requisitos previos
 
 - Node.js 18 o superior y npm (comprobado con Node.js 18.19.1).
-- MySQL 8 o una versión de MariaDB compatible con InnoDB, con permiso para crear la base `pedidos_db`.
+- MySQL 8 o una versión de MariaDB compatible con InnoDB (por ejemplo, mediante XAMPP), con permiso para crear la base `pedidos_db`.
 - No se necesita Live Server: Express sirve el frontend y la API en el mismo puerto.
 
 ## Iniciar
 
-1. En DBeaver, ejecuta `schema.sql` desde la raíz del repositorio. Ese único archivo crea `pedidos_db`, sus tablas y los 30 productos iniciales. Ejecútalo solo en una base nueva; no lo vuelvas a ejecutar sobre la base existente.
+1. Inicia MySQL/MariaDB. En phpMyAdmin de XAMPP, abre la pestaña **Importar** desde la página principal del servidor y selecciona `schema.sql` de la raíz del repositorio. También puedes ejecutarlo en DBeaver. Ese único archivo crea `pedidos_db`, sus tablas y los 30 productos iniciales. Ejecútalo solo en una base nueva; no lo vuelvas a ejecutar sobre la base existente.
 2. Copia `backend/.env.example` a `backend/.env` y completa las credenciales de MySQL. `DB_PORT=3306` es el puerto de MySQL; `PORT=3002` es el puerto del servidor web.
 3. Si usas una base anterior sin las columnas nuevas de `pedidos`, agrega `subtotal DECIMAL(10,2) NULL`, `costo_envio DECIMAL(10,2) NOT NULL DEFAULT 0`, `metodo_pago ENUM('efectivo','transferencia') NULL`, `consulta_token CHAR(64) NULL UNIQUE` y `codigo_rastreo VARCHAR(32) NULL UNIQUE`. Para los pedidos existentes, asigna `codigo_rastreo = CONCAT('LBM-', id)`. La base de este proyecto ya fue actualizada.
 4. En `backend/`, ejecuta `npm install` y `npm start`.
 5. Abre `http://127.0.0.1:3002`.
 
-El servidor entrega el sitio, las imágenes locales y la API. Abre siempre la dirección del servidor Node para la demostración; Live Server no es necesario.
+XAMPP se usa para la base de datos y phpMyAdmin; Node.js ejecuta el backend. El servidor Node entrega el sitio, las imágenes locales y la API en el puerto `3002`. Abre esa dirección para la demostración; no necesitas copiar el proyecto a `htdocs` ni usar Live Server.
 
 Para comprobar el guardado completo contra tu MySQL local, ejecuta `npm run test:smoke` dentro de `backend/`. La prueba crea tres pedidos temporales, comprueba costos, pagos y consultas protegidas, y elimina esos pedidos al terminar.
 
