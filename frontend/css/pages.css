@@ -1221,3 +1221,86 @@
         margin: 0 !important;
     }
 }
+
+/* Consulta de estado por número de orden */
+.page-tracking {
+    background: var(--clr-bg-alt);
+}
+
+.tracking-page {
+    min-height: 70vh;
+    padding-top: 64px;
+    padding-bottom: 80px;
+}
+
+.tracking-card {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: clamp(24px, 5vw, 48px);
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.07);
+}
+
+.tracking-card .section-title {
+    margin: 10px 0 14px;
+}
+
+.tracking-form {
+    display: flex;
+    align-items: end;
+    gap: 16px;
+    margin-top: 30px;
+}
+
+.tracking-form .form-group {
+    flex: 1;
+    margin: 0;
+}
+
+.tracking-form .btn {
+    flex: none;
+}
+
+.tracking-message {
+    margin-top: 18px;
+    color: var(--clr-secondary);
+    font-weight: 700;
+}
+
+.tracking-result {
+    margin-top: 28px;
+    padding: 24px;
+    border: 1px solid #eee5dc;
+    border-radius: 12px;
+    background: #fdfbf7;
+}
+
+.tracking-result[hidden], .tracking-message[hidden] {
+    display: none;
+}
+
+.tracking-status {
+    margin-top: 10px;
+    font-family: var(--font-heading);
+    color: var(--clr-secondary);
+}
+
+.tracking-hint {
+    color: var(--clr-text-light);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+    .tracking-form {
+        display: block;
+    }
+
+    .tracking-form .form-group {
+        margin-bottom: 15px;
+    }
+
+    .tracking-form .btn {
+        width: 100%;
+    }
+}

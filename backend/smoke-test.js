@@ -58,6 +58,9 @@ require('./server');
             });
             assert.equal(lookup.status, 200);
             assert.deepEqual(await lookup.json(), created);
+            const tracking = await fetch(`http://127.0.0.1:${port}/api/seguimiento/${created.pedido_id}`);
+            assert.equal(tracking.status, 200);
+            assert.deepEqual(await tracking.json(), { pedido_id: created.pedido_id, estado: 'pendiente' });
             return created;
         }
         await createOrder('Dirección de prueba A');
@@ -95,7 +98,13 @@ require('./server');
             headers: { authorization: `Bearer ${guestOrder.consulta_token}` }
         });
         assert.equal((await updated.json()).estado, 'en_preparacion');
-        console.log('Catálogo, costos, pagos y consulta segura de tres pedidos: correctos.');
+        const updatedTracking = await fetch(`http://127.0.0.1:${port}/api/seguimiento/${guestOrder.pedido_id}`);
+        assert.equal((await updatedTracking.json()).estado, 'en_preparacion');
+        const invalidTracking = await fetch(`http://127.0.0.1:${port}/api/seguimiento/abc`);
+        assert.equal(invalidTracking.status, 400);
+        const missingTracking = await fetch(`http://127.0.0.1:${port}/api/seguimiento/2147483647`);
+        assert.equal(missingTracking.status, 404);
+        console.log('Catálogo, costos, pagos y seguimiento de tres pedidos: correctos.');
     } finally {
         if (orderIds.length) await pool.query('DELETE FROM pedidos WHERE id IN (?)', [orderIds]);
         if (guestUserId) await pool.query('DELETE FROM usuarios WHERE id = ?', [guestUserId]);

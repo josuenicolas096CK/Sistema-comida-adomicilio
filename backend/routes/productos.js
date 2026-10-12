@@ -95,6 +95,20 @@ router.get('/pedidos/:id', async (req, res) => {
     }
 });
 
+// Consulta pública: solo muestra el estado, sin datos personales ni artículos.
+router.get('/seguimiento/:id', async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isSafeInteger(id) || id < 1) return res.status(400).json({ error: 'Número de pedido inválido.' });
+    try {
+        const [rows] = await pool.query('SELECT id, estado FROM pedidos WHERE id = ?', [id]);
+        if (!rows.length) return res.status(404).json({ error: 'No encontramos ese número de pedido.' });
+        res.json({ pedido_id: rows[0].id, estado: rows[0].estado });
+    } catch (error) {
+        console.error('Error al consultar seguimiento:', error);
+        res.status(500).json({ error: 'No se pudo consultar el estado del pedido.' });
+    }
+});
+
 router.post('/pedidos', async (req, res) => {
     const { cliente: rawClient, entrega: rawDelivery, items, metodo_pago: metodoPago } = req.body || {};
     const cliente = rawClient && typeof rawClient === 'object' && !Array.isArray(rawClient) ? rawClient : {};

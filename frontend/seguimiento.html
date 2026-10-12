@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/webp" href="img/LOGOTIPORESTAURANTE.webp">
+    <title>Seguimiento de pedido - La Buena Mesa</title>
+    <meta name="description" content="Consulta el estado de tu pedido de La Buena Mesa con el número de orden.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body class="page-tracking">
+    <header class="header-interior">
+        <div class="container">
+            <a href="index.html" class="header-logo" aria-label="Ir al inicio"><img src="img/LOGOTIPORESTAURANTE.webp" alt="" class="header-logo-img" width="48" height="48"><span class="header-logo-text">La Buena Mesa</span></a>
+            <nav class="main-nav" aria-label="Navegación principal">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="menu.html">Menú</a></li>
+                    <li><a href="seguimiento.html" class="active" aria-current="page">Seguir mi pedido</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="tracking-page container">
+        <section class="tracking-card" aria-labelledby="tracking-title">
+            <span class="section-label">— TU PEDIDO</span>
+            <h1 class="section-title" id="tracking-title">Consulta el estado de tu orden</h1>
+            <p class="section-desc">Escribe el número que aparece en tu comprobante, por ejemplo <strong>#LBM-123</strong>.</p>
+            <form id="tracking-form" class="tracking-form">
+                <div class="form-group">
+                    <label for="tracking-number">Número de orden</label>
+                    <input id="tracking-number" name="pedido" type="text" inputmode="numeric" autocomplete="off" placeholder="#LBM-123" required>
+                </div>
+                <button type="submit" class="btn btn-primary" id="tracking-submit">Consultar estado</button>
+            </form>
+            <p id="tracking-message" class="tracking-message" role="status" aria-live="polite" hidden></p>
+            <section id="tracking-result" class="tracking-result" aria-live="polite" hidden>
+                <p class="section-label">ORDEN <strong id="tracking-order"></strong></p>
+                <h2 id="tracking-status" class="tracking-status"></h2>
+                <div class="order-tracker" aria-label="Progreso del pedido">
+                    <div class="tracker-progress-bar" aria-hidden="true"></div>
+                    <div class="tracker-step"><div class="tracker-dot" aria-hidden="true">✓</div><div class="tracker-label">Recibido</div></div>
+                    <div class="tracker-step"><div class="tracker-dot" aria-hidden="true">🍳</div><div class="tracker-label">En cocina</div></div>
+                    <div class="tracker-step"><div class="tracker-dot" aria-hidden="true">⌂</div><div class="tracker-label">Entregado</div></div>
+                </div>
+                <p class="tracking-hint">El estado se actualiza cuando el restaurante registra un cambio. Usa «Consultar estado» de nuevo para ver la información más reciente.</p>
+            </section>
+        </section>
+    </main>
+
+    <footer class="site-footer"><div class="container"><div class="footer-bottom" style="justify-content: center;"><p>&copy; 2026 La Buena Mesa. Todos los derechos reservados.</p></div></div></footer>
+    <script src="js/seguimiento.js"></script>
+</body>
+</html>
