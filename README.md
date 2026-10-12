@@ -2,15 +2,21 @@
 
 Sistema de pedidos de comida a domicilio con frontend HTML/CSS/JavaScript, Express y MySQL.
 
+## Requisitos previos
+
+- Node.js 18 o superior y npm (comprobado con Node.js 18.19.1).
+- MySQL 8 o una versión de MariaDB compatible con InnoDB, con permiso para crear la base `pedidos_db`.
+- No se necesita Live Server: Express sirve el frontend y la API en el mismo puerto.
+
 ## Iniciar
 
-1. Instala Node.js y MySQL. En DBeaver, crea una base nueva ejecutando `database/schema.sql`; después ejecuta `database/seed.sql` para cargar los productos. No vuelvas a ejecutar `schema.sql` en una base que ya tiene esas tablas. `seed.sql` omite productos con el mismo nombre o ruta de imagen.
+1. En DBeaver, crea una base nueva ejecutando `schema.sql` desde la raíz del repositorio; después ejecuta `database/seed.sql` para cargar los productos. No vuelvas a ejecutar `schema.sql` en una base que ya tiene esas tablas. `seed.sql` omite productos con el mismo nombre o ruta de imagen.
 2. Copia `backend/.env.example` a `backend/.env` y completa las credenciales de MySQL. `DB_PORT=3306` es el puerto de MySQL; `PORT=3002` es el puerto del servidor web.
 3. Si usas una base anterior sin las columnas nuevas de `pedidos`, agrega `subtotal DECIMAL(10,2) NULL`, `costo_envio DECIMAL(10,2) NOT NULL DEFAULT 0`, `metodo_pago ENUM('efectivo','transferencia') NULL`, `consulta_token CHAR(64) NULL UNIQUE` y `codigo_rastreo VARCHAR(32) NULL UNIQUE`. Para los pedidos existentes, asigna `codigo_rastreo = CONCAT('LBM-', id)`. La base de este proyecto ya fue actualizada.
 4. En `backend/`, ejecuta `npm install` y `npm start`.
 5. Abre `http://127.0.0.1:3002`.
 
-El servidor entrega el sitio, las imágenes locales y la API. También puedes abrir el frontend con Live Server; en ese caso, la API seguirá en `http://127.0.0.1:3002`.
+El servidor entrega el sitio, las imágenes locales y la API. Abre siempre la dirección del servidor Node para la demostración; Live Server no es necesario.
 
 Para comprobar el guardado completo contra tu MySQL local, ejecuta `npm run test:smoke` dentro de `backend/`. La prueba crea tres pedidos temporales, comprueba costos, pagos y consultas protegidas, y elimina esos pedidos al terminar.
 
