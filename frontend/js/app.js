@@ -219,7 +219,7 @@ async function loadProducts() {
         saveCart();
         renderPayment();
         renderProducts();
-        if (!products.length) showMessage('La conexión funciona, pero la tabla productos está vacía. Carga el catálogo con database/seed.sql.');
+        if (!products.length) showMessage('La conexión funciona, pero la tabla productos está vacía. Agrega productos a tu base de datos; schema.sql carga el catálogo al crear una base nueva.');
     } catch {
         showMessage('No se pudo cargar el menú. Comprueba que el servidor y la base de datos estén activos.');
         if ($('btn-confirm-order')) $('btn-confirm-order').disabled = true;
