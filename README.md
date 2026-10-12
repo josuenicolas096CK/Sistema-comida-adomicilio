@@ -1,38 +1,122 @@
-# La Buena Mesa
+# La Buena Mesa — sistema de pedidos a domicilio
 
-Sistema de pedidos de comida a domicilio con frontend HTML/CSS/JavaScript, Express y MySQL.
+Aplicación con HTML, CSS y JavaScript; servidor Node.js/Express; base de datos MySQL o MariaDB. El servidor Node entrega tanto las páginas como la API. **No se necesita Live Server ni copiar el proyecto a `htdocs`.**
 
-## Requisitos previos
+## 1. Requisitos
 
-- Node.js 18 o superior y npm (comprobado con Node.js 18.19.1).
-- MySQL 8 o una versión de MariaDB compatible con InnoDB (por ejemplo, mediante XAMPP), con permiso para crear la base `pedidos_db`.
-- No se necesita Live Server: Express sirve el frontend y la API en el mismo puerto.
+- Node.js 18 o superior y npm. El proyecto se comprobó con Node.js 18.19.1.
+- XAMPP con MariaDB/MySQL y phpMyAdmin, o una instalación equivalente de MySQL 8 o MariaDB compatible con InnoDB.
+- Git para clonar el repositorio, o el código descargado desde el enlace de entrega.
 
-## Iniciar
+XAMPP administra la base de datos; **Node.js es necesario para ejecutar el backend**. Apache solo hace falta si se utiliza phpMyAdmin para importar o revisar la base.
 
-1. Inicia MySQL/MariaDB. En phpMyAdmin de XAMPP, abre la pestaña **Importar** desde la página principal del servidor y selecciona `schema.sql` de la raíz del repositorio. También puedes ejecutarlo en DBeaver. Ese único archivo crea `pedidos_db`, sus tablas y los 30 productos iniciales. Ejecútalo solo en una base nueva; no lo vuelvas a ejecutar sobre la base existente.
-2. Copia `backend/.env.example` a `backend/.env` y completa las credenciales de MySQL. `DB_PORT=3306` es el puerto de MySQL; `PORT=3002` es el puerto del servidor web.
-3. Si usas una base anterior sin las columnas nuevas de `pedidos`, agrega `subtotal DECIMAL(10,2) NULL`, `costo_envio DECIMAL(10,2) NOT NULL DEFAULT 0`, `metodo_pago ENUM('efectivo','transferencia') NULL`, `consulta_token CHAR(64) NULL UNIQUE` y `codigo_rastreo VARCHAR(32) NULL UNIQUE`. Para los pedidos existentes, asigna `codigo_rastreo = CONCAT('LBM-', id)`. La base de este proyecto ya fue actualizada.
-4. En `backend/`, ejecuta `npm install` y `npm start`.
-5. Abre `http://127.0.0.1:3002`.
+## 2. Obtener el proyecto
 
-XAMPP se usa para la base de datos y phpMyAdmin; Node.js ejecuta el backend. El servidor Node entrega el sitio, las imágenes locales y la API en el puerto `3002`. Abre esa dirección para la demostración; no necesitas copiar el proyecto a `htdocs` ni usar Live Server.
+Si el enlace de entrega corresponde a la rama `feature/avance`, se puede clonar así:
 
-Para comprobar el guardado completo contra tu MySQL local, ejecuta `npm run test:smoke` dentro de `backend/`. La prueba crea tres pedidos temporales, comprueba costos, pagos y consultas protegidas, y elimina esos pedidos al terminar.
+```bash
+git clone --branch feature/avance --single-branch https://github.com/josuenicolas096CK/Sistema-comida-adomicilio.git
+cd Sistema-comida-adomicilio
+```
 
-## API
+Todos los comandos siguientes parten de la raíz del proyecto, donde están `schema.sql` y este README.
 
-- `GET /api/productos`: catálogo desde MySQL.
-- `GET /api/productos/:id`: detalle de un producto.
-- `GET /api/configuracion`: costo de envío, métodos de pago y rango estimado de entrega.
-- `POST /api/pedidos`: guarda el cliente en `usuarios`, el total y estado en `pedidos`, la dirección y contacto de esa compra en `pedido_entrega`, los artículos en `detalles_pedido` y una fila de consulta en `resumen_pedidos`. Devuelve el comprobante leído de la base tras guardar.
-- `GET /api/pedidos/:id`: devuelve un pedido desde MySQL. Requiere `Authorization: Bearer <consulta_token>`; la clave se entrega al crear el pedido.
-- `GET /api/seguimiento/:codigo`: devuelve únicamente el código y el estado de un pedido; no expone datos personales. Acepta `LBM-123`, `lbm123` o `123`.
+## 3. Crear la base de datos con XAMPP
 
-Los productos iniciales ya están incluidos en `schema.sql`. Las imágenes de los platillos están en `frontend/img`; guarda una ruta como `/img/jocon.jpeg` en `imagen_url`. Los campos `categoria` y `descripcion` alimentan los filtros y tarjetas del sitio. Para agregar productos después, insértalos en la tabla `productos`.
+1. En el panel de XAMPP, inicia **Apache** y **MySQL** (puede aparecer como MariaDB).
+2. Abre `http://localhost/phpmyadmin`.
+3. En la página principal de phpMyAdmin, selecciona **Importar** y elige `schema.sql`, ubicado en la raíz del proyecto. Ejecuta la importación. No hace falta crear las tablas manualmente.
+4. Comprueba que exista `pedidos_db` con las tablas `usuarios`, `productos`, `pedidos`, `pedido_entrega`, `detalles_pedido` y `resumen_pedidos`. `productos` debe contener **30 platillos**.
 
-Cada pedido conserva sus propios datos de entrega aunque el mismo cliente vuelva a comprar. El servidor calcula el subtotal y añade Q15 de envío; el IVA se muestra como parte incluida en el subtotal. En pago se puede elegir efectivo contra entrega o transferencia, que se coordina con el restaurante. El tiempo estimado inicial es de 45–60 minutos. Edita estos valores en `backend/config/checkout.js`. Desde el inicio, «Seguir mi pedido» abre `seguimiento.html`; basta introducir el número de orden para consultar el estado, incluso desde otro dispositivo. El comprobante completo sigue protegido por una clave de consulta guardada en el navegador donde se hizo el pedido.
+`schema.sql` crea la base, las seis tablas y el catálogo inicial en un solo paso. **Úsalo para una instalación nueva; no lo ejecutes de nuevo sobre una base que ya contiene esas tablas o pedidos.** Si se prefiere DBeaver, se puede ejecutar el mismo archivo allí.
 
-El correo es opcional en checkout. Como `usuarios.correo` exige un valor único, los pedidos sin correo reciben una referencia interna en esa tabla; `pedido_entrega.correo` queda vacío y el comprobante no muestra un correo inventado.
+## 4. Configurar la conexión
 
-`resumen_pedidos` permite ver en DBeaver una fila por orden con cliente, contacto, dirección, fecha, cantidad de artículos y total. Los pedidos anteriores a `pedido_entrega` pueden carecer de dirección histórica fiable; en esos resúmenes se deja vacía.
+Desde la raíz del proyecto, copia `backend/.env.example` a `backend/.env`. Puedes hacerlo con el explorador de archivos o con uno de estos comandos:
+
+```bash
+# Linux o macOS
+cp backend/.env.example backend/.env
+```
+
+```powershell
+# Windows PowerShell
+Copy-Item backend/.env.example backend/.env
+```
+
+Edita `backend/.env` con las credenciales de la base que inició XAMPP. Ejemplo **solo si** tu instalación usa `root` sin contraseña:
+
+```dotenv
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=pedidos_db
+PORT=3002
+```
+
+Si XAMPP usa otro usuario, contraseña o puerto para MySQL/MariaDB, reemplaza esos valores. `DB_PORT` es el puerto de la base; `PORT` es el puerto de la página y la API. El archivo `.env` está excluido de Git.
+
+## 5. Instalar y arrancar
+
+Abre una terminal en la raíz del proyecto y ejecuta:
+
+```bash
+cd backend
+npm install
+npm start
+```
+
+Mantén esa terminal abierta. Debe aparecer un mensaje de conexión exitosa a MySQL/MariaDB. Si aparece un error de conexión, revisa que MySQL esté encendido en XAMPP y que `backend/.env` tenga los datos correctos.
+
+Abre **http://127.0.0.1:3002** en el navegador. El puerto 80 de Apache no se usa para la aplicación; Node sirve el frontend en el puerto 3002.
+
+## 6. Revisar el funcionamiento
+
+1. En **Inicio** o **Menú**, comprueba que aparecen los platillos con imagen, descripción y precio. Usa los filtros por categoría.
+2. Agrega productos al carrito, cambia las cantidades y recarga la página: el carrito se conserva en `localStorage`.
+3. Continúa al checkout. Completa nombre, teléfono, dirección, ciudad y una zona del 1 al 12; el correo es opcional.
+4. Revisa el subtotal y el envío de **Q15**. El IVA mostrado está incluido en el subtotal. Elige **efectivo contra entrega** o **transferencia** y confirma el pedido. La transferencia se coordina con el restaurante; la aplicación no procesa pagos bancarios.
+5. La página de confirmación muestra el código de rastreo `LBM-...`, el resumen y una estimación inicial de **45–60 minutos**.
+6. En phpMyAdmin, comprueba el nuevo pedido en `pedidos`, los artículos en `detalles_pedido`, la dirección en `pedido_entrega` y el resumen en `resumen_pedidos`.
+7. Abre **Seguir mi pedido** desde Inicio. Escribe el código mostrado; se aceptan formatos como `LBM-123`, `lbm123` o `123`.
+
+El estado inicial es `pendiente`. Este proyecto no incluye un panel de administración: para demostrar un cambio de estado, el evaluador puede ejecutar en la pestaña **SQL** de phpMyAdmin, sustituyendo el código por el de su pedido:
+
+```sql
+UPDATE pedidos
+SET estado = 'en_preparacion'
+WHERE codigo_rastreo = 'LBM-123';
+```
+
+Vuelve a consultar el código en la página de seguimiento. También se puede usar `entregado` como estado. Los valores admitidos son `pendiente`, `en_preparacion` y `entregado`.
+
+## 7. Rutas de la API
+
+| Método | Ruta | Función |
+| --- | --- | --- |
+| GET | `/api/productos` | Lista el catálogo desde la base. |
+| GET | `/api/productos/:id` | Consulta un producto. |
+| GET | `/api/configuracion` | Devuelve costo de envío, métodos de pago y tiempo estimado. |
+| POST | `/api/pedidos` | Guarda el cliente, pedido, entrega, artículos y resumen en una transacción. |
+| GET | `/api/pedidos/:id` | Consulta el pedido completo; exige `Authorization: Bearer <consulta_token>`. |
+| GET | `/api/seguimiento/:codigo` | Devuelve solo el código y el estado, sin datos personales. |
+
+El `consulta_token` protege los datos completos de una orden; el código `LBM-...` permite ver solo su estado.
+
+## 8. Prueba automática opcional
+
+Con MySQL/MariaDB encendido y `.env` configurado, desde `backend` se puede ejecutar:
+
+```bash
+npm run test:smoke
+```
+
+La prueba consulta el catálogo, crea tres pedidos temporales, verifica montos, métodos de pago, guardado y seguimiento, y elimina esos pedidos al terminar. Usa el puerto 3102 durante la prueba.
+
+## Estructura principal
+
+- `schema.sql`: crea `pedidos_db`, las tablas y los 30 productos iniciales.
+- `backend/`: servidor Express, configuración y rutas API.
+- `frontend/`: páginas, estilos, JavaScript e imágenes locales en `frontend/img`.
+- `.gitignore`: excluye `node_modules/` y los archivos `.env`.
