@@ -17,7 +17,7 @@ async function start(port = process.env.PORT || 3002) {
         throw new Error('PORT debe ser un número entre 1 y 65535 en backend/.env.');
     }
     for (const name of ['DB_HOST', 'DB_USER', 'DB_NAME']) {
-        if (!process.env[name]) throw new Error(`Falta ${name} en backend/.env. Ejecuta npm run setup y revisa ese archivo.`);
+        if (!process.env[name]) throw new Error(`Falta ${name} en backend/.env. Ejecuta npm install y revisa ese archivo.`);
     }
     try {
         await pool.query('SELECT 1');

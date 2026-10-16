@@ -35,11 +35,11 @@ Todos los comandos siguientes parten de la raíz del proyecto, donde están `sch
 Abre una terminal en la raíz del proyecto, donde está este README, y ejecuta:
 
 ```bash
-npm run setup
+npm install
 npm start
 ```
 
-`setup` instala las dependencias del backend según `package-lock.json` y crea `backend/.env` solo si no existe. Los valores iniciales corresponden al caso habitual de XAMPP (`root` sin contraseña, MySQL en 3306):
+`npm install` instala las dependencias del backend según su `package-lock.json` y crea `backend/.env` solo si no existe. No necesitas `npm init`: el proyecto ya incluye `package.json`. Los valores iniciales corresponden al caso habitual de XAMPP (`root` sin contraseña, MySQL en 3306):
 
 ```dotenv
 DB_HOST=127.0.0.1
