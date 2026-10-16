@@ -4,7 +4,7 @@ Aplicación con HTML, CSS y JavaScript; servidor Node.js/Express; base de datos 
 
 ## Inicio rápido
 
-1. Instala **Node.js 18 o superior** e inicia **MySQL** en XAMPP.
+1. Instala [Node.js 18 o superior](https://nodejs.org/en/download) y [XAMPP](https://www.apachefriends.org/download.html) si esa computadora aún no los tiene. Abre una terminal nueva y comprueba que `node -v` indique `v18` o mayor y que `npm -v` muestre una versión. Inicia **Apache** y **MySQL** desde XAMPP.
 2. En phpMyAdmin (`http://localhost/phpmyadmin`), importa el archivo **`schema.sql`** de la raíz. Esto crea `pedidos_db`, las tablas y los productos. Hazlo solo en una base nueva.
 3. Abre una terminal en la **raíz del proyecto** y ejecuta:
 
@@ -19,11 +19,12 @@ Si MySQL no usa `root` sin contraseña en el puerto 3306, edita `backend/.env` d
 
 ## 1. Requisitos
 
-- Node.js 18 o superior y npm. El proyecto se comprobó con Node.js 18.19.1.
+- Node.js 18 o superior y npm (incluido con Node.js). Comprueba la instalación con `node -v` y `npm -v`; el proyecto se comprobó con Node.js 18.19.1.
 - XAMPP con MariaDB/MySQL y phpMyAdmin, o una instalación equivalente de MySQL 8 o MariaDB compatible con InnoDB.
 - Git para clonar el repositorio, o el código descargado desde el enlace de entrega.
 
 XAMPP administra la base de datos; **Node.js es necesario para ejecutar el backend**. Apache solo hace falta si se utiliza phpMyAdmin para importar o revisar la base.
+Node.js y MySQL son programas del sistema y se instalan una vez en la computadora. El repositorio incluye el código, el esquema SQL y las instrucciones; `npm install` descarga las dependencias JavaScript del proyecto.
 
 ## 2. Obtener el proyecto
 
