@@ -2,6 +2,21 @@
 
 Aplicación con HTML, CSS y JavaScript; servidor Node.js/Express; base de datos MySQL o MariaDB. El servidor Node entrega tanto las páginas como la API. **No se necesita Live Server ni copiar el proyecto a `htdocs`.**
 
+## Inicio rápido
+
+1. Instala **Node.js 18 o superior** e inicia **MySQL** en XAMPP.
+2. En phpMyAdmin (`http://localhost/phpmyadmin`), importa el archivo **`schema.sql`** de la raíz. Esto crea `pedidos_db`, las tablas y los productos. Hazlo solo en una base nueva.
+3. Abre una terminal en la **raíz del proyecto** y ejecuta:
+
+   ```bash
+   npm install
+   npm start
+   ```
+
+4. Abre la dirección que muestra la terminal, normalmente **http://127.0.0.1:3002/**. Deja la terminal abierta.
+
+Si MySQL no usa `root` sin contraseña en el puerto 3306, edita `backend/.env` después de `npm install` y antes de `npm start`. Para comprobar automáticamente el catálogo y los pedidos, ejecuta `npm test` en otra terminal; la prueba elimina sus pedidos temporales.
+
 ## 1. Requisitos
 
 - Node.js 18 o superior y npm. El proyecto se comprobó con Node.js 18.19.1.
@@ -99,7 +114,7 @@ El `consulta_token` protege los datos completos de una orden; el código `LBM-..
 Con MySQL/MariaDB encendido y `.env` configurado, desde la raíz se puede ejecutar:
 
 ```bash
-npm --prefix backend run test:smoke
+npm test
 ```
 
 La prueba consulta el catálogo, crea tres pedidos temporales, verifica montos, métodos de pago, guardado y seguimiento, y elimina esos pedidos al terminar. Usa el puerto 3102 durante la prueba.

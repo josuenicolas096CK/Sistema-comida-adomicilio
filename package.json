@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "start": "npm --prefix backend start",
+    "test": "npm --prefix backend run test:smoke",
     "postinstall": "node backend/setup.js && npm --prefix backend ci"
   }
 }
