@@ -1,6 +1,6 @@
 # La Buena Mesa — sistema de pedidos a domicilio
 
-Aplicación con HTML, CSS y JavaScript; servidor Node.js/Express; base de datos MySQL o MariaDB. El servidor Node entrega tanto las páginas como la API. **No se necesita Live Server ni copiar el proyecto a `htdocs`.**
+Aplicación con HTML, CSS y JavaScript; servidor Node.js/Express; base de datos MySQL o MariaDB. El servidor Node entrega tanto las páginas como la API.
 
 ## Inicio rápido
 
@@ -28,10 +28,10 @@ Node.js y MySQL son programas del sistema y se instalan una vez en la computador
 
 ## 2. Obtener el proyecto
 
-Clona la rama de entrega (una vez publicada):
+Clona el repositorio; `main` es la rama predeterminada:
 
 ```bash
-git clone --branch feature/integracionfinal --single-branch https://github.com/josuenicolas096CK/Sistema-comida-adomicilio.git
+git clone https://github.com/josuenicolas096CK/Sistema-comida-adomicilio.git
 cd Sistema-comida-adomicilio
 ```
 
