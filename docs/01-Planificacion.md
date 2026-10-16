@@ -1,50 +1,27 @@
-# hola mundo xd
+# Planificación inicial del sistema de pedidos
 
-##  Descripción General del Proyecto
-* **Proyecto:** Sistema Web de Comida a Domicilio
-* **Período:** 31 de Agosto – 15 de Septiembre 2026
-* **Objetivo:** Planificar la interfaz, flujos y la estructura relacional de la base de datos para el sistema de pedidos.
+Este documento reúne los bocetos de la primera fase. La implementación final se describe en [la guía del código](CODIGO.md) y en [`schema.sql`](../schema.sql).
 
-# Fase 1: Planificación, Diseño UI/UX y Base de Datos
-## Definicion de los alcances y requerimentos
-1. pagina principal/Home  => boton de menu
-2. Menu
-3. Carrito de compras flotante
-4. Toma de datos
-5. Confirmacion del pedido y datos de pago
+## Objetivo y alcance
 
-## 2. Requerimientos de la Interfaz (UI/UX)
-* **Vistas principales:**
-  1. Catálogo / Menú de platillos (Home).
-  2. Vista de detalle del producto.
-  3. Carrito de compras (flotante o sección interactiva).
-  4. Formulario de checkout / confirmación de datos del cliente y entrega.
+- **Proyecto:** sistema web de comida a domicilio.
+- **Período de planificación:** 31 de agosto al 15 de septiembre de 2026.
+- **Objetivo:** definir la interfaz, la navegación y el modelo relacional para registrar pedidos.
 
-### 1.
-    DISEÑO ECHO EN FIGMA https://www.figma.com/design/vBu9SUTUT6xul4ZHcFDUaZ/Restaurante-dise%C3%B1o?node-id=2-4&t=ow19rvHBc5zGFVAK-1
+Las vistas previstas fueron inicio, menú, carrito, captura de datos de entrega, pago y confirmación. La implementación final también incluye seguimiento de órdenes.
 
-    # home
-    ![Home](img/HomeRestaurante.png)
+## Diseño de la interfaz
 
-    # menu
-    ![Menu](img/MenuRestaurante.png)
+El [diseño original en Figma](https://www.figma.com/design/vBu9SUTUT6xul4ZHcFDUaZ/Restaurante-dise%C3%B1o?node-id=2-4&t=ow19rvHBc5zGFVAK-1) sirvió como referencia para las páginas y componentes del frontend.
 
-    # carrito de compras
-    ![Carrito de compras](img/CarritoRestaurante.png)
+| Vista | Boceto |
+| --- | --- |
+| Inicio | ![Boceto de inicio](img/HomeRestaurante.png) |
+| Menú | ![Boceto del menú](img/MenuRestaurante.png) |
+| Carrito | ![Boceto del carrito](img/CarritoRestaurante.png) |
+| Datos de entrega | ![Boceto del formulario](img/TomaDatosRestaurante.png) |
+| Pago y confirmación | ![Boceto de pago y confirmación](img/ConfirmacionYPagoRestaurante.png) |
 
-    # toma de datos
-    ![Toma de datos](img/TomaDatosRestaurante.png)
+## Base de datos final
 
-    # confirmacion de pedidos
-    ![Confirmacion de pedidos](img/ConfirmacionYPagoRestaurante.png)
-
-## 3. Estructura de la Base de Datos (MySQL)
-* Tablas planeadas:
-  * `usuarios`
-  * `categorias`
-  * `productos`
-  * `pedidos`
-  * `detalle_pedido`
-
-
-  
+El esquema implementado usa `usuarios`, `productos`, `pedidos`, `pedido_entrega`, `detalles_pedido` y `resumen_pedidos`. Sus columnas, claves y productos iniciales están definidos en [`schema.sql`](../schema.sql).
