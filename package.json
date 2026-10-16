@@ -1,0 +1,8 @@
+{
+  "name": "sistema-comida-domicilio",
+  "private": true,
+  "scripts": {
+    "start": "npm --prefix backend start",
+    "setup": "node backend/setup.js && npm --prefix backend ci"
+  }
+}

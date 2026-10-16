@@ -12,10 +12,10 @@ XAMPP administra la base de datos; **Node.js es necesario para ejecutar el backe
 
 ## 2. Obtener el proyecto
 
-Si el enlace de entrega corresponde a la rama `feature/avance`, se puede clonar así:
+Clona la rama de entrega (una vez publicada):
 
 ```bash
-git clone --branch feature/avance --single-branch https://github.com/josuenicolas096CK/Sistema-comida-adomicilio.git
+git clone --branch feature/integracionfinal --single-branch https://github.com/josuenicolas096CK/Sistema-comida-adomicilio.git
 cd Sistema-comida-adomicilio
 ```
 
@@ -30,21 +30,16 @@ Todos los comandos siguientes parten de la raíz del proyecto, donde están `sch
 
 `schema.sql` crea la base, las seis tablas y el catálogo inicial en un solo paso. **Úsalo para una instalación nueva; no lo ejecutes de nuevo sobre una base que ya contiene esas tablas o pedidos.** Si se prefiere DBeaver, se puede ejecutar el mismo archivo allí.
 
-## 4. Configurar la conexión
+## 4. Instalar y arrancar
 
-Desde la raíz del proyecto, copia `backend/.env.example` a `backend/.env`. Puedes hacerlo con el explorador de archivos o con uno de estos comandos:
+Abre una terminal en la raíz del proyecto, donde está este README, y ejecuta:
 
 ```bash
-# Linux o macOS
-cp backend/.env.example backend/.env
+npm run setup
+npm start
 ```
 
-```powershell
-# Windows PowerShell
-Copy-Item backend/.env.example backend/.env
-```
-
-Edita `backend/.env` con las credenciales de la base que inició XAMPP. Ejemplo **solo si** tu instalación usa `root` sin contraseña:
+`setup` instala las dependencias del backend según `package-lock.json` y crea `backend/.env` solo si no existe. Los valores iniciales corresponden al caso habitual de XAMPP (`root` sin contraseña, MySQL en 3306):
 
 ```dotenv
 DB_HOST=127.0.0.1
@@ -55,23 +50,18 @@ DB_NAME=pedidos_db
 PORT=3002
 ```
 
-Si XAMPP usa otro usuario, contraseña o puerto para MySQL/MariaDB, reemplaza esos valores. `DB_PORT` es el puerto de la base; `PORT` es el puerto de la página y la API. El archivo `.env` está excluido de Git.
+Si tu MySQL usa otro usuario, contraseña o puerto, edita `backend/.env` antes de `npm start`. `DB_PORT` corresponde a MySQL; `PORT` corresponde al sitio web. `.env` no se publica en Git.
 
-## 5. Instalar y arrancar
+Mantén abierta la terminal con `npm start`. Cuando aparezca **`MySQL conectado. Abre http://127.0.0.1:3002/`**, abre esa dirección **en el navegador de la misma computadora**. Node entrega el sitio y la API; no necesitas Live Server ni poner archivos en `htdocs`. Para detenerlo, pulsa `Ctrl+C`.
 
-Abre una terminal en la raíz del proyecto y ejecuta:
+Si no arranca:
 
-```bash
-cd backend
-npm install
-npm start
-```
+- `npm` no se reconoce: instala Node.js 18 o superior y abre una terminal nueva.
+- `No se pudo conectar a MySQL`: inicia MySQL en XAMPP; comprueba `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD` y `DB_NAME` en `backend/.env`, y que importaste `schema.sql`.
+- `El puerto 3002 ya está ocupado`: cierra la otra instancia del servidor o cambia `PORT` en `backend/.env`; usa en el navegador el puerto indicado al arrancar.
+- El navegador no carga: deja abierta la terminal donde se ejecutó `npm start` y usa la dirección exacta que imprime, con `http://`.
 
-Mantén esa terminal abierta. Debe aparecer un mensaje de conexión exitosa a MySQL/MariaDB. Si aparece un error de conexión, revisa que MySQL esté encendido en XAMPP y que `backend/.env` tenga los datos correctos.
-
-Abre **http://127.0.0.1:3002** en el navegador. El puerto 80 de Apache no se usa para la aplicación; Node sirve el frontend en el puerto 3002.
-
-## 6. Revisar el funcionamiento
+## 5. Revisar el funcionamiento
 
 1. En **Inicio** o **Menú**, comprueba que aparecen los platillos con imagen, descripción y precio. Usa los filtros por categoría.
 2. Agrega productos al carrito, cambia las cantidades y recarga la página: el carrito se conserva en `localStorage`.
@@ -91,7 +81,7 @@ WHERE codigo_rastreo = 'LBM-123';
 
 Vuelve a consultar el código en la página de seguimiento. También se puede usar `entregado` como estado. Los valores admitidos son `pendiente`, `en_preparacion` y `entregado`.
 
-## 7. Rutas de la API
+## 6. Rutas de la API
 
 | Método | Ruta | Función |
 | --- | --- | --- |
@@ -104,12 +94,12 @@ Vuelve a consultar el código en la página de seguimiento. También se puede us
 
 El `consulta_token` protege los datos completos de una orden; el código `LBM-...` permite ver solo su estado.
 
-## 8. Prueba automática opcional
+## 7. Prueba automática opcional
 
-Con MySQL/MariaDB encendido y `.env` configurado, desde `backend` se puede ejecutar:
+Con MySQL/MariaDB encendido y `.env` configurado, desde la raíz se puede ejecutar:
 
 ```bash
-npm run test:smoke
+npm --prefix backend run test:smoke
 ```
 
 La prueba consulta el catálogo, crea tres pedidos temporales, verifica montos, métodos de pago, guardado y seguimiento, y elimina esos pedidos al terminar. Usa el puerto 3102 durante la prueba.

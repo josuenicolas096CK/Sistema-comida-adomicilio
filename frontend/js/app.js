@@ -1,4 +1,4 @@
-const API = location.port === '3002' ? '/api' : 'http://127.0.0.1:3002/api';
+const API = '/api';
 const CART_KEY = 'lbm_cart';
 const DELIVERY_KEY = 'lbm_delivery';
 const LAST_ORDER_KEY = 'lbm_last_order';

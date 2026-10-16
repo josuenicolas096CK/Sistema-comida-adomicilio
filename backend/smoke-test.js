@@ -1,17 +1,15 @@
 // Prueba integral contra MySQL local. Elimina únicamente los pedidos de prueba que crea.
-require('dotenv').config();
 const assert = require('node:assert/strict');
 const pool = require('./config/db');
 const port = 3102;
-process.env.PORT = String(port);
-require('./server');
+const { start } = require('./server');
 
 (async () => {
+    const server = await start(port);
     const orderIds = [];
     let guestUserId;
     const email = `prueba-${Date.now()}@example.invalid`;
     try {
-        await new Promise(resolve => setTimeout(resolve, 400));
         const catalogResponse = await fetch(`http://127.0.0.1:${port}/api/productos`);
         assert.equal(catalogResponse.status, 200);
         const products = await catalogResponse.json();
@@ -118,6 +116,7 @@ require('./server');
         if (orderIds.length) await pool.query('DELETE FROM pedidos WHERE id IN (?)', [orderIds]);
         if (guestUserId) await pool.query('DELETE FROM usuarios WHERE id = ?', [guestUserId]);
         await pool.query('DELETE FROM usuarios WHERE correo = ?', [email]);
+        await new Promise(resolve => server.close(resolve));
         await pool.end();
     }
 })().then(() => process.exit(0)).catch(error => { console.error(error); process.exit(1); });

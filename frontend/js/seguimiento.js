@@ -1,4 +1,4 @@
-const trackingApi = location.port === '3002' ? '/api' : `http://${location.hostname || '127.0.0.1'}:3002/api`;
+const trackingApi = '/api';
 const trackingForm = document.getElementById('tracking-form');
 const trackingNumber = document.getElementById('tracking-number');
 const trackingMessage = document.getElementById('tracking-message');
@@ -42,7 +42,7 @@ trackingForm.addEventListener('submit', async event => {
         trackingResult.hidden = false;
     } catch (error) {
         trackingMessage.textContent = error instanceof TypeError
-            ? 'No se pudo conectar con el servidor. Comprueba que esté activo en el puerto 3002.'
+            ? 'No se pudo conectar con el servidor. Comprueba que esté activo en la misma dirección de esta página.'
             : error.message || 'No se pudo consultar el pedido. Inténtalo de nuevo.';
         trackingMessage.hidden = false;
     } finally {
