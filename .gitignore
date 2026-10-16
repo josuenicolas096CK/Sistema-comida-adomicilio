@@ -1,4 +1,7 @@
+# Dependencias instaladas localmente por npm.
 node_modules/
+# Credenciales locales; el repositorio conserva solo backend/.env.example.
 .env
+# Archivos generados por el sistema o por herramientas de empaquetado.
 .DS_Store
 dist/

@@ -1,4 +1,7 @@
+// Lógica compartida de catálogo, carrito y compra para las páginas que cargan app.js.
+// La API usa el mismo origen HTTP que sirve los archivos HTML.
 const API = '/api';
+// El carrito persiste entre recargas; los datos de entrega duran solo el flujo actual.
 const CART_KEY = 'lbm_cart';
 const DELIVERY_KEY = 'lbm_delivery';
 const LAST_ORDER_KEY = 'lbm_last_order';
@@ -33,6 +36,7 @@ let checkoutConfig = null;
 const totalLabel = value => value == null ? 'Calculando…' : money(value);
 
 async function loadCheckoutConfig() {
+    // El importe de envío y los métodos válidos vienen del backend.
     if ($('confirmation-details')) return;
     try {
         const response = await requestApi('/configuracion');
@@ -67,6 +71,7 @@ function showMessage(message, target) {
     box.hidden = false;
 }
 function getTotals() {
+    // El IVA se muestra como parte del subtotal, no se suma por segunda vez.
     const subtotal = Math.round(cart.reduce((sum, item) => sum + Number(item.precio) * item.quantity, 0) * 100) / 100;
     const envio = !cart.length ? 0 : checkoutConfig ? Number(checkoutConfig.costo_envio) : null;
     const total = envio == null ? null : Math.round((subtotal + envio) * 100) / 100;
@@ -103,6 +108,7 @@ function closeDrawer() {
     $('cart-drawer')?.setAttribute('aria-hidden', 'true');
 }
 function renderCart() {
+    // Actualiza el carrito lateral y la página de carrito desde el mismo estado.
     const totals = getTotals();
     setText('header-cart-badge', totals.count);
     if ($('header-cart-badge')) $('header-cart-badge').style.display = totals.count ? 'flex' : 'none';
@@ -143,6 +149,7 @@ function renderCart() {
     renderCheckout();
 }
 function productCard(product) {
+    // Los datos dinámicos se escapan antes de insertarlos en el HTML de la tarjeta.
     const image = imageMarkup(product, 'card-img');
     const canExpand = Boolean($('product-image-dialog')) && safeImage(product.imagen_url);
     const media = canExpand
@@ -204,6 +211,7 @@ function renderHomeCatalog() {
         '<p class="section-desc">No hay platillos en esta categoría.</p>';
 }
 async function loadProducts() {
+    // Reconcilia el carrito guardado con el catálogo actual de MySQL.
     if ($('confirmation-details')) return;
     try {
         const response = await requestApi('/productos');
@@ -250,6 +258,7 @@ function renderCheckout() {
     setText('checkout-total', totalLabel(totals.total));
 }
 function initCheckout() {
+    // Un checkout nuevo limpia datos anteriores; ?editar=1 recupera el borrador de esta sesión.
     const form = $('checkout-shipping-form');
     if (!form) return;
     // Solo se recupera un borrador si el cliente volvió expresamente a editarlo.
@@ -303,6 +312,7 @@ function renderPayment() {
     $('btn-confirm-order').disabled = !checkoutConfig;
 }
 function initPayment() {
+    // Solo los IDs y cantidades viajan al servidor; allí se recalculan los precios.
     if (!$('btn-confirm-order')) return;
     renderPayment();
     document.querySelectorAll('input[name="metodo_pago"]').forEach(input => input.addEventListener('change', () => {
@@ -380,6 +390,7 @@ function renderConfirmation(order) {
     if (progress) progress.style.width = `${statusIndex * 33.3}%`;
 }
 async function initConfirmation() {
+    // El token privado permite reconstruir el comprobante tras recargar la página.
     if (!$('confirmation-details')) return;
     const order = readSessionStorage(LAST_ORDER_KEY, null);
     const reference = order?.consulta_token ? order : readStorage(ORDER_REFERENCE_KEY, null);
@@ -405,6 +416,7 @@ async function initConfirmation() {
     }
 }
 document.addEventListener('click', event => {
+    // Delegación: las tarjetas y controles del carrito se generan después de cargar la API.
     const control = event.target.closest('[data-action]');
     if (control) {
         const { action, id } = control.dataset;

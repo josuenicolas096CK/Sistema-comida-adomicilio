@@ -1,3 +1,4 @@
+// API del catálogo, creación de pedidos, comprobantes privados y seguimiento público.
 const express = require('express');
 const { randomUUID, randomBytes } = require('node:crypto');
 const router = express.Router();
@@ -7,12 +8,14 @@ const checkout = require('../config/checkout');
 const round = value => Math.round(value * 100) / 100;
 const validText = (value, max) => typeof value === 'string' && value.trim().length > 0 && value.trim().length <= max;
 async function productSelect() {
+    // Conserva compatibilidad con bases antiguas que además tenían la columna `imagen`.
     const [legacyImage] = await pool.query("SHOW COLUMNS FROM productos LIKE 'imagen'");
     const image = legacyImage.length ? "COALESCE(NULLIF(imagen_url, ''), NULLIF(imagen, ''))" : 'imagen_url';
     return `SELECT id, nombre, descripcion, precio, categoria, ${image} AS imagen_url FROM productos`;
 }
 
 async function readOrder(connection, id, token) {
+    // Recupera el comprobante completo únicamente si coincide el token privado.
     const [orders] = await connection.query(
         `SELECT p.id, p.codigo_rastreo, p.fecha, p.estado, p.subtotal, p.costo_envio, p.total, p.metodo_pago,
                 e.nombre, e.correo, e.telefono, e.direccion, e.zona, e.ciudad, e.codigo_postal
@@ -84,6 +87,7 @@ router.get('/productos/:id', async (req, res) => {
 router.get('/pedidos/:id', async (req, res) => {
     const id = Number(req.params.id);
     if (!Number.isSafeInteger(id) || id < 1) return res.status(400).json({ error: 'Pedido inválido.' });
+    // El código público de rastreo no da acceso a nombre, dirección ni artículos.
     const token = /^Bearer ([a-f0-9]{64})$/i.exec(req.get('authorization') || '')?.[1];
     if (!token) return res.status(401).json({ error: 'Se necesita la clave de consulta del pedido.' });
     try {
@@ -115,6 +119,7 @@ router.get('/seguimiento/:codigo', async (req, res) => {
 });
 
 router.post('/pedidos', async (req, res) => {
+    // Se validan datos y cantidades antes de abrir la transacción de escritura.
     const { cliente: rawClient, entrega: rawDelivery, items, metodo_pago: metodoPago } = req.body || {};
     const cliente = rawClient && typeof rawClient === 'object' && !Array.isArray(rawClient) ? rawClient : {};
     const entrega = rawDelivery && typeof rawDelivery === 'object' && !Array.isArray(rawDelivery) ? rawDelivery : {};
@@ -150,6 +155,7 @@ router.post('/pedidos', async (req, res) => {
     try {
         connection = await pool.getConnection();
         await connection.beginTransaction();
+        // Se agrupan IDs repetidos; el precio se lee de MySQL, no del carrito enviado.
         const quantities = new Map();
         for (const item of items) quantities.set(Number(item.id), (quantities.get(Number(item.id)) || 0) + Number(item.cantidad));
         if ([...quantities.values()].some(quantity => quantity > 99)) {
@@ -199,6 +205,7 @@ router.post('/pedidos', async (req, res) => {
         );
         const saved = await readOrder(connection, order.insertId, consultaToken);
         if (!saved) throw new Error('No se pudo verificar el pedido guardado.');
+        // Solo se confirma cuando todas las tablas y el comprobante se verificaron.
         await connection.commit();
         res.status(201).json(saved);
     } catch (error) {

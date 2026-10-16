@@ -1,3 +1,4 @@
+// Punto de entrada HTTP: entrega el frontend y monta la API en el mismo origen.
 const express = require('express');
 const cors = require('cors');
 const path = require('node:path');
@@ -11,6 +12,8 @@ app.use('/api', productosRoutes);
 app.use('/docs/img', express.static(path.join(__dirname, '../docs/img')));
 app.use(express.static(path.join(__dirname, '../frontend')));
 
+// Solo escucha cuando la configuración es válida y MySQL responde.
+// La prueba integral reutiliza esta función con un puerto propio (3102).
 async function start(port = process.env.PORT || 3002) {
     const number = Number(port);
     if (!Number.isInteger(number) || number < 1 || number > 65535) {
@@ -38,6 +41,7 @@ async function start(port = process.env.PORT || 3002) {
     });
 }
 
+// Al ejecutar `node server.js` se inicia; al importarlo se exporta start().
 if (require.main === module) {
     start().catch(error => {
         console.error(`Error al iniciar: ${error.message}`);

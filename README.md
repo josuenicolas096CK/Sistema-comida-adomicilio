@@ -126,3 +126,5 @@ La prueba consulta el catálogo, crea tres pedidos temporales, verifica montos, 
 - `backend/`: servidor Express, configuración y rutas API.
 - `frontend/`: páginas, estilos, JavaScript e imágenes locales en `frontend/img`.
 - `.gitignore`: excluye `node_modules/` y los archivos `.env`.
+
+La explicación de cada archivo y del flujo entre navegador, API y MySQL está en [docs/CODIGO.md](docs/CODIGO.md).

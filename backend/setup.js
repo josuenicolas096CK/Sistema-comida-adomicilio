@@ -1,3 +1,5 @@
+// Preparación inicial llamada por el postinstall de la raíz.
+// Conserva cualquier .env existente para no perder credenciales locales.
 const fs = require('node:fs');
 const path = require('node:path');
 

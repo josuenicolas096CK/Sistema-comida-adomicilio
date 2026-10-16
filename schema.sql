@@ -1,3 +1,4 @@
+-- Instalación de una base nueva: crear tablas y cargar el catálogo inicial.
 -- Estructura actual de pedidos_db: usuarios, productos, pedidos,
 -- pedido_entrega, detalles_pedido y resumen_pedidos.
 -- Ejecutar solo para crear una base nueva; no volver a ejecutar sobre la base existente.

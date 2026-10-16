@@ -1,4 +1,5 @@
 // Prueba integral contra MySQL local. Elimina únicamente los pedidos de prueba que crea.
+// Usa el puerto 3102 para poder ejecutarse mientras la aplicación usa el 3002.
 const assert = require('node:assert/strict');
 const pool = require('./config/db');
 const port = 3102;
@@ -113,6 +114,7 @@ const { start } = require('./server');
         assert.equal(missingTracking.status, 404);
         console.log('Catálogo, costos, pagos y seguimiento de tres pedidos: correctos.');
     } finally {
+        // Las claves foráneas con cascada eliminan entrega, detalles y resumen.
         if (orderIds.length) await pool.query('DELETE FROM pedidos WHERE id IN (?)', [orderIds]);
         if (guestUserId) await pool.query('DELETE FROM usuarios WHERE id = ?', [guestUserId]);
         await pool.query('DELETE FROM usuarios WHERE correo = ?', [email]);

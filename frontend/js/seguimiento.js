@@ -1,3 +1,5 @@
+// Seguimiento público: acepta variaciones del código y muestra solo el estado.
+// Los datos privados del comprobante se consultan por otra ruta con token.
 const trackingApi = '/api';
 const trackingForm = document.getElementById('tracking-form');
 const trackingNumber = document.getElementById('tracking-number');

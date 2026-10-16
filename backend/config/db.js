@@ -1,3 +1,5 @@
+// Pool único de MySQL compartido por todas las rutas de la API.
+// La ruta absoluta permite iniciar Node desde la raíz o desde backend/.
 const mysql = require('mysql2/promise');
 const path = require('node:path');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
